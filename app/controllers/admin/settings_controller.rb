@@ -19,8 +19,8 @@ module Admin
     def wedding_params
       params.require(:wedding).permit(
         :title, :date, :location,
-        settings: [:rsvp_deadline, { meal_options: [] }],
-        theme_config: [{ colors: %i[primary secondary] }, :font, :layout]
+        :rsvp_deadline, :meal_options_text,
+        :primary_color, :secondary_color, :font, :layout
       )
     end
   end

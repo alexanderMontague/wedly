@@ -3,6 +3,7 @@ module AdminAuthentication
 
   included do
     before_action :require_admin
+    helper_method :current_admin, :admin_logged_in?
   end
 
   private
@@ -20,6 +21,4 @@ module AdminAuthentication
   def admin_logged_in?
     current_admin.present?
   end
-
-  helper_method :current_admin, :admin_logged_in?
 end
