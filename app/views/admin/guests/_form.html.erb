@@ -1,0 +1,49 @@
+<%= form_with model: [:admin, guest] do |f| %>
+  <% if guest.errors.any? %>
+    <div class="alert alert-error">
+      <h3><%= pluralize(guest.errors.count, "error") %> prohibited this guest from being saved:</h3>
+      <ul>
+        <% guest.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :household_id, "Household" %>
+    <%= f.collection_select :household_id, @households, :id, :name, 
+                           { prompt: "Select a household" }, 
+                           { class: "form-control", required: true } %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :first_name %>
+    <%= f.text_field :first_name, class: "form-control", required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :last_name %>
+    <%= f.text_field :last_name, class: "form-control", required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :email %>
+    <%= f.email_field :email, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :phone_number %>
+    <%= f.text_field :phone_number, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :address %>
+    <%= f.text_area :address, class: "form-control", rows: 3 %>
+  </div>
+
+  <div style="display: flex; gap: 1rem;">
+    <%= f.submit class: "btn btn-primary" %>
+    <%= link_to "Cancel", admin_guests_path, class: "btn btn-secondary" %>
+  </div>
+<% end %>

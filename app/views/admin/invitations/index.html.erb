@@ -1,0 +1,76 @@
+<div class="card">
+  <h1>Send Invitations</h1>
+
+  <div class="stats-grid" style="margin-bottom: 2rem;">
+    <div class="stat-card">
+      <div class="stat-value"><%= @invitation_stats[:total_guests] %></div>
+      <div class="stat-label">Total Guests</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-value"><%= @invitation_stats[:sent] %></div>
+      <div class="stat-label">Invitations Sent</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-value"><%= @invitation_stats[:pending] %></div>
+      <div class="stat-label">Pending</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-value"><%= @invitation_stats[:opened] %></div>
+      <div class="stat-label">Opened</div>
+    </div>
+  </div>
+
+  <%= form_with url: admin_invitations_path, method: :post do |f| %>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 50px;">
+            <input type="checkbox" id="select-all">
+          </th>
+          <th>Guest</th>
+          <th>Email</th>
+          <th>Household</th>
+          <th>Status</th>
+          <th>Last Sent</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @guests.each do |guest| %>
+          <tr>
+            <td>
+              <%= check_box_tag "guest_ids[]", guest.id, false, class: "guest-checkbox" %>
+            </td>
+            <td><%= guest.full_name %></td>
+            <td><%= guest.email %></td>
+            <td><%= guest.household.name %></td>
+            <td>
+              <% last_invitation = guest.invitations.last %>
+              <span style="color: <%= last_invitation&.status == 'sent' ? 'green' : 'orange' %>;">
+                <%= last_invitation&.status&.capitalize || "Not Sent" %>
+              </span>
+            </td>
+            <td>
+              <%= guest.invitations.sent.last&.sent_at&.strftime("%b %d, %Y") || "Never" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <div style="margin-top: 2rem;">
+      <%= f.submit "Send Invitations to Selected", class: "btn btn-primary", 
+                   data: { confirm: "Send invitations to selected guests?" } %>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  document.getElementById('select-all')?.addEventListener('change', function(e) {
+    document.querySelectorAll('.guest-checkbox').forEach(cb => {
+      cb.checked = e.target.checked;
+    });
+  });
+</script>

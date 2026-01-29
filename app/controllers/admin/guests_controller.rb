@@ -1,0 +1,103 @@
+class Admin::GuestsController < Admin::BaseController
+  before_action :set_guest, only: [:show, :edit, :update, :destroy]
+
+  def index
+    @guests = current_wedding.guests
+                             .includes(:household, :rsvp)
+                             .order(:last_name, :first_name)
+    
+    @guests = apply_filters(@guests)
+    @households = current_wedding.households.order(:name)
+  end
+
+  def show
+  end
+
+  def new
+    @guest = current_wedding.guests.build
+    @households = current_wedding.households.order(:name)
+  end
+
+  def create
+    @guest = current_wedding.guests.build(guest_params)
+
+    if @guest.save
+      redirect_to admin_guests_path, notice: "Guest added successfully"
+    else
+      @households = current_wedding.households.order(:name)
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  def edit
+    @households = current_wedding.households.order(:name)
+  end
+
+  def update
+    if @guest.update(guest_params)
+      redirect_to admin_guests_path, notice: "Guest updated successfully"
+    else
+      @households = current_wedding.households.order(:name)
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @guest.destroy
+    redirect_to admin_guests_path, notice: "Guest removed successfully"
+  end
+
+  def export
+    @guests = current_wedding.guests.includes(:household, :rsvp)
+    
+    respond_to do |format|
+      format.csv do
+        send_data generate_csv(@guests), 
+                  filename: "guests-#{Date.today}.csv",
+                  type: 'text/csv'
+      end
+    end
+  end
+
+  private
+
+  def set_guest
+    @guest = current_wedding.guests.find(params[:id])
+  end
+
+  def guest_params
+    params.require(:guest).permit(
+      :household_id, :first_name, :last_name, :email, 
+      :address, :phone_number
+    )
+  end
+
+  def apply_filters(guests)
+    guests = guests.where(household_id: params[:household_id]) if params[:household_id].present?
+    
+    if params[:rsvp_status].present?
+      guests = guests.joins(:rsvp).where(rsvps: { status: params[:rsvp_status] })
+    end
+
+    guests
+  end
+
+  def generate_csv(guests)
+    CSV.generate(headers: true) do |csv|
+      csv << ['First Name', 'Last Name', 'Email', 'Phone', 'Household', 'RSVP Status', 'Meal Choice', 'Dietary Restrictions']
+      
+      guests.each do |guest|
+        csv << [
+          guest.first_name,
+          guest.last_name,
+          guest.email,
+          guest.phone_number,
+          guest.household.name,
+          guest.rsvp&.status,
+          guest.rsvp&.meal_choice,
+          guest.rsvp&.dietary_restrictions
+        ]
+      end
+    end
+  end
+end

@@ -1,0 +1,108 @@
+<div class="hero" style="padding: 4rem 2rem;">
+  <h1>RSVP</h1>
+  <p><%= @wedding.title %></p>
+</div>
+
+<div class="container">
+  <% if flash[:notice] %>
+    <div class="alert alert-success"><%= flash[:notice] %></div>
+  <% end %>
+  
+  <% if flash[:alert] %>
+    <div class="alert alert-error"><%= flash[:alert] %></div>
+  <% end %>
+
+  <div class="event-card">
+    <h2 style="margin-top: 0; color: var(--primary-color);">
+      <%= @household.name %>
+    </h2>
+    
+    <p style="margin-bottom: 2rem;">
+      Please let us know if you'll be attending. Update the information for each guest below.
+    </p>
+
+    <%= form_with url: public_rsvp_path(@guest.invite_code), method: :patch do |f| %>
+      <% @guests.each_with_index do |guest, index| %>
+        <div style="border-top: 1px solid #ddd; padding-top: 2rem; margin-top: 2rem;">
+          <h3><%= guest.full_name %></h3>
+          
+          <%= fields_for "rsvps[#{guest.id}]", guest.rsvp do |rsvp_f| %>
+            <div class="form-group">
+              <%= rsvp_f.label :status, "Will you be attending?" %>
+              <div>
+                <%= rsvp_f.radio_button :status, "accepted", id: "guest_#{guest.id}_accepted" %>
+                <%= rsvp_f.label :status, "Yes, I'll be there!", value: "accepted", for: "guest_#{guest.id}_accepted" %>
+              </div>
+              <div>
+                <%= rsvp_f.radio_button :status, "declined", id: "guest_#{guest.id}_declined" %>
+                <%= rsvp_f.label :status, "Sorry, I can't make it", value: "declined", for: "guest_#{guest.id}_declined" %>
+              </div>
+            </div>
+
+            <div class="form-group" id="meal_choice_<%= guest.id %>" style="display: <%= guest.rsvp.accepted? ? 'block' : 'none' %>;">
+              <%= rsvp_f.label :meal_choice, "Meal Preference" %>
+              <%= rsvp_f.select :meal_choice, 
+                                @meal_options.map { |opt| [opt, opt] },
+                                { include_blank: "Select a meal option" },
+                                { class: "form-control" } %>
+            </div>
+
+            <div class="form-group" id="dietary_restrictions_<%= guest.id %>" style="display: <%= guest.rsvp.accepted? ? 'block' : 'none' %>;">
+              <%= rsvp_f.label :dietary_restrictions, "Dietary Restrictions or Allergies" %>
+              <%= rsvp_f.text_area :dietary_restrictions, class: "form-control", rows: 2 %>
+            </div>
+
+            <div class="form-group">
+              <%= rsvp_f.label :notes, "Special Notes or Comments" %>
+              <%= rsvp_f.text_area :notes, class: "form-control", rows: 2 %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+      <div style="margin-top: 3rem;">
+        <%= f.submit "Submit RSVP", class: "btn btn-primary", style: "width: 100%; font-size: 1.2rem;" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    <% @guests.each do |guest| %>
+      const acceptedRadio_<%= guest.id %> = document.getElementById('guest_<%= guest.id %>_accepted');
+      const declinedRadio_<%= guest.id %> = document.getElementById('guest_<%= guest.id %>_declined');
+      const mealChoice_<%= guest.id %> = document.getElementById('meal_choice_<%= guest.id %>');
+      const dietaryRestrictions_<%= guest.id %> = document.getElementById('dietary_restrictions_<%= guest.id %>');
+
+      function toggleFields_<%= guest.id %>() {
+        if (acceptedRadio_<%= guest.id %>.checked) {
+          mealChoice_<%= guest.id %>.style.display = 'block';
+          dietaryRestrictions_<%= guest.id %>.style.display = 'block';
+        } else {
+          mealChoice_<%= guest.id %>.style.display = 'none';
+          dietaryRestrictions_<%= guest.id %>.style.display = 'none';
+        }
+      }
+
+      acceptedRadio_<%= guest.id %>.addEventListener('change', toggleFields_<%= guest.id %>);
+      declinedRadio_<%= guest.id %>.addEventListener('change', toggleFields_<%= guest.id %>);
+    <% end %>
+  });
+</script>
+
+<style>
+  .form-group { margin-bottom: 1.5rem; }
+  .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; color: #2c3e50; }
+  .form-control { 
+    width: 100%; 
+    padding: 0.75rem; 
+    border: 1px solid #ddd; 
+    border-radius: 4px; 
+    font-size: 1rem; 
+    font-family: inherit;
+    box-sizing: border-box;
+  }
+  .form-control:focus { outline: none; border-color: var(--primary-color); }
+  input[type="radio"] { margin-right: 0.5rem; }
+</style>

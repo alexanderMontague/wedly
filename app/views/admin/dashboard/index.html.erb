@@ -1,0 +1,96 @@
+<div class="card">
+  <h1>Dashboard</h1>
+  <% if @wedding %>
+    <p><strong><%= @wedding.title %></strong> - <%= @wedding.date&.strftime("%B %d, %Y") %></p>
+  <% else %>
+    <p>No wedding configured yet.</p>
+  <% end %>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-value"><%= @stats[:total_guests] %></div>
+    <div class="stat-label">Total Guests</div>
+  </div>
+  
+  <div class="stat-card">
+    <div class="stat-value"><%= @stats[:accepted] %></div>
+    <div class="stat-label">Accepted</div>
+  </div>
+  
+  <div class="stat-card">
+    <div class="stat-value"><%= @stats[:declined] %></div>
+    <div class="stat-label">Declined</div>
+  </div>
+  
+  <div class="stat-card">
+    <div class="stat-value"><%= @stats[:pending] %></div>
+    <div class="stat-label">Pending</div>
+  </div>
+  
+  <div class="stat-card">
+    <div class="stat-value"><%= @stats[:acceptance_rate] %>%</div>
+    <div class="stat-label">Acceptance Rate</div>
+  </div>
+  
+  <div class="stat-card">
+    <div class="stat-value"><%= @stats[:invitations_sent] %></div>
+    <div class="stat-label">Invitations Sent</div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Upcoming Events</h2>
+  <% if @upcoming_events.any? %>
+    <table>
+      <thead>
+        <tr>
+          <th>Event</th>
+          <th>Date & Time</th>
+          <th>Location</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @upcoming_events.each do |event| %>
+          <tr>
+            <td><%= event.name %></td>
+            <td><%= event.datetime&.strftime("%B %d, %Y at %I:%M %p") %></td>
+            <td><%= event.location %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No upcoming events scheduled.</p>
+  <% end %>
+</div>
+
+<div class="card">
+  <h2>Recent RSVPs</h2>
+  <% if @recent_rsvps.any? %>
+    <table>
+      <thead>
+        <tr>
+          <th>Guest</th>
+          <th>Status</th>
+          <th>Updated</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @recent_rsvps.each do |rsvp| %>
+          <tr>
+            <td><%= rsvp.guest.full_name %></td>
+            <td>
+              <span style="color: <%= rsvp.accepted? ? 'green' : 'red' %>;">
+                <%= rsvp.status.capitalize %>
+              </span>
+            </td>
+            <td><%= time_ago_in_words(rsvp.updated_at) %> ago</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No RSVPs yet.</p>
+  <% end %>
+</div>

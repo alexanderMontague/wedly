@@ -1,0 +1,46 @@
+<h1>You're Invited!</h1>
+
+<p style="text-align: center; font-size: 24px; color: #C89B7B; margin: 30px 0;">
+  <%= @wedding.title %>
+</p>
+
+<% if @wedding.date %>
+  <p style="text-align: center; font-size: 18px;">
+    <%= @wedding.date.strftime("%B %d, %Y") %>
+  </p>
+<% end %>
+
+<% if @wedding.location %>
+  <p style="text-align: center; font-size: 18px;">
+    <%= @wedding.location %>
+  </p>
+<% end %>
+
+<p style="margin: 40px 0;">
+  Dear <%= @guest.first_name %>,
+</p>
+
+<p>
+  We are delighted to invite you to celebrate our special day with us! 
+  Your presence would mean the world to us.
+</p>
+
+<p>
+  Please let us know if you'll be able to join us by clicking the button below to RSVP.
+</p>
+
+<div style="text-align: center; margin: 40px 0;">
+  <a href="<%= @rsvp_url %>" class="btn">RSVP Now</a>
+</div>
+
+<p style="text-align: center; color: #999; font-size: 14px;">
+  Or copy this link: <%= @rsvp_url %>
+</p>
+
+<p>
+  We look forward to celebrating with you!
+</p>
+
+<div class="footer">
+  <p>This invitation was sent to <%= @guest.email %></p>
+</div>

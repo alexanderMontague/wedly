@@ -1,0 +1,41 @@
+#!/bin/bash
+
+eval "$(rbenv init - zsh)"
+
+echo "🔧 Setting up Wedly..."
+echo ""
+
+cd "$(dirname "$0")"
+
+echo "✓ Ruby version: $(ruby --version)"
+echo ""
+
+echo "📦 Installing dependencies..."
+bundle install
+
+if [ ! -f .env ]; then
+  echo ""
+  echo "📝 Creating .env file..."
+  cp .env.example .env
+  echo "✓ .env created (configure SMTP settings before sending emails)"
+fi
+
+echo ""
+echo "🗄️  Setting up database..."
+rails db:create
+rails db:migrate
+rails db:seed
+
+echo ""
+echo "🎨 Building CSS..."
+bundle exec tailwindcss -i app/assets/stylesheets/application.tailwind.css -o app/assets/builds/application.css --config config/tailwind.config.js
+
+echo ""
+echo "✅ Setup complete!"
+echo ""
+echo "To start the server, run:"
+echo "  ./bin/dev"
+echo ""
+echo "Admin login: http://localhost:3000/admin/login"
+echo "  Email: admin@wedly.com"
+echo "  Password: password"

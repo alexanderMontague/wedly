@@ -1,0 +1,84 @@
+<div class="card">
+  <h1>Wedding Settings</h1>
+
+  <%= form_with model: @wedding, url: admin_settings_path, method: :patch do |f| %>
+    <% if @wedding.errors.any? %>
+      <div class="alert alert-error">
+        <h3><%= pluralize(@wedding.errors.count, "error") %> prohibited these settings from being saved:</h3>
+        <ul>
+          <% @wedding.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <h3>Basic Information</h3>
+
+    <div class="form-group">
+      <%= f.label :title, "Wedding Title" %>
+      <%= f.text_field :title, class: "form-control", required: true %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :date, "Wedding Date" %>
+      <%= f.date_field :date, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :location %>
+      <%= f.text_field :location, class: "form-control" %>
+    </div>
+
+    <h3 style="margin-top: 2rem;">RSVP Settings</h3>
+
+    <%= f.fields_for :settings, OpenStruct.new(@wedding.settings) do |settings_f| %>
+      <div class="form-group">
+        <%= settings_f.label :rsvp_deadline, "RSVP Deadline" %>
+        <%= settings_f.date_field :rsvp_deadline, class: "form-control", 
+                                  value: @wedding.settings['rsvp_deadline'] %>
+      </div>
+
+      <div class="form-group">
+        <%= settings_f.label :meal_options, "Meal Options (one per line)" %>
+        <%= settings_f.text_area :meal_options, class: "form-control", rows: 4,
+                                 value: (@wedding.settings['meal_options'] || []).join("\n") %>
+        <small style="color: #7f8c8d;">Enter each meal option on a new line</small>
+      </div>
+    <% end %>
+
+    <h3 style="margin-top: 2rem;">Theme Settings</h3>
+
+    <%= f.fields_for :theme_config, OpenStruct.new(@wedding.theme_config) do |theme_f| %>
+      <%= theme_f.fields_for :colors, OpenStruct.new(@wedding.theme_config['colors'] || {}) do |colors_f| %>
+        <div class="form-group">
+          <%= colors_f.label :primary, "Primary Color" %>
+          <%= colors_f.color_field :primary, class: "form-control", 
+                                   value: @wedding.theme_config.dig('colors', 'primary') || '#C89B7B' %>
+        </div>
+
+        <div class="form-group">
+          <%= colors_f.label :secondary, "Secondary Color" %>
+          <%= colors_f.color_field :secondary, class: "form-control",
+                                   value: @wedding.theme_config.dig('colors', 'secondary') || '#8B7355' %>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= theme_f.label :font, "Font Style" %>
+        <%= theme_f.select :font, [["Serif", "serif"], ["Sans-serif", "sans-serif"]], 
+                          { selected: @wedding.theme_config['font'] || 'serif' },
+                          { class: "form-control" } %>
+      </div>
+
+      <div class="form-group">
+        <%= theme_f.label :layout, "Layout Style" %>
+        <%= theme_f.select :layout, [["Classic", "classic"], ["Modern", "modern"]], 
+                          { selected: @wedding.theme_config['layout'] || 'classic' },
+                          { class: "form-control" } %>
+      </div>
+    <% end %>
+
+    <%= f.submit "Save Settings", class: "btn btn-primary" %>
+  <% end %>
+</div>

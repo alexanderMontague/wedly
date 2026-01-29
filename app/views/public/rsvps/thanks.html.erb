@@ -1,0 +1,19 @@
+<div class="hero">
+  <h1>Thank You!</h1>
+  <p>Your RSVP has been received</p>
+</div>
+
+<div class="container text-center">
+  <div class="event-card">
+    <h2 style="color: var(--primary-color);">We've Got Your Response</h2>
+    <p style="font-size: 1.2rem; margin: 2rem 0;">
+      Thank you for taking the time to RSVP for <%= @wedding.title %>.
+    </p>
+    <p>
+      If you need to make any changes to your response, you can use your invitation link again.
+    </p>
+    <div style="margin-top: 3rem;">
+      <%= link_to "Back to Wedding Page", public_wedding_path(@wedding.slug), class: "btn btn-primary" %>
+    </div>
+  </div>
+</div>

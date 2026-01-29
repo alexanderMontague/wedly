@@ -1,0 +1,63 @@
+<div class="card">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1>Guests</h1>
+    <div style="display: flex; gap: 1rem;">
+      <%= link_to "Export CSV", export_admin_guests_path(format: :csv), class: "btn btn-secondary" %>
+      <%= link_to "New Guest", new_admin_guest_path, class: "btn btn-primary" %>
+    </div>
+  </div>
+
+  <%= form_with url: admin_guests_path, method: :get, class: "filter-form" do |f| %>
+    <div class="form-group" style="margin-bottom: 0; min-width: 200px;">
+      <%= f.label :household_id, "Filter by Household" %>
+      <%= f.collection_select :household_id, @households, :id, :name, 
+                             { include_blank: "All Households" }, 
+                             { class: "form-control", onchange: "this.form.submit()" } %>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+      <%= f.label :rsvp_status, "Filter by RSVP" %>
+      <%= f.select :rsvp_status, 
+                   [["All", ""], ["Pending", "pending"], ["Accepted", "accepted"], ["Declined", "declined"]], 
+                   {}, 
+                   { class: "form-control", onchange: "this.form.submit()" } %>
+    </div>
+  <% end %>
+
+  <% if @guests.any? %>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Household</th>
+          <th>RSVP Status</th>
+          <th>Invite Code</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @guests.each do |guest| %>
+          <tr>
+            <td><%= guest.full_name %></td>
+            <td><%= guest.email %></td>
+            <td><%= guest.household.name %></td>
+            <td>
+              <span style="color: <%= guest.rsvp.accepted? ? 'green' : guest.rsvp.declined? ? 'red' : 'orange' %>;">
+                <%= guest.rsvp.status.capitalize %>
+              </span>
+            </td>
+            <td><code><%= guest.invite_code %></code></td>
+            <td class="actions">
+              <%= link_to "Edit", edit_admin_guest_path(guest), class: "btn btn-secondary" %>
+              <%= button_to "Delete", admin_guest_path(guest), method: :delete, 
+                            data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No guests found.</p>
+  <% end %>
+</div>

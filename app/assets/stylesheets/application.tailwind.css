@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #C89B7B;
+  --color-primary-light: #E5D4C8;
+  --color-primary-dark: #B8896B;
+  --color-secondary: #2C3E50;
+  --color-secondary-light: #34495E;
+  --color-secondary-dark: #1A252F;
+}
+
+:root {
+  --primary-color: var(--color-primary);
+}
+
+@layer base {
+  body {
+    @apply text-gray-900 leading-relaxed;
+  }
+  
+  h1 {
+    @apply text-3xl font-normal mb-8;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-6 py-3 rounded border-none cursor-pointer text-lg no-underline inline-block transition-all duration-300;
+  }
+  
+  .btn-primary {
+    @apply text-white hover:-translate-y-0.5 hover:shadow-lg;
+    background-color: var(--color-primary);
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--color-primary-dark);
+  }
+  
+  .btn-success {
+    @apply bg-green-600 text-white hover:bg-green-700;
+  }
+  
+  .btn-danger {
+    @apply bg-red-600 text-white hover:bg-red-700;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-500 text-white hover:bg-gray-600;
+  }
+  
+  .card {
+    @apply bg-white p-8 rounded-lg shadow mb-8;
+  }
+  
+  .card-header {
+    @apply text-2xl font-bold mb-6;
+  }
+  
+  .form-group {
+    @apply mb-6;
+  }
+  
+  .form-group label {
+    @apply block mb-2 font-bold;
+  }
+  
+  .form-control {
+    @apply w-full px-3 py-2 border border-gray-300 rounded text-base focus:outline-none focus:border-blue-500;
+  }
+  
+  .alert {
+    @apply px-4 py-3 mb-4 rounded;
+  }
+  
+  .alert-success {
+    @apply bg-green-100 text-green-800 border border-green-200;
+  }
+  
+  .alert-error {
+    @apply bg-red-100 text-red-800 border border-red-200;
+  }
+  
+  .hero {
+    @apply text-white text-center py-24 px-8;
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23C89B7B" width="1200" height="600"/></svg>');
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .hero h1 {
+    @apply text-5xl md:text-6xl m-0 mb-4 font-light tracking-wider;
+  }
+  
+  .hero p {
+    @apply text-xl md:text-2xl m-0 font-light;
+  }
+  
+  .event-card {
+    @apply bg-white p-8 rounded-lg shadow-md mb-6;
+  }
+  
+  .event-card h3 {
+    @apply mt-0;
+    color: var(--color-primary);
+  }
+  
+  .section-title {
+    color: var(--color-primary);
+  }
+  
+  .stats-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8;
+  }
+  
+  .stat-card {
+    @apply bg-white p-6 rounded-lg shadow;
+  }
+  
+  .stat-value {
+    @apply text-3xl font-bold;
+    color: var(--color-secondary);
+  }
+  
+  .stat-label {
+    @apply text-gray-500 mt-2;
+  }
+}

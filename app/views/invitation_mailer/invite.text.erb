@@ -1,0 +1,23 @@
+You're Invited!
+
+<%= @wedding.title %>
+<% if @wedding.date %>
+<%= @wedding.date.strftime("%B %d, %Y") %>
+<% end %>
+<% if @wedding.location %>
+<%= @wedding.location %>
+<% end %>
+
+Dear <%= @guest.first_name %>,
+
+We are delighted to invite you to celebrate our special day with us! 
+Your presence would mean the world to us.
+
+Please let us know if you'll be able to join us by visiting this link to RSVP:
+
+<%= @rsvp_url %>
+
+We look forward to celebrating with you!
+
+---
+This invitation was sent to <%= @guest.email %>

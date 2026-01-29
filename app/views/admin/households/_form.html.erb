@@ -1,0 +1,23 @@
+<%= form_with model: [:admin, household] do |f| %>
+  <% if household.errors.any? %>
+    <div class="alert alert-error">
+      <h3><%= pluralize(household.errors.count, "error") %> prohibited this household from being saved:</h3>
+      <ul>
+        <% household.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: "form-control", required: true, 
+                     placeholder: "e.g., The Smith Family" %>
+  </div>
+
+  <div style="display: flex; gap: 1rem;">
+    <%= f.submit class: "btn btn-primary" %>
+    <%= link_to "Cancel", admin_households_path, class: "btn btn-secondary" %>
+  </div>
+<% end %>
