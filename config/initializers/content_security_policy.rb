@@ -8,6 +8,6 @@ Rails.application.configure do
     policy.style_src   :self, :https, :unsafe_inline
   end
 
-  config.content_security_policy_nonce_generator = ->(request) { request.session.id.to_s }
-  config.content_security_policy_nonce_directives = %w[style-src]
+  config.content_security_policy_nonce_generator = ->(_request) { SecureRandom.base64(16) }
+  config.content_security_policy_nonce_directives = %w[script-src]
 end

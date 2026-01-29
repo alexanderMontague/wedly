@@ -3,13 +3,13 @@ class InvitationJob < ApplicationJob
 
   def perform(guest_id)
     guest = Guest.find(guest_id)
-    
-    return unless guest.email.present?
 
-    invitation = guest.invitations.create!(status: 'pending')
-    
+    return if guest.email.blank?
+
+    invitation = guest.invitations.create!(status: "pending")
+
     InvitationMailer.invite(guest).deliver_now
-    
+
     invitation.mark_sent!
   rescue StandardError => e
     Rails.logger.error("Failed to send invitation to guest #{guest_id}: #{e.message}")

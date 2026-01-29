@@ -1,3 +1,3 @@
 ActiveSupport::Inflector.inflections(:en) do |inflect|
-  inflect.acronym 'RSVP'
+  inflect.acronym "RSVP"
 end

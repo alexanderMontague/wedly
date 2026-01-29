@@ -1,25 +1,27 @@
-class Admin::SettingsController < Admin::BaseController
-  def show
-    @wedding = current_wedding
-  end
-
-  def update
-    @wedding = current_wedding
-
-    if @wedding.update(wedding_params)
-      redirect_to admin_settings_path, notice: "Settings updated successfully"
-    else
-      render :show, status: :unprocessable_entity
+module Admin
+  class SettingsController < Admin::BaseController
+    def show
+      @wedding = current_wedding
     end
-  end
 
-  private
+    def update
+      @wedding = current_wedding
 
-  def wedding_params
-    params.require(:wedding).permit(
-      :title, :date, :location,
-      settings: [:rsvp_deadline, meal_options: []],
-      theme_config: [colors: [:primary, :secondary], :font, :layout]
-    )
+      if @wedding.update(wedding_params)
+        redirect_to admin_settings_path, notice: "Settings updated successfully"
+      else
+        render :show, status: :unprocessable_content
+      end
+    end
+
+    private
+
+    def wedding_params
+      params.require(:wedding).permit(
+        :title, :date, :location,
+        settings: [:rsvp_deadline, { meal_options: [] }],
+        theme_config: [{ colors: %i[primary secondary] }, :font, :layout]
+      )
+    end
   end
 end

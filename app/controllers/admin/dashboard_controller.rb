@@ -1,48 +1,50 @@
-class Admin::DashboardController < Admin::BaseController
-  def index
-    @wedding = current_wedding
-    @stats = calculate_stats
-    @upcoming_events = current_wedding&.events&.upcoming&.limit(5) || []
-    @recent_rsvps = RSVP.joins(:guest)
-                        .where(guests: { wedding_id: current_wedding&.id })
-                        .where.not(status: 'pending')
-                        .order(updated_at: :desc)
-                        .limit(10)
-  end
+module Admin
+  class DashboardController < Admin::BaseController
+    def index
+      @wedding = current_wedding
+      @stats = calculate_stats
+      @upcoming_events = current_wedding&.events&.upcoming&.limit(5) || []
+      @recent_rsvps = RSVP.joins(:guest)
+                          .where(guests: { wedding_id: current_wedding&.id })
+                          .where.not(status: "pending")
+                          .order(updated_at: :desc)
+                          .limit(10)
+    end
 
-  private
+    private
 
-  def calculate_stats
-    return default_stats unless current_wedding
+    def calculate_stats
+      return default_stats unless current_wedding
 
-    guests = current_wedding.guests
-    rsvps = RSVP.where(guest_id: guests.pluck(:id))
+      guests = current_wedding.guests
+      rsvps = RSVP.where(guest_id: guests.pluck(:id))
 
-    {
-      total_guests: guests.count,
-      accepted: rsvps.accepted.count,
-      declined: rsvps.declined.count,
-      pending: rsvps.pending.count,
-      acceptance_rate: calculate_acceptance_rate(rsvps),
-      invitations_sent: Invitation.where(guest_id: guests.pluck(:id)).sent.count
-    }
-  end
+      {
+        total_guests: guests.count,
+        accepted: rsvps.accepted.count,
+        declined: rsvps.declined.count,
+        pending: rsvps.pending.count,
+        acceptance_rate: calculate_acceptance_rate(rsvps),
+        invitations_sent: Invitation.where(guest_id: guests.pluck(:id)).sent.count
+      }
+    end
 
-  def calculate_acceptance_rate(rsvps)
-    total_responses = rsvps.accepted.count + rsvps.declined.count
-    return 0 if total_responses.zero?
-    
-    ((rsvps.accepted.count.to_f / total_responses) * 100).round(1)
-  end
+    def calculate_acceptance_rate(rsvps)
+      total_responses = rsvps.accepted.count + rsvps.declined.count
+      return 0 if total_responses.zero?
 
-  def default_stats
-    {
-      total_guests: 0,
-      accepted: 0,
-      declined: 0,
-      pending: 0,
-      acceptance_rate: 0,
-      invitations_sent: 0
-    }
+      ((rsvps.accepted.count.to_f / total_responses) * 100).round(1)
+    end
+
+    def default_stats
+      {
+        total_guests: 0,
+        accepted: 0,
+        declined: 0,
+        pending: 0,
+        acceptance_rate: 0,
+        invitations_sent: 0
+      }
+    end
   end
 end

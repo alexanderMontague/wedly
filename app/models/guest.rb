@@ -12,27 +12,28 @@ class Guest < ApplicationRecord
   before_validation :generate_invite_code, on: :create
   after_create :create_default_rsvp
 
-  scope :with_email, -> { where.not(email: nil).where.not(email: '') }
-  scope :rsvp_accepted, -> { joins(:rsvp).where(rsvps: { status: 'accepted' }) }
-  scope :rsvp_declined, -> { joins(:rsvp).where(rsvps: { status: 'declined' }) }
-  scope :rsvp_pending, -> { joins(:rsvp).where(rsvps: { status: 'pending' }) }
+  scope :with_email, -> { where.not(email: nil).where.not(email: "") }
+  scope :rsvp_accepted, -> { joins(:rsvp).where(rsvps: { status: "accepted" }) }
+  scope :rsvp_declined, -> { joins(:rsvp).where(rsvps: { status: "declined" }) }
+  scope :rsvp_pending, -> { joins(:rsvp).where(rsvps: { status: "pending" }) }
 
   def full_name
     "#{first_name} #{last_name}"
   end
 
   def rsvp_status
-    rsvp&.status || 'pending'
+    rsvp&.status || "pending"
   end
 
   def has_responded?
-    rsvp&.status != 'pending'
+    rsvp&.status != "pending"
   end
 
   private
 
   def generate_invite_code
     return if invite_code.present?
+
     loop do
       self.invite_code = SecureRandom.alphanumeric(10).upcase
       break unless Guest.exists?(invite_code: invite_code)
@@ -40,6 +41,6 @@ class Guest < ApplicationRecord
   end
 
   def create_default_rsvp
-    create_rsvp!(status: 'pending') unless rsvp.present?
+    create_rsvp!(status: "pending") if rsvp.blank?
   end
 end

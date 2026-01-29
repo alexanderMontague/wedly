@@ -3,13 +3,12 @@ class Household < ApplicationRecord
   has_many :guests, dependent: :destroy
 
   validates :name, presence: true
-  validates :wedding, presence: true
 
   def primary_guest
     guests.order(:created_at).first
   end
 
   def guest_names
-    guests.map(&:full_name).join(', ')
+    guests.map(&:full_name).join(", ")
   end
 end

@@ -10,21 +10,21 @@ class Wedding < ApplicationRecord
   before_validation :generate_slug, on: :create
 
   def rsvp_deadline
-    settings.dig('rsvp_deadline')
+    settings["rsvp_deadline"]
   end
 
   def meal_options
-    settings.dig('meal_options') || []
+    settings["meal_options"] || []
   end
 
   def primary_color
-    theme_config.dig('colors', 'primary') || '#C89B7B'
+    theme_config.dig("colors", "primary") || "#C89B7B"
   end
 
   def rsvp_stats
     total = guests.count
-    accepted = guests.joins(:rsvp).where(rsvps: { status: 'accepted' }).count
-    declined = guests.joins(:rsvp).where(rsvps: { status: 'declined' }).count
+    accepted = guests.joins(:rsvp).where(rsvps: { status: "accepted" }).count
+    declined = guests.joins(:rsvp).where(rsvps: { status: "declined" }).count
     pending = total - accepted - declined
 
     {
@@ -44,6 +44,7 @@ class Wedding < ApplicationRecord
 
   def generate_slug
     return if slug.present?
+
     self.slug = title.parameterize if title.present?
   end
 end

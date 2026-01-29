@@ -14,11 +14,11 @@ module ApplicationHelper
 
   def rsvp_status_badge(status)
     color = case status
-            when 'accepted' then 'green'
-            when 'declined' then 'red'
-            else 'orange'
+            when "accepted" then "green"
+            when "declined" then "red"
+            else "orange"
             end
-    
+
     content_tag(:span, status.capitalize, style: "color: #{color}; font-weight: bold;")
   end
 end

@@ -8,9 +8,9 @@ module AdminAuthentication
   private
 
   def require_admin
-    unless current_admin
-      redirect_to admin_login_path, alert: "Please log in to continue"
-    end
+    return if current_admin
+
+    redirect_to admin_login_path, alert: "Please log in to continue"
   end
 
   def current_admin

@@ -1,13 +1,15 @@
-class Admin::BaseController < ApplicationController
-  include AdminAuthentication
+module Admin
+  class BaseController < ApplicationController
+    include AdminAuthentication
 
-  layout 'admin'
+    layout "admin"
 
-  private
+    private
 
-  def current_wedding
-    @current_wedding ||= Wedding.first
+    def current_wedding
+      @current_wedding ||= Wedding.first
+    end
+
+    helper_method :current_wedding
   end
-
-  helper_method :current_wedding
 end

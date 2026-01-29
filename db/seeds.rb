@@ -1,11 +1,11 @@
-puts "Creating default admin user..."
+Rails.logger.debug "Creating default admin user..."
 AdminUser.create!(
   email: "admin@wedly.com",
   password: "password",
   name: "Admin User"
 )
 
-puts "Creating sample wedding..."
+Rails.logger.debug "Creating sample wedding..."
 wedding = Wedding.create!(
   slug: "john-and-jane-2026",
   title: "John & Jane's Wedding",
@@ -21,29 +21,29 @@ wedding = Wedding.create!(
   },
   settings: {
     rsvp_deadline: Date.new(2026, 5, 15),
-    meal_options: ["Chicken", "Beef", "Vegetarian", "Vegan"]
+    meal_options: %w[Chicken Beef Vegetarian Vegan]
   }
 )
 
-puts "Creating events..."
+Rails.logger.debug "Creating events..."
 Event.create!([
-  {
-    wedding: wedding,
-    name: "Ceremony",
-    datetime: DateTime.new(2026, 6, 15, 15, 0),
-    location: "Sunset Gardens Chapel",
-    description: "Join us for our wedding ceremony"
-  },
-  {
-    wedding: wedding,
-    name: "Reception",
-    datetime: DateTime.new(2026, 6, 15, 18, 0),
-    location: "Sunset Gardens Ballroom",
-    description: "Dinner and dancing to follow"
-  }
-])
+                {
+                  wedding: wedding,
+                  name: "Ceremony",
+                  datetime: DateTime.new(2026, 6, 15, 15, 0),
+                  location: "Sunset Gardens Chapel",
+                  description: "Join us for our wedding ceremony"
+                },
+                {
+                  wedding: wedding,
+                  name: "Reception",
+                  datetime: DateTime.new(2026, 6, 15, 18, 0),
+                  location: "Sunset Gardens Ballroom",
+                  description: "Dinner and dancing to follow"
+                }
+              ])
 
-puts "Creating sample household and guests..."
+Rails.logger.debug "Creating sample household and guests..."
 household = Household.create!(
   wedding: wedding,
   name: "The Smith Family"
@@ -69,6 +69,6 @@ guest2 = Guest.create!(
   invite_code: SecureRandom.alphanumeric(10).upcase
 )
 
-puts "✓ Seed data created successfully!"
-puts "Admin login: admin@wedly.com / password"
-puts "Guest RSVP codes: #{guest1.invite_code}, #{guest2.invite_code}"
+Rails.logger.debug "✓ Seed data created successfully!"
+Rails.logger.debug "Admin login: admin@wedly.com / password"
+Rails.logger.debug { "Guest RSVP codes: #{guest1.invite_code}, #{guest2.invite_code}" }

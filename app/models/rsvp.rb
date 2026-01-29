@@ -4,21 +4,20 @@ class RSVP < ApplicationRecord
   STATUSES = %w[pending accepted declined].freeze
 
   validates :status, presence: true, inclusion: { in: STATUSES }
-  validates :guest, presence: true
 
-  scope :accepted, -> { where(status: 'accepted') }
-  scope :declined, -> { where(status: 'declined') }
-  scope :pending, -> { where(status: 'pending') }
+  scope :accepted, -> { where(status: "accepted") }
+  scope :declined, -> { where(status: "declined") }
+  scope :pending, -> { where(status: "pending") }
 
   def accepted?
-    status == 'accepted'
+    status == "accepted"
   end
 
   def declined?
-    status == 'declined'
+    status == "declined"
   end
 
   def pending?
-    status == 'pending'
+    status == "pending"
   end
 end
