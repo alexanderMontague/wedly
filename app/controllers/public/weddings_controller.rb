@@ -3,7 +3,7 @@ module Public
     layout "public"
 
     def show
-      @wedding = Wedding.find_by!(slug: params[:slug])
+      @wedding = Wedding.current
       @events = @wedding.events.upcoming.ordered
     end
   end

@@ -1,0 +1,24 @@
+# Wedding Configuration
+# This file defines the single wedding this site is built for.
+# These values are used to seed/sync the wedding record in the database.
+
+default: &default
+  title: "Alex & Britt's Wedding"
+  date: "2026-09-05"
+  location: "Toronto, Ontario"
+  rsvp_deadline: "2026-08-01"
+  meal_options:
+    - Chicken
+    - Beef
+    - Vegetarian
+    - Vegan
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+  title: "Test Wedding"
+
+production:
+  <<: *default

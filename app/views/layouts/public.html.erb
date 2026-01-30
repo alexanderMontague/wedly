@@ -1,26 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= @wedding&.title || "Wedding" %> - Wedly</title>
+    <title><%= @wedding&.title || "Wedding" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-    <style>
-      :root {
-        --primary-color: <%= @wedding&.primary_color || '#C89B7B' %>;
-      }
-    </style>
   </head>
 
-  <body class="font-serif m-0 bg-bg-page text-neutral-800 leading-relaxed">
+  <body class="font-serif m-0 bg-stone-50 text-neutral-800 leading-relaxed">
     <main class="min-h-[calc(100vh-100px)]">
       <%= yield %>
     </main>
 
-    <footer class="bg-secondary text-white text-center p-8 mt-section">
-      <p class="m-0 text-neutral-200">&copy; <%= Time.current.year %> <%= @wedding&.title || "Wedding" %>. Powered by Wedly.</p>
+    <footer class="bg-stone-700 text-white text-center p-8 mt-16">
+      <p class="m-0 text-stone-300">&copy; <%= Time.current.year %> <%= @wedding&.title || "Wedding" %></p>
     </footer>
   </body>
 </html>

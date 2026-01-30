@@ -7,7 +7,7 @@ module Admin
     private
 
     def current_wedding
-      @current_wedding ||= Wedding.first
+      @current_wedding ||= Wedding.current
     end
 
     helper_method :current_wedding

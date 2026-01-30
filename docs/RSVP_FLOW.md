@@ -232,7 +232,7 @@ class Household < ApplicationRecord
   def all_responded?
     guests.all? { |g| g.rsvp.status != 'pending' }
   end
-  
+
   def response_rate
     total = guests.count
     responded = guests.count { |g| g.rsvp.status != 'pending' }
@@ -255,9 +255,9 @@ end
 # In controller
 def edit
   @guest = Guest.find_by!(invite_code: params[:code])
-  
+
   unless @guest.wedding.rsvp_open?
-    redirect_to public_wedding_path(@guest.wedding.slug),
+    redirect_to root_path,
                 alert: "RSVP deadline has passed"
   end
 end
@@ -274,7 +274,7 @@ add_column :guests, :plus_one_name, :string
 
 # View
 <% if guest.plus_one_allowed? %>
-  <%= rsvp_f.text_field :plus_one_name, 
+  <%= rsvp_f.text_field :plus_one_name,
                         placeholder: "Name of your guest" %>
 <% end %>
 ```
@@ -332,9 +332,9 @@ namespace :rsvp do
   task send_reminders: :environment do
     wedding = Wedding.first
     deadline = wedding.rsvp_deadline
-    
+
     next unless deadline && deadline - 7.days <= Date.current
-    
+
     wedding.guests.rsvp_pending.with_email.each do |guest|
       ReminderMailer.rsvp_reminder(guest).deliver_later
     end
@@ -353,7 +353,7 @@ class Wedding < ApplicationRecord
     accepted = guests.rsvp_accepted.count
     declined = guests.rsvp_declined.count
     pending = guests.rsvp_pending.count
-    
+
     {
       total: total,
       accepted: accepted,
@@ -363,14 +363,14 @@ class Wedding < ApplicationRecord
       acceptance_rate: accepted > 0 ? (accepted.to_f / (accepted + declined) * 100).round(1) : 0
     }
   end
-  
+
   def meal_summary
     guests.rsvp_accepted
           .where.not(rsvps: { meal_choice: nil })
           .group('rsvps.meal_choice')
           .count
   end
-  
+
   def dietary_restrictions_list
     guests.rsvp_accepted
           .where.not(rsvps: { dietary_restrictions: [nil, ''] })
@@ -385,14 +385,14 @@ end
 # In Admin::GuestsController
 def export_meal_counts
   @wedding = current_wedding
-  
+
   csv = CSV.generate do |csv|
     csv << ['Meal Choice', 'Count']
     @wedding.meal_summary.each do |meal, count|
       csv << [meal, count]
     end
   end
-  
+
   send_data csv, filename: "meal-counts-#{Date.today}.csv"
 end
 ```

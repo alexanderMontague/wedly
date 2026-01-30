@@ -1,10 +1,7 @@
 Rails.application.routes.draw do
-  namespace :public do
-    get "/w/:slug", to: "weddings#show", as: :wedding
-    get "/rsvp/:code", to: "rsvps#edit", as: :rsvp
-    patch "/rsvp/:code", to: "rsvps#update"
-    get "/rsvp/:code/thanks", to: "rsvps#thanks", as: :rsvp_thanks
-  end
+  get "/rsvp/:code", to: "public/rsvps#edit", as: :rsvp
+  patch "/rsvp/:code", to: "public/rsvps#update"
+  get "/rsvp/:code/thanks", to: "public/rsvps#thanks", as: :rsvp_thanks
 
   namespace :admin do
     get "/login", to: "sessions#new", as: :login
@@ -24,5 +21,5 @@ Rails.application.routes.draw do
     resource :settings, only: %i[show update]
   end
 
-  root "public/home#index"
+  root "public/weddings#show"
 end

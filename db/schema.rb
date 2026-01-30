@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_01_000007) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_01_000009) do
   create_table "admin_users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest", null: false
@@ -78,15 +78,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_01_000007) do
   end
 
   create_table "weddings", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "slug", null: false
     t.string "title", null: false
     t.date "date"
     t.string "location"
-    t.json "theme_config"
     t.json "settings"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["slug"], name: "index_weddings_on_slug", unique: true
   end
 
   add_foreign_key "events", "weddings"

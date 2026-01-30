@@ -48,6 +48,12 @@ Only essential gems:
 - No magic or black boxes
 - Easy to understand and modify
 
+### 5. Single Wedding Focus
+- Site is designed for one wedding (e.g., `alex-and-britt-wedding.ca`)
+- Clean URLs without slugs or identifiers
+- Wedding configuration in `config/wedding.yml`
+- Accessible via `Wedding.current` singleton
+
 ## Data Model
 
 ### Core Entities
@@ -66,15 +72,20 @@ AdminUser (authentication only)
 ```
 
 ### Wedding
-Primary entity representing the wedding event.
+Primary entity representing the wedding event. This is a **singleton** - the site is designed for a single wedding.
+
+**Configuration:**
+Wedding details are configured in `config/wedding.yml` and loaded via `Wedding.current`.
 
 **Fields:**
-- `slug` - URL-friendly identifier (unique)
 - `title` - Display name
 - `date` - Wedding date
 - `location` - Venue location
-- `theme_config` - JSON (colors, fonts, layout)
 - `settings` - JSON (RSVP deadline, meal options)
+
+**Class Methods:**
+- `Wedding.current` - Returns the singleton wedding instance
+- `Wedding.config` - Returns the YAML configuration
 
 **Associations:**
 - `has_many :events`
@@ -319,12 +330,10 @@ No Devise, no external gems. Clean Rails patterns.
 
 ### Public Routes
 ```ruby
-namespace :public do
-  get '/w/:slug' => 'weddings#show'
-  get '/rsvp/:code' => 'rsvps#edit'
-  patch '/rsvp/:code' => 'rsvps#update'
-  get '/rsvp/:code/thanks' => 'rsvps#thanks'
-end
+root 'public/weddings#show'           # Wedding info at /
+get '/rsvp/:code' => 'public/rsvps#edit'
+patch '/rsvp/:code' => 'public/rsvps#update'
+get '/rsvp/:code/thanks' => 'public/rsvps#thanks'
 ```
 
 ### Admin Routes
@@ -333,9 +342,9 @@ namespace :admin do
   get '/login' => 'sessions#new'
   post '/login' => 'sessions#create'
   delete '/logout' => 'sessions#destroy'
-  
+
   root 'dashboard#index'
-  
+
   resources :events
   resources :guests do
     get :export, on: :collection
@@ -347,26 +356,6 @@ end
 ```
 
 ## Configuration Management
-
-### Theme Configuration
-Stored in Wedding `theme_config` JSON field.
-
-**Structure:**
-```json
-{
-  "colors": {
-    "primary": "#C89B7B",
-    "secondary": "#8B7355"
-  },
-  "font": "serif",
-  "layout": "classic"
-}
-```
-
-**Implementation:**
-- CSS variables in layout
-- Accessed via `@wedding.theme_config`
-- Updated through admin settings
 
 ### Wedding Settings
 Stored in Wedding `settings` JSON field.
