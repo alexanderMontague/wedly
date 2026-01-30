@@ -12,27 +12,27 @@
     <div class="stat-value"><%= @stats[:total_guests] %></div>
     <div class="stat-label">Total Guests</div>
   </div>
-  
+
   <div class="stat-card">
     <div class="stat-value"><%= @stats[:accepted] %></div>
     <div class="stat-label">Accepted</div>
   </div>
-  
+
   <div class="stat-card">
     <div class="stat-value"><%= @stats[:declined] %></div>
     <div class="stat-label">Declined</div>
   </div>
-  
+
   <div class="stat-card">
     <div class="stat-value"><%= @stats[:pending] %></div>
     <div class="stat-label">Pending</div>
   </div>
-  
+
   <div class="stat-card">
     <div class="stat-value"><%= @stats[:acceptance_rate] %>%</div>
     <div class="stat-label">Acceptance Rate</div>
   </div>
-  
+
   <div class="stat-card">
     <div class="stat-value"><%= @stats[:invitations_sent] %></div>
     <div class="stat-label">Invitations Sent</div>
@@ -81,7 +81,7 @@
           <tr>
             <td><%= rsvp.guest.full_name %></td>
             <td>
-              <span style="color: <%= rsvp.accepted? ? 'green' : 'red' %>;">
+              <span class="<%= rsvp.accepted? ? 'text-green-600' : 'text-red-600' %>">
                 <%= rsvp.status.capitalize %>
               </span>
             </td>

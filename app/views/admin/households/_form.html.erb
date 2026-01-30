@@ -12,11 +12,11 @@
 
   <div class="form-group">
     <%= f.label :name %>
-    <%= f.text_field :name, class: "form-control", required: true, 
+    <%= f.text_field :name, class: "form-control", required: true,
                      placeholder: "e.g., The Smith Family" %>
   </div>
 
-  <div style="display: flex; gap: 1rem;">
+  <div class="flex gap-4">
     <%= f.submit class: "btn btn-primary" %>
     <%= link_to "Cancel", admin_households_path, class: "btn btn-secondary" %>
   </div>

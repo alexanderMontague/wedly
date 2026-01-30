@@ -1,4 +1,4 @@
-<div class="hero" style="padding: 4rem 2rem;">
+<div class="hero py-16 px-8">
   <h1>RSVP</h1>
   <p><%= @wedding.title %></p>
 </div>
@@ -7,25 +7,25 @@
   <% if flash[:notice] %>
     <div class="alert alert-success"><%= flash[:notice] %></div>
   <% end %>
-  
+
   <% if flash[:alert] %>
     <div class="alert alert-error"><%= flash[:alert] %></div>
   <% end %>
 
   <div class="event-card">
-    <h2 style="margin-top: 0; color: var(--primary-color);">
+    <h2 class="mt-0 text-[color:var(--primary-color)]">
       <%= @household.name %>
     </h2>
-    
-    <p style="margin-bottom: 2rem;">
+
+    <p class="mb-8">
       Please let us know if you'll be attending. Update the information for each guest below.
     </p>
 
     <%= form_with url: public_rsvp_path(@guest.invite_code), method: :patch do |f| %>
       <% @guests.each_with_index do |guest, index| %>
-        <div style="border-top: 1px solid #ddd; padding-top: 2rem; margin-top: 2rem;">
+        <div class="border-t border-gray-300 pt-8 mt-8">
           <h3><%= guest.full_name %></h3>
-          
+
           <%= fields_for "rsvps[#{guest.id}]", guest.rsvp do |rsvp_f| %>
             <div class="form-group">
               <%= rsvp_f.label :status, "Will you be attending?" %>
@@ -39,15 +39,15 @@
               </div>
             </div>
 
-            <div class="form-group" id="meal_choice_<%= guest.id %>" style="display: <%= guest.rsvp.accepted? ? 'block' : 'none' %>;">
+            <div class="form-group <%= guest.rsvp.accepted? ? 'block' : 'hidden' %>" id="meal_choice_<%= guest.id %>">
               <%= rsvp_f.label :meal_choice, "Meal Preference" %>
-              <%= rsvp_f.select :meal_choice, 
+              <%= rsvp_f.select :meal_choice,
                                 @meal_options.map { |opt| [opt, opt] },
                                 { include_blank: "Select a meal option" },
                                 { class: "form-control" } %>
             </div>
 
-            <div class="form-group" id="dietary_restrictions_<%= guest.id %>" style="display: <%= guest.rsvp.accepted? ? 'block' : 'none' %>;">
+            <div class="form-group <%= guest.rsvp.accepted? ? 'block' : 'hidden' %>" id="dietary_restrictions_<%= guest.id %>">
               <%= rsvp_f.label :dietary_restrictions, "Dietary Restrictions or Allergies" %>
               <%= rsvp_f.text_area :dietary_restrictions, class: "form-control", rows: 2 %>
             </div>
@@ -60,8 +60,8 @@
         </div>
       <% end %>
 
-      <div style="margin-top: 3rem;">
-        <%= f.submit "Submit RSVP", class: "btn btn-primary", style: "width: 100%; font-size: 1.2rem;" %>
+      <div class="mt-12">
+        <%= f.submit "Submit RSVP", class: "btn btn-primary w-full text-xl" %>
       </div>
     <% end %>
   </div>
@@ -77,11 +77,15 @@
 
       function toggleFields_<%= guest.id %>() {
         if (acceptedRadio_<%= guest.id %>.checked) {
-          mealChoice_<%= guest.id %>.style.display = 'block';
-          dietaryRestrictions_<%= guest.id %>.style.display = 'block';
+          mealChoice_<%= guest.id %>.classList.remove('hidden');
+          mealChoice_<%= guest.id %>.classList.add('block');
+          dietaryRestrictions_<%= guest.id %>.classList.remove('hidden');
+          dietaryRestrictions_<%= guest.id %>.classList.add('block');
         } else {
-          mealChoice_<%= guest.id %>.style.display = 'none';
-          dietaryRestrictions_<%= guest.id %>.style.display = 'none';
+          mealChoice_<%= guest.id %>.classList.remove('block');
+          mealChoice_<%= guest.id %>.classList.add('hidden');
+          dietaryRestrictions_<%= guest.id %>.classList.remove('block');
+          dietaryRestrictions_<%= guest.id %>.classList.add('hidden');
         }
       }
 
@@ -94,12 +98,12 @@
 <style>
   .form-group { margin-bottom: 1.5rem; }
   .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; color: #2c3e50; }
-  .form-control { 
-    width: 100%; 
-    padding: 0.75rem; 
-    border: 1px solid #ddd; 
-    border-radius: 4px; 
-    font-size: 1rem; 
+  .form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
     font-family: inherit;
     box-sizing: border-box;
   }

@@ -12,8 +12,8 @@
 
   <div class="form-group">
     <%= f.label :household_id, "Household" %>
-    <%= f.collection_select :household_id, @households, :id, :name, 
-                           { prompt: "Select a household" }, 
+    <%= f.collection_select :household_id, @households, :id, :name,
+                           { prompt: "Select a household" },
                            { class: "form-control", required: true } %>
   </div>
 
@@ -42,7 +42,7 @@
     <%= f.text_area :address, class: "form-control", rows: 3 %>
   </div>
 
-  <div style="display: flex; gap: 1rem;">
+  <div class="flex gap-4">
     <%= f.submit class: "btn btn-primary" %>
     <%= link_to "Cancel", admin_guests_path, class: "btn btn-secondary" %>
   </div>

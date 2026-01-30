@@ -1,25 +1,25 @@
 <div class="card">
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+  <div class="flex justify-between items-center mb-8">
     <h1>Guests</h1>
-    <div style="display: flex; gap: 1rem;">
+    <div class="flex gap-4">
       <%= link_to "Export CSV", export_admin_guests_path(format: :csv), class: "btn btn-secondary" %>
       <%= link_to "New Guest", new_admin_guest_path, class: "btn btn-primary" %>
     </div>
   </div>
 
   <%= form_with url: admin_guests_path, method: :get, class: "filter-form" do |f| %>
-    <div class="form-group" style="margin-bottom: 0; min-width: 200px;">
+    <div class="form-group mb-0 min-w-[200px]">
       <%= f.label :household_id, "Filter by Household" %>
-      <%= f.collection_select :household_id, @households, :id, :name, 
-                             { include_blank: "All Households" }, 
+      <%= f.collection_select :household_id, @households, :id, :name,
+                             { include_blank: "All Households" },
                              { class: "form-control", onchange: "this.form.submit()" } %>
     </div>
 
-    <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+    <div class="form-group mb-0 min-w-[150px]">
       <%= f.label :rsvp_status, "Filter by RSVP" %>
-      <%= f.select :rsvp_status, 
-                   [["All", ""], ["Pending", "pending"], ["Accepted", "accepted"], ["Declined", "declined"]], 
-                   {}, 
+      <%= f.select :rsvp_status,
+                   [["All", ""], ["Pending", "pending"], ["Accepted", "accepted"], ["Declined", "declined"]],
+                   {},
                    { class: "form-control", onchange: "this.form.submit()" } %>
     </div>
   <% end %>
@@ -43,14 +43,14 @@
             <td><%= guest.email %></td>
             <td><%= guest.household.name %></td>
             <td>
-              <span style="color: <%= guest.rsvp.accepted? ? 'green' : guest.rsvp.declined? ? 'red' : 'orange' %>;">
+              <span class="<%= guest.rsvp.accepted? ? 'text-green-600' : guest.rsvp.declined? ? 'text-red-600' : 'text-orange-500' %>">
                 <%= guest.rsvp.status.capitalize %>
               </span>
             </td>
             <td><code><%= guest.invite_code %></code></td>
             <td class="actions">
               <%= link_to "Edit", edit_admin_guest_path(guest), class: "btn btn-secondary" %>
-              <%= button_to "Delete", admin_guest_path(guest), method: :delete, 
+              <%= button_to "Delete", admin_guest_path(guest), method: :delete,
                             data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
             </td>
           </tr>

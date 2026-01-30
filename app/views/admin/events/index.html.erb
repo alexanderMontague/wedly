@@ -1,5 +1,5 @@
 <div class="card">
-  <div style="display: flex; justify-content: space-between; align-items: center;">
+  <div class="flex justify-between items-center">
     <h1>Events</h1>
     <%= link_to "New Event", new_admin_event_path, class: "btn btn-primary" %>
   </div>
@@ -22,7 +22,7 @@
             <td><%= event.location %></td>
             <td class="actions">
               <%= link_to "Edit", edit_admin_event_path(event), class: "btn btn-secondary" %>
-              <%= button_to "Delete", admin_event_path(event), method: :delete, 
+              <%= button_to "Delete", admin_event_path(event), method: :delete,
                             data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
             </td>
           </tr>
