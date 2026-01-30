@@ -48,7 +48,7 @@
             <td><%= guest.household.name %></td>
             <td>
               <% last_invitation = guest.invitations.last %>
-              <span class="<%= last_invitation&.status == 'sent' ? 'text-green-600' : 'text-orange-500' %>">
+              <span class="<%= last_invitation&.status == 'sent' ? 'text-success' : 'text-warning' %>">
                 <%= last_invitation&.status&.capitalize || "Not Sent" %>
               </span>
             </td>

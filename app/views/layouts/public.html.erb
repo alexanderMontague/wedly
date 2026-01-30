@@ -14,13 +14,13 @@
     </style>
   </head>
 
-  <body class="font-serif m-0 bg-[#faf9f7] text-gray-800 leading-relaxed">
+  <body class="font-serif m-0 bg-bg-page text-neutral-800 leading-relaxed">
     <main class="min-h-[calc(100vh-100px)]">
       <%= yield %>
     </main>
 
-    <footer class="bg-secondary text-white text-center p-8 mt-16">
-      <p>&copy; <%= Time.current.year %> <%= @wedding&.title || "Wedding" %>. Powered by Wedly.</p>
+    <footer class="bg-secondary text-white text-center p-8 mt-section">
+      <p class="m-0 text-neutral-200">&copy; <%= Time.current.year %> <%= @wedding&.title || "Wedding" %>. Powered by Wedly.</p>
     </footer>
   </body>
 </html>

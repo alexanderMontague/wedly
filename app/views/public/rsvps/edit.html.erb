@@ -1,4 +1,4 @@
-<div class="hero py-16 px-8">
+<div class="hero py-section px-card">
   <h1>RSVP</h1>
   <p><%= @wedding.title %></p>
 </div>
@@ -13,17 +13,17 @@
   <% end %>
 
   <div class="event-card">
-    <h2 class="mt-0 text-[color:var(--primary-color)]">
+    <h2 class="mt-0 text-primary">
       <%= @household.name %>
     </h2>
 
-    <p class="mb-8">
+    <p class="mb-card text-muted">
       Please let us know if you'll be attending. Update the information for each guest below.
     </p>
 
     <%= form_with url: public_rsvp_path(@guest.invite_code), method: :patch do |f| %>
       <% @guests.each_with_index do |guest, index| %>
-        <div class="border-t border-gray-300 pt-8 mt-8">
+        <div class="border-t border-border pt-card mt-card">
           <h3><%= guest.full_name %></h3>
 
           <%= fields_for "rsvps[#{guest.id}]", guest.rsvp do |rsvp_f| %>
@@ -60,8 +60,8 @@
         </div>
       <% end %>
 
-      <div class="mt-12">
-        <%= f.submit "Submit RSVP", class: "btn btn-primary w-full text-xl" %>
+      <div class="mt-section">
+        <%= f.submit "Submit RSVP", class: "btn btn-primary btn-lg w-full" %>
       </div>
     <% end %>
   </div>
@@ -95,18 +95,3 @@
   });
 </script>
 
-<style>
-  .form-group { margin-bottom: 1.5rem; }
-  .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; color: #2c3e50; }
-  .form-control {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
-    font-family: inherit;
-    box-sizing: border-box;
-  }
-  .form-control:focus { outline: none; border-color: var(--primary-color); }
-  input[type="radio"] { margin-right: 0.5rem; }
-</style>

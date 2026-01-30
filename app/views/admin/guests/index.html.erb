@@ -43,7 +43,7 @@
             <td><%= guest.email %></td>
             <td><%= guest.household.name %></td>
             <td>
-              <span class="<%= guest.rsvp.accepted? ? 'text-green-600' : guest.rsvp.declined? ? 'text-red-600' : 'text-orange-500' %>">
+              <span class="<%= guest.rsvp.accepted? ? 'text-success' : guest.rsvp.declined? ? 'text-danger' : 'text-warning' %>">
                 <%= guest.rsvp.status.capitalize %>
               </span>
             </td>

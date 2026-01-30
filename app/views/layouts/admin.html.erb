@@ -9,42 +9,34 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="font-sans m-0 bg-gray-100">
+  <body class="font-sans m-0 bg-bg-admin">
     <nav class="bg-secondary text-white py-4">
-      <div class="max-w-7xl mx-auto flex justify-between items-center px-4">
+      <div class="max-w-container mx-auto flex justify-between items-center px-4">
         <div>
           <%= link_to "Wedly Admin", admin_root_path, class: "text-white no-underline text-2xl font-bold" %>
         </div>
         <div class="flex gap-6 items-center">
-          <%= link_to "Dashboard", admin_root_path, class: "text-white no-underline px-4 py-2 rounded transition-colors hover:bg-white/10" %>
-          <%= link_to "Events", admin_events_path, class: "text-white no-underline px-4 py-2 rounded transition-colors hover:bg-white/10" %>
-          <%= link_to "Guests", admin_guests_path, class: "text-white no-underline px-4 py-2 rounded transition-colors hover:bg-white/10" %>
-          <%= link_to "Households", admin_households_path, class: "text-white no-underline px-4 py-2 rounded transition-colors hover:bg-white/10" %>
-          <%= link_to "Invitations", admin_invitations_path, class: "text-white no-underline px-4 py-2 rounded transition-colors hover:bg-white/10" %>
-          <%= link_to "Settings", admin_settings_path, class: "text-white no-underline px-4 py-2 rounded transition-colors hover:bg-white/10" %>
-          <%= button_to "Logout", admin_logout_path, method: :delete, class: "text-white px-4 py-2 rounded bg-red-600 hover:bg-red-700 border-none cursor-pointer" %>
+          <%= link_to "Dashboard", admin_root_path, class: "nav-link" %>
+          <%= link_to "Events", admin_events_path, class: "nav-link" %>
+          <%= link_to "Guests", admin_guests_path, class: "nav-link" %>
+          <%= link_to "Households", admin_households_path, class: "nav-link" %>
+          <%= link_to "Invitations", admin_invitations_path, class: "nav-link" %>
+          <%= link_to "Settings", admin_settings_path, class: "nav-link" %>
+          <%= button_to "Logout", admin_logout_path, method: :delete, class: "btn btn-sm btn-danger" %>
         </div>
       </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto my-8 px-4">
+    <main class="max-w-container mx-auto my-8 px-4">
       <% if flash[:notice] %>
         <div class="alert alert-success"><%= flash[:notice] %></div>
       <% end %>
-      
+
       <% if flash[:alert] %>
         <div class="alert alert-error"><%= flash[:alert] %></div>
       <% end %>
 
       <%= yield %>
     </main>
-
-    <style>
-      table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-      th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #ddd; }
-      th { background: #f8f9fa; font-weight: bold; }
-      .actions { display: flex; gap: 0.5rem; }
-      .filter-form { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
-    </style>
   </body>
 </html>

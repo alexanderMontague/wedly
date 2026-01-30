@@ -5,14 +5,14 @@
 
 <div class="container text-center">
   <div class="event-card">
-    <h2 class="text-[color:var(--primary-color)]">We've Got Your Response</h2>
-    <p class="text-xl my-8">
+    <h2 class="text-primary">We've Got Your Response</h2>
+    <p class="text-xl my-8 text-muted">
       Thank you for taking the time to RSVP for <%= @wedding.title %>.
     </p>
-    <p>
+    <p class="text-muted">
       If you need to make any changes to your response, you can use your invitation link again.
     </p>
-    <div class="mt-12">
+    <div class="mt-section">
       <%= link_to "Back to Wedding Page", public_wedding_path(@wedding.slug), class: "btn btn-primary" %>
     </div>
   </div>
