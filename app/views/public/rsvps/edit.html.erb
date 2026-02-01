@@ -1,4 +1,6 @@
-<div class="min-h-screen py-24 px-4" style="background: linear-gradient(to bottom, #fafaf9, rgba(254, 243, 199, 0.3));">
+<div class="min-h-screen py-20 px-4" style="background: linear-gradient(to bottom, #fafaf9, rgba(254, 243, 199, 0.3), #f5f5f4);"
+     data-controller="envelope rsvp-form"
+     data-rsvp-form-guest-ids-value="<%= @guests.map(&:id).to_json %>">
   <div class="max-w-2xl mx-auto">
     <%# Header %>
     <div class="text-center mb-16" style="animation: fade-in-up 1s ease-out forwards;">
@@ -6,14 +8,9 @@
       <h1 class="text-6xl mb-6 tracking-wide" style="font-family: 'Cormorant Garamond', serif; font-weight: 300; color: #292524;">
         RSVP
       </h1>
-      <p style="color: #78716c; font-weight: 300; letter-spacing: 0.05em;">
-        <%= @wedding.title %>
+      <p class="text-sm tracking-wider" style="color: #78716c; font-weight: 300;">
+        Select the envelope to reveal your invitation
       </p>
-      <% if @wedding.rsvp_deadline.present? %>
-        <p class="text-sm mt-2" style="color: #a8a29e; font-weight: 300;">
-          Kindly respond by <%= Date.parse(@wedding.rsvp_deadline).strftime("%B %e, %Y").gsub(/\s+/, ' ') %>
-        </p>
-      <% end %>
     </div>
 
     <%# Flash Messages %>
@@ -29,149 +26,191 @@
       </div>
     <% end %>
 
-    <%# Form Card %>
-    <div class="rsvp-form-card" style="animation: fade-in-up 1s ease-out 0.2s both;">
-      <div class="mb-12">
-        <h2 class="text-3xl mb-2" style="font-family: 'Cormorant Garamond', serif; font-weight: 300; color: #292524;">
-          <%= @household.name %>
-        </h2>
-        <p style="color: #78716c; font-weight: 300;">
-          Please respond for each guest in your party
-        </p>
+    <%# Envelope Container %>
+    <div class="envelope-container relative" data-envelope-target="container">
+      <%# Envelope %>
+      <div class="envelope" data-action="click->envelope#open">
+        <div class="envelope-body">
+          <div class="envelope-inner">
+            <%# Envelope Flap %>
+            <div class="envelope-flap" data-envelope-target="flap">
+              <div class="envelope-flap-inner"></div>
+              <div class="envelope-flap-line"></div>
+            </div>
+
+            <%# Wax Seal %>
+            <div class="envelope-seal" data-envelope-target="seal">
+              <div class="wax-seal">
+                <span style="font-family: 'Cormorant Garamond', serif; color: #fef3c7; font-size: 0.75rem;">
+                  <%= couple_initials(@wedding.title) %>
+                </span>
+              </div>
+            </div>
+
+            <%# Card Inside (RSVP Preview) %>
+            <div class="envelope-card" data-envelope-target="card">
+              <div class="w-full max-h-[calc(100%-2rem)] overflow-y-auto">
+                <div class="text-center space-y-6 mb-8">
+                  <div class="wedding-divider h-8 mb-6"></div>
+                  <p class="uppercase tracking-[0.3em] text-[10px]" style="color: #78716c; font-weight: 300;">
+                    You're Invited
+                  </p>
+                  <h2 class="text-4xl" style="font-family: 'Cormorant Garamond', serif; font-weight: 300; color: #292524;">
+                    <%= @household.name %>
+                  </h2>
+                  <div class="w-16 h-px mx-auto" style="background-color: #d6d3d1;"></div>
+                </div>
+
+                <div class="space-y-4 text-center mb-8">
+                  <% if @wedding.date %>
+                    <p class="text-2xl" style="font-family: 'Cormorant Garamond', serif; color: #292524;">
+                      <%= @wedding.date.strftime("%B %e, %Y").gsub(/\s+/, ' ') %>
+                    </p>
+                  <% end %>
+                  <div class="space-y-1">
+                    <% if @wedding.location %>
+                      <p style="color: #57534e; font-weight: 300;"><%= @wedding.location.split(",").first %></p>
+                      <p class="text-sm" style="color: #78716c; font-weight: 300;"><%= @wedding.location.split(",")[1..]&.join(",")&.strip %></p>
+                    <% end %>
+                  </div>
+                </div>
+
+                <div class="text-center">
+                  <button 
+                    type="button" 
+                    data-action="click->envelope#showForm"
+                    class="px-8 py-3 text-xs uppercase tracking-[0.2em] transition-colors cursor-pointer"
+                    style="background-color: #292524; color: white; border: none; font-weight: 300;"
+                  >
+                    Respond Now
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <%# Envelope Bottom (visible when closed) %>
+            <div class="envelope-bottom" data-envelope-target="bottom"></div>
+          </div>
+        </div>
       </div>
 
-      <%= form_with url: public_rsvp_path(@guest.invite_code), method: :patch, data: { turbo: false } do |f| %>
-        <% @guests.each_with_index do |guest, index| %>
-          <div class="<%= 'pt-10 mt-10' if index > 0 %>" style="<%= 'border-top: 1px solid #e7e5e4;' if index > 0 %>">
-            <h3 class="text-2xl mb-8" style="font-family: 'Cormorant Garamond', serif; color: #44403c;">
-              <%= guest.full_name %>
-            </h3>
+      <%# Instruction %>
+      <p class="envelope-instruction" data-envelope-target="instruction" style="color: #a8a29e; font-size: 0.75rem; letter-spacing: 0.05em; font-weight: 300;">
+        Click to open
+      </p>
+    </div>
 
-            <%= fields_for "rsvps[#{guest.id}]", guest.rsvp do |rsvp_f| %>
-              <%# Attendance Selection %>
-              <div class="mb-8">
-                <label class="rsvp-label">
-                  Will you be attending? <span style="color: #a8a29e;">*</span>
-                </label>
-                <div class="grid grid-cols-2 gap-6">
-                  <label class="cursor-pointer">
-                    <%= rsvp_f.radio_button :status, "accepted", 
-                        id: "guest_#{guest.id}_accepted",
-                        class: "sr-only peer",
-                        required: true %>
-                    <div class="rsvp-radio-card" style="border-color: #d6d3d1;" data-radio-card>
-                      <span class="rsvp-radio-label">Joyfully Accepts</span>
-                    </div>
-                  </label>
-                  <label class="cursor-pointer">
-                    <%= rsvp_f.radio_button :status, "declined", 
-                        id: "guest_#{guest.id}_declined",
-                        class: "sr-only peer" %>
-                    <div class="rsvp-radio-card" style="border-color: #d6d3d1;" data-radio-card>
-                      <span class="rsvp-radio-label">Regretfully Declines</span>
-                    </div>
-                  </label>
-                </div>
-              </div>
+    <%# Full RSVP Form (hidden initially) %>
+    <div class="hidden" data-envelope-target="form">
+      <div class="rsvp-form-card" style="animation: fade-in-up 0.6s ease-out forwards;">
+        <div class="mb-12">
+          <h2 class="text-3xl mb-2" style="font-family: 'Cormorant Garamond', serif; font-weight: 300; color: #292524;">
+            <%= @household.name %>
+          </h2>
+          <p style="color: #78716c; font-weight: 300;">
+            Please respond for each guest in your party
+          </p>
+          <% if @wedding.rsvp_deadline.present? %>
+            <p class="text-sm mt-2" style="color: #a8a29e; font-weight: 300;">
+              Kindly respond by <%= Date.parse(@wedding.rsvp_deadline).strftime("%B %e, %Y").gsub(/\s+/, ' ') %>
+            </p>
+          <% end %>
+        </div>
 
-              <%# Conditional Fields (shown when accepted) %>
-              <div id="accepted_fields_<%= guest.id %>" class="space-y-8 <%= guest.rsvp&.accepted? ? '' : 'hidden' %>">
-                <%# Meal Choice %>
-                <% if @meal_options.any? %>
-                  <div>
-                    <label for="rsvps_<%= guest.id %>_meal_choice" class="rsvp-label">
-                      Meal Preference
+        <%= form_with url: public_rsvp_path(@guest.invite_code), method: :patch, data: { turbo: false } do |f| %>
+          <% @guests.each_with_index do |guest, index| %>
+            <div class="<%= 'pt-10 mt-10' if index > 0 %>" style="<%= 'border-top: 1px solid #e7e5e4;' if index > 0 %>">
+              <h3 class="text-2xl mb-8" style="font-family: 'Cormorant Garamond', serif; color: #44403c;">
+                <%= guest.full_name %>
+              </h3>
+
+              <%= fields_for "rsvps[#{guest.id}]", guest.rsvp do |rsvp_f| %>
+                <%# Attendance Selection %>
+                <div class="mb-8">
+                  <label class="rsvp-label">
+                    Will you be attending? <span style="color: #a8a29e;">*</span>
+                  </label>
+                  <div class="grid grid-cols-2 gap-6">
+                    <label class="cursor-pointer">
+                      <%= rsvp_f.radio_button :status, "accepted", 
+                          id: "guest_#{guest.id}_accepted",
+                          class: "sr-only",
+                          required: true %>
+                      <div class="rsvp-radio-card" 
+                           style="border-color: #d6d3d1;" 
+                           data-rsvp-form-target="radioCard"
+                           data-action="click->rsvp-form#selectRadio">
+                        <span class="rsvp-radio-label">Joyfully Accepts</span>
+                      </div>
                     </label>
-                    <%= rsvp_f.select :meal_choice,
-                        @meal_options.map { |opt| [opt, opt] },
-                        { include_blank: "Select your preference" },
-                        { class: "rsvp-input cursor-pointer appearance-none", id: "rsvps_#{guest.id}_meal_choice" } %>
+                    <label class="cursor-pointer">
+                      <%= rsvp_f.radio_button :status, "declined", 
+                          id: "guest_#{guest.id}_declined",
+                          class: "sr-only" %>
+                      <div class="rsvp-radio-card" 
+                           style="border-color: #d6d3d1;" 
+                           data-rsvp-form-target="radioCard"
+                           data-action="click->rsvp-form#selectRadio">
+                        <span class="rsvp-radio-label">Regretfully Declines</span>
+                      </div>
+                    </label>
                   </div>
-                <% end %>
-
-                <%# Dietary Restrictions %>
-                <div>
-                  <label for="rsvps_<%= guest.id %>_dietary_restrictions" class="rsvp-label">
-                    Dietary Restrictions or Allergies
-                  </label>
-                  <%= rsvp_f.text_field :dietary_restrictions,
-                      class: "rsvp-input",
-                      placeholder: "None",
-                      id: "rsvps_#{guest.id}_dietary_restrictions" %>
                 </div>
-              </div>
 
-              <%# Notes %>
-              <div class="mt-8">
-                <label for="rsvps_<%= guest.id %>_notes" class="rsvp-label">
-                  Message to the Couple
-                </label>
-                <%= rsvp_f.text_area :notes,
-                    rows: 3,
-                    class: "rsvp-input resize-none",
-                    placeholder: "Your well wishes...",
-                    id: "rsvps_#{guest.id}_notes" %>
-              </div>
-            <% end %>
+                <%# Conditional Fields (shown when accepted) %>
+                <div id="accepted_fields_<%= guest.id %>" 
+                     class="space-y-8 <%= guest.rsvp&.accepted? ? '' : 'hidden' %>"
+                     data-rsvp-form-target="conditionalFields">
+                  <%# Meal Choice %>
+                  <% if @meal_options.any? %>
+                    <div>
+                      <label for="rsvps_<%= guest.id %>_meal_choice" class="rsvp-label">
+                        Meal Preference
+                      </label>
+                      <%= rsvp_f.select :meal_choice,
+                          @meal_options.map { |opt| [opt, opt] },
+                          { include_blank: "Select your preference" },
+                          { class: "rsvp-input cursor-pointer appearance-none", id: "rsvps_#{guest.id}_meal_choice" } %>
+                    </div>
+                  <% end %>
+
+                  <%# Dietary Restrictions %>
+                  <div>
+                    <label for="rsvps_<%= guest.id %>_dietary_restrictions" class="rsvp-label">
+                      Dietary Restrictions or Allergies
+                    </label>
+                    <%= rsvp_f.text_field :dietary_restrictions,
+                        class: "rsvp-input",
+                        placeholder: "None",
+                        id: "rsvps_#{guest.id}_dietary_restrictions" %>
+                  </div>
+                </div>
+
+                <%# Notes %>
+                <div class="mt-8">
+                  <label for="rsvps_<%= guest.id %>_notes" class="rsvp-label">
+                    Message to the Couple
+                  </label>
+                  <%= rsvp_f.text_area :notes,
+                      rows: 3,
+                      class: "rsvp-input resize-none",
+                      placeholder: "Your well wishes...",
+                      id: "rsvps_#{guest.id}_notes" %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+
+          <%# Submit Button %>
+          <div class="pt-12">
+            <%= f.submit "Submit Response", class: "rsvp-submit" %>
           </div>
         <% end %>
-
-        <%# Submit Button %>
-        <div class="pt-12">
-          <%= f.submit "Submit Response", class: "rsvp-submit" %>
-        </div>
-      <% end %>
+      </div>
     </div>
+
+    <%# Decorative corner flourishes %>
+    <div class="absolute top-20 left-10 w-24 h-24 hidden md:block" style="border-left: 1px solid rgba(231, 229, 228, 0.5); border-top: 1px solid rgba(231, 229, 228, 0.5);"></div>
+    <div class="absolute bottom-20 right-10 w-24 h-24 hidden md:block" style="border-right: 1px solid rgba(231, 229, 228, 0.5); border-bottom: 1px solid rgba(231, 229, 228, 0.5);"></div>
   </div>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Style radio cards on selection
-  document.querySelectorAll('input[type="radio"]').forEach(function(radio) {
-    radio.addEventListener('change', function() {
-      const name = this.name;
-      document.querySelectorAll('input[name="' + name + '"]').forEach(function(r) {
-        const card = r.closest('label').querySelector('[data-radio-card]');
-        if (card) {
-          if (r.checked) {
-            card.style.borderColor = '#292524';
-            card.style.backgroundColor = '#fafaf9';
-          } else {
-            card.style.borderColor = '#d6d3d1';
-            card.style.backgroundColor = 'transparent';
-          }
-        }
-      });
-    });
-    // Initialize state
-    if (radio.checked) {
-      const card = radio.closest('label').querySelector('[data-radio-card]');
-      if (card) {
-        card.style.borderColor = '#292524';
-        card.style.backgroundColor = '#fafaf9';
-      }
-    }
-  });
-
-  <% @guests.each do |guest| %>
-  (function() {
-    const acceptedRadio = document.getElementById('guest_<%= guest.id %>_accepted');
-    const declinedRadio = document.getElementById('guest_<%= guest.id %>_declined');
-    const acceptedFields = document.getElementById('accepted_fields_<%= guest.id %>');
-
-    function toggleFields() {
-      if (acceptedRadio && acceptedRadio.checked) {
-        acceptedFields.classList.remove('hidden');
-        acceptedFields.style.animation = 'fade-in-up 0.4s ease-out forwards';
-      } else if (acceptedFields) {
-        acceptedFields.classList.add('hidden');
-      }
-    }
-
-    if (acceptedRadio) acceptedRadio.addEventListener('change', toggleFields);
-    if (declinedRadio) declinedRadio.addEventListener('change', toggleFields);
-  })();
-  <% end %>
-});
-</script>
