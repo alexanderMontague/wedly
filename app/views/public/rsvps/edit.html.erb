@@ -1,97 +1,177 @@
-<div class="hero py-section px-card">
-  <h1>RSVP</h1>
-  <p><%= @wedding.title %></p>
-</div>
-
-<div class="container">
-  <% if flash[:notice] %>
-    <div class="alert alert-success"><%= flash[:notice] %></div>
-  <% end %>
-
-  <% if flash[:alert] %>
-    <div class="alert alert-error"><%= flash[:alert] %></div>
-  <% end %>
-
-  <div class="event-card">
-    <h2 class="mt-0 text-primary">
-      <%= @household.name %>
-    </h2>
-
-    <p class="mb-card text-muted">
-      Please let us know if you'll be attending. Update the information for each guest below.
-    </p>
-
-    <%= form_with url: public_rsvp_path(@guest.invite_code), method: :patch do |f| %>
-      <% @guests.each_with_index do |guest, index| %>
-        <div class="border-t border-border pt-card mt-card">
-          <h3><%= guest.full_name %></h3>
-
-          <%= fields_for "rsvps[#{guest.id}]", guest.rsvp do |rsvp_f| %>
-            <div class="form-group">
-              <%= rsvp_f.label :status, "Will you be attending?" %>
-              <div>
-                <%= rsvp_f.radio_button :status, "accepted", id: "guest_#{guest.id}_accepted" %>
-                <%= rsvp_f.label :status, "Yes, I'll be there!", value: "accepted", for: "guest_#{guest.id}_accepted" %>
-              </div>
-              <div>
-                <%= rsvp_f.radio_button :status, "declined", id: "guest_#{guest.id}_declined" %>
-                <%= rsvp_f.label :status, "Sorry, I can't make it", value: "declined", for: "guest_#{guest.id}_declined" %>
-              </div>
-            </div>
-
-            <div class="form-group <%= guest.rsvp.accepted? ? 'block' : 'hidden' %>" id="meal_choice_<%= guest.id %>">
-              <%= rsvp_f.label :meal_choice, "Meal Preference" %>
-              <%= rsvp_f.select :meal_choice,
-                                @meal_options.map { |opt| [opt, opt] },
-                                { include_blank: "Select a meal option" },
-                                { class: "form-control" } %>
-            </div>
-
-            <div class="form-group <%= guest.rsvp.accepted? ? 'block' : 'hidden' %>" id="dietary_restrictions_<%= guest.id %>">
-              <%= rsvp_f.label :dietary_restrictions, "Dietary Restrictions or Allergies" %>
-              <%= rsvp_f.text_area :dietary_restrictions, class: "form-control", rows: 2 %>
-            </div>
-
-            <div class="form-group">
-              <%= rsvp_f.label :notes, "Special Notes or Comments" %>
-              <%= rsvp_f.text_area :notes, class: "form-control", rows: 2 %>
-            </div>
-          <% end %>
-        </div>
+<div class="min-h-screen py-24 px-4" style="background: linear-gradient(to bottom, #fafaf9, rgba(254, 243, 199, 0.3));">
+  <div class="max-w-2xl mx-auto">
+    <%# Header %>
+    <div class="text-center mb-16" style="animation: fade-in-up 1s ease-out forwards;">
+      <div class="wedding-divider h-12 mb-8"></div>
+      <h1 class="text-6xl mb-6 tracking-wide" style="font-family: 'Cormorant Garamond', serif; font-weight: 300; color: #292524;">
+        RSVP
+      </h1>
+      <p style="color: #78716c; font-weight: 300; letter-spacing: 0.05em;">
+        <%= @wedding.title %>
+      </p>
+      <% if @wedding.rsvp_deadline.present? %>
+        <p class="text-sm mt-2" style="color: #a8a29e; font-weight: 300;">
+          Kindly respond by <%= Date.parse(@wedding.rsvp_deadline).strftime("%B %e, %Y").gsub(/\s+/, ' ') %>
+        </p>
       <% end %>
+    </div>
 
-      <div class="mt-section">
-        <%= f.submit "Submit RSVP", class: "btn btn-primary btn-lg w-full" %>
+    <%# Flash Messages %>
+    <% if flash[:notice] %>
+      <div class="mb-8 p-4 text-center" style="background-color: #ECFDF5; border: 1px solid #D1FAE5; color: #15803D;">
+        <%= flash[:notice] %>
       </div>
     <% end %>
+
+    <% if flash[:alert] %>
+      <div class="mb-8 p-4 text-center" style="background-color: #FEF2F2; border: 1px solid #FEE2E2; color: #B91C1C;">
+        <%= flash[:alert] %>
+      </div>
+    <% end %>
+
+    <%# Form Card %>
+    <div class="rsvp-form-card" style="animation: fade-in-up 1s ease-out 0.2s both;">
+      <div class="mb-12">
+        <h2 class="text-3xl mb-2" style="font-family: 'Cormorant Garamond', serif; font-weight: 300; color: #292524;">
+          <%= @household.name %>
+        </h2>
+        <p style="color: #78716c; font-weight: 300;">
+          Please respond for each guest in your party
+        </p>
+      </div>
+
+      <%= form_with url: public_rsvp_path(@guest.invite_code), method: :patch, data: { turbo: false } do |f| %>
+        <% @guests.each_with_index do |guest, index| %>
+          <div class="<%= 'pt-10 mt-10' if index > 0 %>" style="<%= 'border-top: 1px solid #e7e5e4;' if index > 0 %>">
+            <h3 class="text-2xl mb-8" style="font-family: 'Cormorant Garamond', serif; color: #44403c;">
+              <%= guest.full_name %>
+            </h3>
+
+            <%= fields_for "rsvps[#{guest.id}]", guest.rsvp do |rsvp_f| %>
+              <%# Attendance Selection %>
+              <div class="mb-8">
+                <label class="rsvp-label">
+                  Will you be attending? <span style="color: #a8a29e;">*</span>
+                </label>
+                <div class="grid grid-cols-2 gap-6">
+                  <label class="cursor-pointer">
+                    <%= rsvp_f.radio_button :status, "accepted", 
+                        id: "guest_#{guest.id}_accepted",
+                        class: "sr-only peer",
+                        required: true %>
+                    <div class="rsvp-radio-card" style="border-color: #d6d3d1;" data-radio-card>
+                      <span class="rsvp-radio-label">Joyfully Accepts</span>
+                    </div>
+                  </label>
+                  <label class="cursor-pointer">
+                    <%= rsvp_f.radio_button :status, "declined", 
+                        id: "guest_#{guest.id}_declined",
+                        class: "sr-only peer" %>
+                    <div class="rsvp-radio-card" style="border-color: #d6d3d1;" data-radio-card>
+                      <span class="rsvp-radio-label">Regretfully Declines</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <%# Conditional Fields (shown when accepted) %>
+              <div id="accepted_fields_<%= guest.id %>" class="space-y-8 <%= guest.rsvp&.accepted? ? '' : 'hidden' %>">
+                <%# Meal Choice %>
+                <% if @meal_options.any? %>
+                  <div>
+                    <label for="rsvps_<%= guest.id %>_meal_choice" class="rsvp-label">
+                      Meal Preference
+                    </label>
+                    <%= rsvp_f.select :meal_choice,
+                        @meal_options.map { |opt| [opt, opt] },
+                        { include_blank: "Select your preference" },
+                        { class: "rsvp-input cursor-pointer appearance-none", id: "rsvps_#{guest.id}_meal_choice" } %>
+                  </div>
+                <% end %>
+
+                <%# Dietary Restrictions %>
+                <div>
+                  <label for="rsvps_<%= guest.id %>_dietary_restrictions" class="rsvp-label">
+                    Dietary Restrictions or Allergies
+                  </label>
+                  <%= rsvp_f.text_field :dietary_restrictions,
+                      class: "rsvp-input",
+                      placeholder: "None",
+                      id: "rsvps_#{guest.id}_dietary_restrictions" %>
+                </div>
+              </div>
+
+              <%# Notes %>
+              <div class="mt-8">
+                <label for="rsvps_<%= guest.id %>_notes" class="rsvp-label">
+                  Message to the Couple
+                </label>
+                <%= rsvp_f.text_area :notes,
+                    rows: 3,
+                    class: "rsvp-input resize-none",
+                    placeholder: "Your well wishes...",
+                    id: "rsvps_#{guest.id}_notes" %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+
+        <%# Submit Button %>
+        <div class="pt-12">
+          <%= f.submit "Submit Response", class: "rsvp-submit" %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    <% @guests.each do |guest| %>
-      const acceptedRadio_<%= guest.id %> = document.getElementById('guest_<%= guest.id %>_accepted');
-      const declinedRadio_<%= guest.id %> = document.getElementById('guest_<%= guest.id %>_declined');
-      const mealChoice_<%= guest.id %> = document.getElementById('meal_choice_<%= guest.id %>');
-      const dietaryRestrictions_<%= guest.id %> = document.getElementById('dietary_restrictions_<%= guest.id %>');
-
-      function toggleFields_<%= guest.id %>() {
-        if (acceptedRadio_<%= guest.id %>.checked) {
-          mealChoice_<%= guest.id %>.classList.remove('hidden');
-          mealChoice_<%= guest.id %>.classList.add('block');
-          dietaryRestrictions_<%= guest.id %>.classList.remove('hidden');
-          dietaryRestrictions_<%= guest.id %>.classList.add('block');
-        } else {
-          mealChoice_<%= guest.id %>.classList.remove('block');
-          mealChoice_<%= guest.id %>.classList.add('hidden');
-          dietaryRestrictions_<%= guest.id %>.classList.remove('block');
-          dietaryRestrictions_<%= guest.id %>.classList.add('hidden');
+document.addEventListener('DOMContentLoaded', function() {
+  // Style radio cards on selection
+  document.querySelectorAll('input[type="radio"]').forEach(function(radio) {
+    radio.addEventListener('change', function() {
+      const name = this.name;
+      document.querySelectorAll('input[name="' + name + '"]').forEach(function(r) {
+        const card = r.closest('label').querySelector('[data-radio-card]');
+        if (card) {
+          if (r.checked) {
+            card.style.borderColor = '#292524';
+            card.style.backgroundColor = '#fafaf9';
+          } else {
+            card.style.borderColor = '#d6d3d1';
+            card.style.backgroundColor = 'transparent';
+          }
         }
+      });
+    });
+    // Initialize state
+    if (radio.checked) {
+      const card = radio.closest('label').querySelector('[data-radio-card]');
+      if (card) {
+        card.style.borderColor = '#292524';
+        card.style.backgroundColor = '#fafaf9';
       }
-
-      acceptedRadio_<%= guest.id %>.addEventListener('change', toggleFields_<%= guest.id %>);
-      declinedRadio_<%= guest.id %>.addEventListener('change', toggleFields_<%= guest.id %>);
-    <% end %>
+    }
   });
-</script>
 
+  <% @guests.each do |guest| %>
+  (function() {
+    const acceptedRadio = document.getElementById('guest_<%= guest.id %>_accepted');
+    const declinedRadio = document.getElementById('guest_<%= guest.id %>_declined');
+    const acceptedFields = document.getElementById('accepted_fields_<%= guest.id %>');
+
+    function toggleFields() {
+      if (acceptedRadio && acceptedRadio.checked) {
+        acceptedFields.classList.remove('hidden');
+        acceptedFields.style.animation = 'fade-in-up 0.4s ease-out forwards';
+      } else if (acceptedFields) {
+        acceptedFields.classList.add('hidden');
+      }
+    }
+
+    if (acceptedRadio) acceptedRadio.addEventListener('change', toggleFields);
+    if (declinedRadio) declinedRadio.addEventListener('change', toggleFields);
+  })();
+  <% end %>
+});
+</script>

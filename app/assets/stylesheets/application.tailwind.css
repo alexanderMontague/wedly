@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500&display=swap');
 
 @theme {
   /* Primary - Warm Gold/Tan (Wedding aesthetic) */
@@ -60,6 +61,24 @@
   --color-neutral-800: #1F2937;
   --color-neutral-900: #111827;
 
+  /* Amber for accents */
+  --color-amber-700: #b45309;
+  --color-amber-800: #92400e;
+  --color-amber-900: #78350f;
+  --color-amber-100: #fef3c7;
+
+  /* Stone colors for wedding theme */
+  --color-stone-50: #fafaf9;
+  --color-stone-100: #f5f5f4;
+  --color-stone-200: #e7e5e4;
+  --color-stone-300: #d6d3d1;
+  --color-stone-400: #a8a29e;
+  --color-stone-500: #78716c;
+  --color-stone-600: #57534e;
+  --color-stone-700: #44403c;
+  --color-stone-800: #292524;
+  --color-stone-900: #1c1917;
+
   /* Background colors */
   --color-bg-page: #FAF9F7;
   --color-bg-admin: #F3F4F6;
@@ -86,6 +105,8 @@
   --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.12);
 
   /* Font families */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-serif: Georgia, Cambria, "Times New Roman", Times, serif;
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
@@ -93,6 +114,7 @@
   --max-width-container: 80rem;
   --max-width-content: 65ch;
   --max-width-form: 32rem;
+
 }
 
 :root {
@@ -106,6 +128,11 @@
 @layer base {
   body {
     @apply text-neutral-900 leading-relaxed antialiased;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
   }
 
   h1 {
@@ -261,7 +288,7 @@
   }
 
   /* --------------------------------------------------------------------------
-     Hero Section
+     Hero Section (Legacy - for admin pages)
      -------------------------------------------------------------------------- */
   .hero {
     @apply text-white text-center py-section px-card;
@@ -277,6 +304,183 @@
 
   .hero p {
     @apply text-xl md:text-2xl m-0 font-light opacity-90;
+  }
+
+  /* --------------------------------------------------------------------------
+     Wedding Navigation
+     -------------------------------------------------------------------------- */
+  .wedding-nav {
+    @apply bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-50 border-b border-stone-200/50;
+  }
+
+  .wedding-nav-link {
+    @apply text-xs tracking-[0.2em] uppercase transition-colors relative;
+  }
+
+  .wedding-nav-link::after {
+    content: '';
+    @apply absolute -bottom-1 left-0 w-full h-px bg-stone-800 transition-transform origin-left scale-x-0;
+  }
+
+  .wedding-nav-link:hover::after,
+  .wedding-nav-link.active::after {
+    @apply scale-x-100;
+  }
+
+  .wedding-nav-link.active {
+    @apply text-stone-800;
+  }
+
+  .wedding-nav-link:not(.active) {
+    @apply text-stone-500 hover:text-stone-800;
+  }
+
+  /* --------------------------------------------------------------------------
+     Wedding Hero (Full Screen)
+     -------------------------------------------------------------------------- */
+  .wedding-hero {
+    @apply relative h-screen overflow-hidden;
+  }
+
+  .wedding-hero-image {
+    @apply w-full h-full object-cover;
+  }
+
+  .wedding-hero-overlay {
+    @apply absolute inset-0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.3), rgba(0,0,0,0.5));
+  }
+
+  .wedding-hero-content {
+    @apply absolute inset-0 flex items-center justify-center text-white;
+  }
+
+  .wedding-hero-title {
+    @apply text-7xl md:text-8xl mb-6 tracking-wide;
+    font-family: var(--font-display);
+    font-weight: 300;
+  }
+
+  .wedding-hero-subtitle {
+    @apply text-sm tracking-[0.3em] uppercase font-light mb-12;
+  }
+
+  /* --------------------------------------------------------------------------
+     Wedding Section Styles
+     -------------------------------------------------------------------------- */
+  .wedding-section-title {
+    @apply text-6xl mb-16 tracking-wide text-stone-800;
+    font-family: var(--font-display);
+    font-weight: 300;
+  }
+
+  .wedding-divider {
+    @apply w-px bg-stone-300 mx-auto;
+  }
+
+  .wedding-divider-horizontal {
+    @apply h-px bg-white/40 mx-auto;
+  }
+
+  /* --------------------------------------------------------------------------
+     Event Detail Cards
+     -------------------------------------------------------------------------- */
+  .event-icon-circle {
+    @apply inline-flex items-center justify-center w-20 h-20 border border-stone-300 rounded-full mb-8 bg-white;
+  }
+
+  .event-icon {
+    @apply w-8 h-8 text-stone-700;
+    stroke-width: 1.5;
+  }
+
+  /* --------------------------------------------------------------------------
+     Gallery
+     -------------------------------------------------------------------------- */
+  .gallery-item {
+    @apply h-[500px] overflow-hidden;
+  }
+
+  .gallery-item img {
+    @apply w-full h-full object-cover grayscale transition-all duration-700 ease-out;
+  }
+
+  .gallery-item:hover img {
+    @apply grayscale-0 scale-105;
+  }
+
+  /* --------------------------------------------------------------------------
+     Wedding Footer
+     -------------------------------------------------------------------------- */
+  .wedding-footer {
+    @apply bg-stone-900 text-stone-400 py-16 text-center;
+  }
+
+  /* --------------------------------------------------------------------------
+     RSVP Form Styles
+     -------------------------------------------------------------------------- */
+  .rsvp-form-card {
+    @apply bg-white shadow-xl p-12 md:p-16 border border-stone-200/50;
+  }
+
+  .rsvp-label {
+    @apply block text-xs tracking-wider uppercase text-stone-600 mb-3 font-light;
+  }
+
+  .rsvp-input {
+    @apply w-full px-0 py-3 border-b border-stone-300 focus:border-stone-600 outline-none transition-colors bg-transparent text-stone-800;
+  }
+
+  .rsvp-radio-card {
+    @apply h-32 border border-stone-300 transition-all flex items-center justify-center cursor-pointer;
+  }
+
+  .rsvp-radio-card:hover {
+    @apply border-stone-400;
+  }
+
+  .rsvp-radio-card.selected {
+    @apply border-stone-800 bg-stone-50;
+  }
+
+  .rsvp-radio-label {
+    @apply text-stone-700 text-xl;
+    font-family: var(--font-display);
+    font-weight: 300;
+  }
+
+  .rsvp-submit {
+    @apply w-full bg-stone-800 text-white py-5 hover:bg-stone-900 transition-colors text-xs tracking-[0.2em] uppercase font-light shadow-lg cursor-pointer border-none;
+  }
+
+  /* --------------------------------------------------------------------------
+     Wax Seal (Save the Date)
+     -------------------------------------------------------------------------- */
+  .wax-seal {
+    @apply w-16 h-16 rounded-full shadow-lg flex items-center justify-center border-2 border-amber-800/30;
+    background: linear-gradient(135deg, #b45309 0%, #78350f 100%);
+  }
+
+  /* --------------------------------------------------------------------------
+     Animation Utilities
+     -------------------------------------------------------------------------- */
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .animation-delay-200 {
+    transition-delay: 200ms;
+  }
+
+  .animation-delay-400 {
+    transition-delay: 400ms;
   }
 
   /* --------------------------------------------------------------------------
@@ -405,5 +609,52 @@
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+/* ==========================================================================
+   Keyframe Animations (outside layers for global scope)
+   ========================================================================== */
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-in-up {
+  from { 
+    opacity: 0; 
+    transform: translateY(30px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes grow-width {
+  from { width: 0; }
+  to { width: 6rem; }
+}
+
+@keyframes scale-in {
+  from { 
+    opacity: 0; 
+    transform: scale(0.95); 
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+}
+
+@keyframes slide-up {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
   }
 }

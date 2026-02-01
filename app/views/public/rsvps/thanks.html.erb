@@ -1,19 +1,34 @@
-<div class="hero">
-  <h1>Thank You!</h1>
-  <p>Your RSVP has been received</p>
-</div>
+<div class="min-h-screen flex items-center justify-center px-4" style="background: linear-gradient(to bottom, #fafaf9, rgba(254, 243, 199, 0.3));">
+  <div class="max-w-md w-full bg-white shadow-xl p-12 text-center" style="animation: scale-in 0.6s ease-out forwards; border: 1px solid rgba(231, 229, 228, 0.5);">
+    <%# Check Icon %>
+    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full mb-8" style="border: 1px solid #d6d3d1; background-color: #fafaf9;">
+      <svg class="w-9 h-9" style="color: #44403c;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+      </svg>
+    </div>
 
-<div class="container text-center">
-  <div class="event-card">
-    <h2 class="text-primary">We've Got Your Response</h2>
-    <p class="text-xl my-8 text-muted">
-      Thank you for taking the time to RSVP for <%= @wedding.title %>.
+    <h1 class="text-5xl mb-6" style="font-family: 'Cormorant Garamond', serif; font-weight: 300; color: #292524;">
+      Thank You
+    </h1>
+
+    <p class="mb-8 leading-relaxed" style="color: #57534e; font-weight: 300;">
+      We have received your response and look forward to celebrating with you.
     </p>
-    <p class="text-muted">
-      If you need to make any changes to your response, you can use your invitation link again.
+
+    <div class="wedding-divider h-8 mb-8"></div>
+
+    <p class="text-sm mb-8" style="color: #78716c; font-weight: 300;">
+      <%= @wedding.title %>
+      <% if @wedding.date %>
+        <br>
+        <span class="text-xs"><%= @wedding.date.strftime("%B %e, %Y").gsub(/\s+/, ' ') %></span>
+      <% end %>
     </p>
-    <div class="mt-section">
-      <%= link_to "Back to Wedding Page", root_path, class: "btn btn-primary" %>
+
+    <div class="space-y-4">
+      <%= link_to "Return to Wedding Page", root_path, 
+          class: "text-xs uppercase tracking-wider transition-colors",
+          style: "color: #57534e; text-decoration: none;" %>
     </div>
   </div>
 </div>

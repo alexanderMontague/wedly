@@ -1,38 +1,220 @@
-<div class="hero">
-  <h1><%= @wedding.title %></h1>
-  <% if @wedding.date %>
-    <p><%= @wedding.date.strftime("%B %d, %Y") %></p>
-  <% end %>
-  <% if @wedding.location %>
-    <p><%= @wedding.location %></p>
-  <% end %>
-</div>
-
-<div class="container">
-  <% if @events.any? %>
-    <div class="section">
-      <h2 class="section-title">Event Schedule</h2>
-      <% @events.each do |event| %>
-        <div class="event-card">
-          <h3><%= event.name %></h3>
-          <% if event.datetime %>
-            <p><strong>When:</strong> <%= event.datetime.strftime("%B %d, %Y at %I:%M %p") %></p>
+<div class="min-h-screen">
+  <%# Hero Section %>
+  <div class="wedding-hero">
+    <img 
+      src="https://images.unsplash.com/photo-1768900044120-650653953a6a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbGVnYW50JTIwd2VkZGluZyUyMGNvdXBsZXxlbnwxfHx8fDE3Njk2NzM2NDh8MA&ixlib=rb-4.1.0&q=80&w=1920"
+      alt="Wedding couple"
+      class="wedding-hero-image"
+    />
+    <div class="wedding-hero-overlay"></div>
+    <div class="wedding-hero-content">
+      <div class="text-center px-4" style="animation: fade-in-up 1.2s ease-out forwards;">
+        <div class="mb-8" style="animation: scale-in 1s ease-out 0.3s both;">
+          <div class="w-px h-16 mx-auto mb-8" style="background-color: rgba(255,255,255,0.3);"></div>
+        </div>
+        <h1 class="wedding-hero-title" style="color: white;">
+          <%= @wedding.title %>
+        </h1>
+        <div class="h-px mx-auto mb-8" style="background-color: rgba(255,255,255,0.4); animation: grow-width 1s ease-out 0.8s both; width: 0;"></div>
+        <p class="wedding-hero-subtitle" style="color: white;">
+          Request the Honour of Your Presence
+        </p>
+        <div class="space-y-3 text-base tracking-wider" style="color: white; font-weight: 300;">
+          <% if @wedding.date %>
+            <p><%= @wedding.date.strftime("%B %e, %Y").gsub(/\s+/, ' ') %></p>
           <% end %>
-          <% if event.location %>
-            <p><strong>Where:</strong> <%= event.location %></p>
-          <% end %>
-          <% if event.description.present? %>
-            <p><%= event.description %></p>
+          <% if @wedding.location %>
+            <p class="text-sm" style="opacity: 0.8;"><%= @wedding.location %></p>
           <% end %>
         </div>
-      <% end %>
+      </div>
     </div>
+  </div>
+
+  <%# Our Story Section %>
+  <section class="max-w-4xl mx-auto py-32 px-4">
+    <div class="text-center animate-on-scroll" data-animate>
+      <div class="wedding-divider h-12 mb-12"></div>
+      <h2 class="wedding-section-title">
+        Our Story
+      </h2>
+      <div class="space-y-8 leading-loose text-lg max-w-2xl mx-auto" style="color: #57534e; font-weight: 300;">
+        <p>
+          In the autumn of 2020, serendipity brought us together in a quiet corner of the city. 
+          What began as shared glances over morning coffee blossomed into endless conversations 
+          that stretched into the night.
+        </p>
+        <p>
+          Through adventures near and far, countless Sunday mornings, and the beautiful 
+          ordinary moments in between, we discovered that home isn't a place—it's a person. 
+          Now, we embark on life's greatest journey together.
+        </p>
+        <p class="italic text-base" style="color: #78716c;">
+          And we would be honoured to have you witness our union.
+        </p>
+      </div>
+      <div class="wedding-divider h-12 mt-16"></div>
+    </div>
+  </section>
+
+  <%# Event Details %>
+  <section class="py-32 border-y" id="events" style="background-color: rgba(245, 245, 244, 0.5); border-color: #e7e5e4;">
+    <div class="max-w-6xl mx-auto px-4">
+      <h2 class="wedding-section-title text-center mb-24">
+        Event Details
+      </h2>
+      <div class="grid md:grid-cols-3 gap-20">
+        <%# Date %>
+        <div class="text-center animate-on-scroll" data-animate>
+          <div class="event-icon-circle">
+            <svg class="event-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+            </svg>
+          </div>
+          <h3 class="text-2xl mb-4" style="font-family: 'Cormorant Garamond', serif; color: #292524;">
+            Date
+          </h3>
+          <% if @wedding.date %>
+            <p style="color: #57534e; font-weight: 300;"><%= @wedding.date.strftime("%A") %></p>
+            <p style="color: #57534e; font-weight: 300;"><%= @wedding.date.strftime("%B %e, %Y").gsub(/\s+/, ' ') %></p>
+          <% end %>
+        </div>
+        
+        <%# Time %>
+        <div class="text-center animate-on-scroll animation-delay-200" data-animate>
+          <div class="event-icon-circle">
+            <svg class="event-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-2xl mb-4" style="font-family: 'Cormorant Garamond', serif; color: #292524;">
+            Time
+          </h3>
+          <p style="color: #57534e; font-weight: 300;">Ceremony at Four O'Clock</p>
+          <p class="text-sm" style="color: #57534e; font-weight: 300; opacity: 0.7;">Reception to Follow</p>
+        </div>
+        
+        <%# Venue %>
+        <div class="text-center animate-on-scroll animation-delay-400" data-animate>
+          <div class="event-icon-circle">
+            <svg class="event-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+            </svg>
+          </div>
+          <h3 class="text-2xl mb-4" style="font-family: 'Cormorant Garamond', serif; color: #292524;">
+            Venue
+          </h3>
+          <% if @wedding.location %>
+            <p style="color: #57534e; font-weight: 300;"><%= @wedding.location %></p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <% if @events.any? %>
+    <%# Schedule Section %>
+    <section class="py-32 px-4">
+      <div class="max-w-4xl mx-auto">
+        <div class="wedding-divider h-12 mb-12"></div>
+        <h2 class="wedding-section-title text-center">
+          Schedule
+        </h2>
+        <div class="space-y-8">
+          <% @events.each do |event| %>
+            <div class="bg-white p-8 shadow-sm animate-on-scroll" data-animate style="border: 1px solid rgba(231, 229, 228, 0.5);">
+              <h3 class="text-2xl mb-2" style="font-family: 'Cormorant Garamond', serif; color: #292524;">
+                <%= event.name %>
+              </h3>
+              <% if event.datetime %>
+                <p class="text-sm tracking-wider uppercase mb-4" style="color: #78716c; font-weight: 300;">
+                  <%= event.datetime.strftime("%I:%M %p") %>
+                </p>
+              <% end %>
+              <% if event.location %>
+                <p style="color: #57534e; font-weight: 300;"><%= event.location %></p>
+              <% end %>
+              <% if event.description.present? %>
+                <p class="mt-4" style="color: #78716c; font-weight: 300;"><%= event.description %></p>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </section>
   <% end %>
 
-  <div class="section text-center">
-    <h2 class="section-title">We Hope You Can Join Us</h2>
-    <p class="text-xl mb-card text-muted">
-      Have you received your invitation? Click below to RSVP.
-    </p>
-  </div>
+  <%# Photo Gallery %>
+  <section class="py-32">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="wedding-divider h-12 mb-12"></div>
+      <h2 class="wedding-section-title text-center mb-24">
+        Gallery
+      </h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="gallery-item animate-on-scroll" data-animate>
+          <img
+            src="https://images.unsplash.com/photo-1571332760709-8943098311f1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3ZWRkaW5nJTIwY2VyZW1vbnklMjBhaXNsZXxlbnwxfHx8fDE3Njk2NDc2NzF8MA&ixlib=rb-4.1.0&q=80&w=1080"
+            alt="Wedding aisle"
+          />
+        </div>
+        <div class="gallery-item animate-on-scroll animation-delay-200" data-animate>
+          <img
+            src="https://images.unsplash.com/photo-1674223975974-0fd3869bb2ed?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3ZWRkaW5nJTIwZmxvd2VycyUyMHJvc2VzfGVufDF8fHx8MTc2OTc0NzE0MXww&ixlib=rb-4.1.0&q=80&w=1080"
+            alt="Wedding flowers"
+          />
+        </div>
+        <div class="gallery-item animate-on-scroll animation-delay-400" data-animate>
+          <img
+            src="https://images.unsplash.com/photo-1625619080917-7d6ff39e0675?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3ZWRkaW5nJTIwdmVudWUlMjBiYWxscm9vbXxlbnwxfHx8fDE3Njk3NDcxNDF8MA&ixlib=rb-4.1.0&q=80&w=1080"
+            alt="Wedding venue"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# RSVP Call to Action %>
+  <section class="py-32 border-y" id="rsvp-section" style="background-color: rgba(245, 245, 244, 0.5); border-color: #e7e5e4;">
+    <div class="max-w-2xl mx-auto px-4 text-center">
+      <div class="wedding-divider h-12 mb-12"></div>
+      <h2 class="wedding-section-title">
+        Join Us
+      </h2>
+      <p class="text-lg mb-12 max-w-lg mx-auto leading-relaxed" style="color: #57534e; font-weight: 300;">
+        Have you received your invitation? We would be delighted to have you celebrate with us.
+      </p>
+      <p class="text-sm tracking-wider" style="color: #78716c; font-weight: 300;">
+        Please use the personalized link in your invitation to RSVP
+      </p>
+    </div>
+  </section>
+
+  <%# Footer %>
+  <footer class="py-16 text-center" style="background-color: #1c1917; color: #a8a29e;">
+    <p class="text-xs uppercase mb-2" style="letter-spacing: 0.2em;"><%= @wedding.title %></p>
+    <% if @wedding.date %>
+      <p class="text-xs" style="font-weight: 300;"><%= @wedding.date.strftime("%m.%d.%Y") %></p>
+    <% end %>
+  </footer>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const animatedElements = document.querySelectorAll('[data-animate]');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  });
+  
+  animatedElements.forEach(el => observer.observe(el));
+});
+</script>

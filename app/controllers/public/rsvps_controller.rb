@@ -1,5 +1,5 @@
 module Public
-  class RSVPsController < ApplicationController
+  class RsvpsController < ApplicationController
     layout "public"
     before_action :set_guest
 

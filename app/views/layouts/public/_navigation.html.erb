@@ -1,0 +1,18 @@
+<nav class="sticky top-0 z-50 shadow-sm" style="background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(4px); border-bottom: 1px solid rgba(231, 229, 228, 0.5);">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-24">
+      <%= link_to root_path, class: "flex items-center", style: "text-decoration: none;" do %>
+        <span class="text-3xl" style="font-family: 'Cormorant Garamond', serif; color: #292524;">
+          <%= @wedding&.title || "Wedding" %>
+        </span>
+      <% end %>
+      
+      <div class="flex gap-12">
+        <%= link_to "Home", root_path, 
+            class: "wedding-nav-link #{current_page?(root_path) ? 'active' : ''}" %>
+        <%= link_to "RSVP", "#rsvp-section", 
+            class: "wedding-nav-link" %>
+      </div>
+    </div>
+  </div>
+</nav>

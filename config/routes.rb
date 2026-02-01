@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  get "/rsvp/:code", to: "public/rsvps#edit", as: :rsvp
+  get "/rsvp/:code", to: "public/rsvps#edit", as: :public_rsvp
   patch "/rsvp/:code", to: "public/rsvps#update"
-  get "/rsvp/:code/thanks", to: "public/rsvps#thanks", as: :rsvp_thanks
+  get "/rsvp/:code/thanks", to: "public/rsvps#thanks", as: :public_rsvp_thanks
 
   namespace :admin do
     get "/login", to: "sessions#new", as: :login
