@@ -1,12 +1,37 @@
 module Public
   class RsvpsController < ApplicationController
     layout "public"
-    before_action :set_guest
+    before_action :set_wedding
+    before_action :set_guest, only: %i[edit update thanks]
+
+    def index
+    end
+
+    def search
+      query = params[:q].to_s.strip
+      @results = []
+
+      if query.length >= 2
+        @results = @wedding.guests
+                           .includes(:household)
+                           .where("LOWER(first_name) LIKE :q OR LOWER(last_name) LIKE :q", q: "%#{query.downcase}%")
+                           .limit(10)
+                           .map do |guest|
+          {
+            id: guest.id,
+            name: guest.full_name,
+            household: guest.household.name,
+            invite_code: guest.invite_code
+          }
+        end
+      end
+
+      render json: @results
+    end
 
     def edit
       @household = @guest.household
       @guests = @household.guests.includes(:rsvp)
-      @wedding = @guest.wedding
       @meal_options = @wedding.meal_options
     end
 
@@ -22,7 +47,6 @@ module Public
       else
         @household = @guest.household
         @guests = @household.guests.includes(:rsvp)
-        @wedding = @guest.wedding
         @meal_options = @wedding.meal_options
         flash.now[:alert] = result[:error]
         render :edit, status: :unprocessable_content
@@ -30,10 +54,13 @@ module Public
     end
 
     def thanks
-      @wedding = @guest.wedding
     end
 
     private
+
+    def set_wedding
+      @wedding = Wedding.current
+    end
 
     def set_guest
       @guest = Guest.find_by!(invite_code: params[:code])

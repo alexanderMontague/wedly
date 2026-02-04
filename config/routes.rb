@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "/rsvp", to: "public/rsvps#index", as: :public_rsvp_lookup
+  get "/rsvp/search", to: "public/rsvps#search", as: :public_rsvp_search
   get "/rsvp/:code", to: "public/rsvps#edit", as: :public_rsvp
   patch "/rsvp/:code", to: "public/rsvps#update"
   get "/rsvp/:code/thanks", to: "public/rsvps#thanks", as: :public_rsvp_thanks
