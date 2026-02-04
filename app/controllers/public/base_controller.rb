@@ -1,8 +1,7 @@
-module Admin
+module Public
   class BaseController < ApplicationController
-    include AdminAuthentication
     include WeddingConcern
 
-    layout "admin"
+    layout "public"
   end
 end

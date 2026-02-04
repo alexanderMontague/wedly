@@ -1,16 +1,16 @@
 You're Invited!
 
-<%= @wedding.title %>
-<% if @wedding.date %>
-<%= @wedding.date.strftime("%B %d, %Y") %>
+<%= current_wedding.title %>
+<% if current_wedding.date %>
+<%= current_wedding.date.strftime("%B %d, %Y") %>
 <% end %>
-<% if @wedding.location %>
-<%= @wedding.location %>
+<% if current_wedding.location %>
+<%= current_wedding.location %>
 <% end %>
 
 Dear <%= @guest.first_name %>,
 
-We are delighted to invite you to celebrate our special day with us! 
+We are delighted to invite you to celebrate our special day with us!
 Your presence would mean the world to us.
 
 Please let us know if you'll be able to join us by visiting this link to RSVP:

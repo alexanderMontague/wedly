@@ -1,7 +1,6 @@
 module Admin
   class DashboardController < Admin::BaseController
     def index
-      @wedding = current_wedding
       @stats = calculate_stats
       @upcoming_events = current_wedding&.events&.upcoming&.limit(5) || []
       @recent_rsvps = RSVP.joins(:guest)

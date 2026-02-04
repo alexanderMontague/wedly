@@ -1,13 +1,10 @@
 module Admin
   class SettingsController < Admin::BaseController
     def show
-      @wedding = current_wedding
     end
 
     def update
-      @wedding = current_wedding
-
-      if @wedding.update(wedding_params)
+      if current_wedding.update(wedding_params)
         redirect_to admin_settings_path, notice: "Settings updated successfully"
       else
         render :show, status: :unprocessable_content

@@ -1,8 +1,8 @@
 <div class="min-h-screen" data-controller="scroll-animate">
   <%# Hero Section %>
   <section class="wedding-hero">
-    <%= image_tag @wedding.hero[:image_url],
-        alt: @wedding.title,
+    <%= image_tag current_wedding.hero[:image_url],
+        alt: current_wedding.title,
         class: "wedding-hero-image" %>
     <div class="wedding-hero-overlay"></div>
     <div class="wedding-hero-content">
@@ -11,36 +11,36 @@
           <div class="w-px h-16 bg-white/30 mx-auto mb-8"></div>
         </div>
         <h1 class="wedding-hero-title text-white">
-          <%= @wedding.title %>
+          <%= current_wedding.title %>
         </h1>
         <div class="wedding-divider-horizontal w-24 mb-8 animate-grow-width"></div>
         <p class="wedding-hero-subtitle text-white">
-          <%= @wedding.hero[:tagline] %>
+          <%= current_wedding.hero[:tagline] %>
         </p>
         <div class="space-y-3 text-base font-light tracking-wider text-white">
-          <% if @wedding.date %>
-            <p><%= @wedding.date_elegant %></p>
+          <% if current_wedding.date %>
+            <p><%= current_wedding.date_elegant %></p>
           <% end %>
-          <p class="text-sm opacity-80"><%= @wedding.venue_full %></p>
+          <p class="text-sm opacity-80"><%= current_wedding.venue_full %></p>
         </div>
       </div>
     </div>
   </section>
 
-  <% if @wedding.story[:enabled] %>
+  <% if current_wedding.story[:enabled] %>
     <%# Our Story Section %>
     <section class="max-w-4xl mx-auto py-32 px-4">
       <div class="text-center animate-on-scroll" data-scroll-animate-target="item">
         <%= render "public/shared/divider" %>
         <div class="mb-12"></div>
-        <%= render "public/shared/section_title", title: @wedding.story[:title] %>
+        <%= render "public/shared/section_title", title: current_wedding.story[:title] %>
         <div class="space-y-8 leading-loose text-lg font-light max-w-2xl mx-auto text-stone-600">
-          <% @wedding.story[:paragraphs]&.each do |paragraph| %>
+          <% current_wedding.story[:paragraphs]&.each do |paragraph| %>
             <p><%= paragraph %></p>
           <% end %>
-          <% if @wedding.story[:closing] %>
+          <% if current_wedding.story[:closing] %>
             <p class="italic text-base text-stone-500">
-              <%= @wedding.story[:closing] %>
+              <%= current_wedding.story[:closing] %>
             </p>
           <% end %>
         </div>
@@ -57,21 +57,21 @@
       <div class="mb-24"></div>
       <div class="grid md:grid-cols-3 gap-20">
         <%= render "public/shared/event_detail", icon: "calendar", title: "Date" do %>
-          <% if @wedding.date %>
-            <p class="text-stone-600 font-light"><%= @wedding.date.strftime("%A") %></p>
-            <p class="text-stone-600 font-light"><%= @wedding.date_formatted %></p>
+          <% if current_wedding.date %>
+            <p class="text-stone-600 font-light"><%= current_wedding.date.strftime("%A") %></p>
+            <p class="text-stone-600 font-light"><%= current_wedding.date_formatted %></p>
           <% end %>
         <% end %>
 
         <%= render "public/shared/event_detail", icon: "clock", title: "Time", delay_class: "animation-delay-200" do %>
-          <p class="text-stone-600 font-light">Ceremony at <%= @wedding.ceremony_time %></p>
+          <p class="text-stone-600 font-light">Ceremony at <%= current_wedding.ceremony_time %></p>
           <p class="text-sm text-stone-600 font-light opacity-70">Reception to Follow</p>
         <% end %>
 
         <%= render "public/shared/event_detail", icon: "map_pin", title: "Venue", delay_class: "animation-delay-400" do %>
-          <p class="text-stone-600 font-light"><%= @wedding.venue_name %></p>
+          <p class="text-stone-600 font-light"><%= current_wedding.venue_name %></p>
           <p class="text-sm text-stone-600 font-light opacity-70">
-            <%= [@wedding.venue_city, @wedding.venue_region].compact.join(", ") %>
+            <%= [current_wedding.venue_city, current_wedding.venue_region].compact.join(", ") %>
           </p>
         <% end %>
       </div>
@@ -109,16 +109,16 @@
     </section>
   <% end %>
 
-  <% if @wedding.gallery[:enabled] && @wedding.gallery[:images].present? %>
+  <% if current_wedding.gallery[:enabled] && current_wedding.gallery[:images].present? %>
     <%# Photo Gallery %>
     <section class="py-32">
       <div class="max-w-7xl mx-auto px-4">
         <%= render "public/shared/divider" %>
         <div class="mb-12"></div>
-        <%= render "public/shared/section_title", title: @wedding.gallery[:title], centered: true %>
+        <%= render "public/shared/section_title", title: current_wedding.gallery[:title], centered: true %>
         <div class="mb-24"></div>
         <div class="grid md:grid-cols-3 gap-8">
-          <% @wedding.gallery[:images].each_with_index do |image, index| %>
+          <% current_wedding.gallery[:images].each_with_index do |image, index| %>
             <% delay_class = index == 1 ? "animation-delay-200" : (index == 2 ? "animation-delay-400" : "") %>
             <div class="gallery-item animate-on-scroll <%= delay_class %>" data-scroll-animate-target="item">
               <%= image_tag image[:url], alt: image[:alt] %>
@@ -134,23 +134,23 @@
     <div class="max-w-2xl mx-auto px-4 text-center">
       <%= render "public/shared/divider" %>
       <div class="mb-12"></div>
-      <%= render "public/shared/section_title", title: @wedding.rsvp_content[:title] %>
+      <%= render "public/shared/section_title", title: current_wedding.rsvp_content[:title] %>
       <p class="text-lg mb-12 max-w-lg mx-auto leading-relaxed text-stone-600 font-light">
-        <%= @wedding.rsvp_content[:description] %>
+        <%= current_wedding.rsvp_content[:description] %>
       </p>
-      <%= link_to @wedding.rsvp_content[:button_text], public_rsvp_lookup_path,
+      <%= link_to current_wedding.rsvp_content[:button_text], public_rsvp_lookup_path,
           class: "btn-wedding-primary" %>
       <p class="text-sm tracking-wider mt-8 text-stone-400 font-light">
-        <%= @wedding.rsvp_content[:lookup_hint] %>
+        <%= current_wedding.rsvp_content[:lookup_hint] %>
       </p>
     </div>
   </section>
 
   <%# Footer %>
   <footer class="wedding-footer">
-    <p class="text-xs tracking-[0.2em] uppercase mb-2"><%= @wedding.title %></p>
-    <% if @wedding.date %>
-      <p class="text-xs font-light"><%= @wedding.date_short %></p>
+    <p class="text-xs tracking-[0.2em] uppercase mb-2"><%= current_wedding.title %></p>
+    <% if current_wedding.date %>
+      <p class="text-xs font-light"><%= current_wedding.date_short %></p>
     <% end %>
   </footer>
 </div>

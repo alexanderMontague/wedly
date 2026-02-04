@@ -1,12 +1,12 @@
 <div class="card">
   <h1>Wedding Settings</h1>
 
-  <%= form_with model: @wedding, url: admin_settings_path, method: :patch do |f| %>
-    <% if @wedding.errors.any? %>
+  <%= form_with model: current_wedding, url: admin_settings_path, method: :patch do |f| %>
+    <% if current_wedding.errors.any? %>
       <div class="alert alert-error">
-        <h3><%= pluralize(@wedding.errors.count, "error") %> prohibited these settings from being saved:</h3>
+        <h3><%= pluralize(current_wedding.errors.count, "error") %> prohibited these settings from being saved:</h3>
         <ul>
-          <% @wedding.errors.full_messages.each do |message| %>
+          <% current_wedding.errors.full_messages.each do |message| %>
             <li><%= message %></li>
           <% end %>
         </ul>

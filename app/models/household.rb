@@ -11,4 +11,8 @@ class Household < ApplicationRecord
   def guest_names
     guests.map(&:full_name).join(", ")
   end
+
+  def rsvpd?
+    guests.all?(&:has_responded?)
+  end
 end

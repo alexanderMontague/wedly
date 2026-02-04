@@ -17,10 +17,10 @@
     <div class="mb-8"></div>
 
     <p class="text-sm mb-8 text-stone-500 font-light">
-      <%= @wedding.title %>
-      <% if @wedding.date %>
+      <%= current_wedding.title %>
+      <% if current_wedding.date %>
         <br>
-        <span class="text-xs"><%= @wedding.date_formatted %></span>
+        <span class="text-xs"><%= current_wedding.date_formatted %></span>
       <% end %>
     </p>
 

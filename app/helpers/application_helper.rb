@@ -1,6 +1,6 @@
 module ApplicationHelper
   def page_title(title = nil)
-    base_title = @wedding&.title || "Wedding"
+    base_title = current_wedding&.title || "Wedding"
     title.present? ? "#{title} | #{base_title}" : base_title
   end
 

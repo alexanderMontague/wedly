@@ -1,7 +1,5 @@
 module Public
-  class RsvpsController < ApplicationController
-    layout "public"
-    before_action :set_wedding
+  class RsvpsController < Public::BaseController
     before_action :set_guest, only: %i[edit update thanks]
 
     def index
@@ -12,11 +10,11 @@ module Public
       @results = []
 
       if query.length >= 2
-        @results = @wedding.guests
-                           .includes(:household)
-                           .where("LOWER(first_name) LIKE :q OR LOWER(last_name) LIKE :q", q: "%#{query.downcase}%")
-                           .limit(10)
-                           .map do |guest|
+        @results = current_wedding.guests
+                                  .includes(:household)
+                                  .where("LOWER(first_name) LIKE :q OR LOWER(last_name) LIKE :q", q: "%#{query.downcase}%")
+                                  .limit(10)
+                                  .map do |guest|
           {
             id: guest.id,
             name: guest.full_name,
@@ -32,7 +30,11 @@ module Public
     def edit
       @household = @guest.household
       @guests = @household.guests.includes(:rsvp)
-      @meal_options = @wedding.meal_options
+      @meal_options = current_wedding.meal_options
+
+      return unless @household.rsvpd?
+
+      flash.now[:notice] = "Thank you for your RSVP!"
     end
 
     def update
@@ -47,7 +49,7 @@ module Public
       else
         @household = @guest.household
         @guests = @household.guests.includes(:rsvp)
-        @meal_options = @wedding.meal_options
+        @meal_options = current_wedding.meal_options
         flash.now[:alert] = result[:error]
         render :edit, status: :unprocessable_content
       end
@@ -57,10 +59,6 @@ module Public
     end
 
     private
-
-    def set_wedding
-      @wedding = Wedding.current
-    end
 
     def set_guest
       @guest = Guest.find_by!(invite_code: params[:code])

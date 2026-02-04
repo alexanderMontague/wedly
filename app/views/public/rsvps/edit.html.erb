@@ -29,9 +29,9 @@
           <p class="text-stone-500 font-light">
             Please respond for each guest in your party
           </p>
-          <% if @wedding.rsvp_deadline %>
+          <% if current_wedding.rsvp_deadline %>
             <p class="text-sm mt-2 text-stone-400 font-light">
-              Kindly respond by <%= @wedding.rsvp_deadline_formatted %>
+              Kindly respond by <%= current_wedding.rsvp_deadline_formatted %>
             </p>
           <% end %>
         </div>

@@ -1,18 +1,18 @@
 <h1>You're Invited!</h1>
 
 <p style="text-align: center; font-size: 24px; color: #C89B7B; margin: 30px 0;">
-  <%= @wedding.title %>
+  <%= current_wedding.title %>
 </p>
 
-<% if @wedding.date %>
+<% if current_wedding.date %>
   <p style="text-align: center; font-size: 18px;">
-    <%= @wedding.date.strftime("%B %d, %Y") %>
+    <%= current_wedding.date.strftime("%B %d, %Y") %>
   </p>
 <% end %>
 
-<% if @wedding.location %>
+<% if current_wedding.location %>
   <p style="text-align: center; font-size: 18px;">
-    <%= @wedding.location %>
+    <%= current_wedding.location %>
   </p>
 <% end %>
 
@@ -21,7 +21,7 @@
 </p>
 
 <p>
-  We are delighted to invite you to celebrate our special day with us! 
+  We are delighted to invite you to celebrate our special day with us!
   Your presence would mean the world to us.
 </p>
 

@@ -35,7 +35,7 @@ A clean, Rails-native wedding planning and RSVP management system built with zer
 
 Run the setup script (one time only):
 ```bash
-./setup
+./bin/setup
 ```
 
 This installs dependencies, creates your `.env` file, sets up the database, and builds the initial CSS.
@@ -49,8 +49,6 @@ This installs dependencies, creates your `.env` file, sets up the database, and 
 This starts both:
 - Rails server on http://localhost:3000
 - Tailwind CSS watch process (auto-rebuilds styles when files change)
-
-**Quick alternative:** If you only need Rails without CSS watching, use `./start`
 
 ### Access
 

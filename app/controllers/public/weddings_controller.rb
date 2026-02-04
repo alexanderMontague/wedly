@@ -1,10 +1,7 @@
 module Public
-  class WeddingsController < ApplicationController
-    layout "public"
-
+  class WeddingsController < Public::BaseController
     def show
-      @wedding = Wedding.current
-      @events = @wedding.events.upcoming.ordered
+      @events = current_wedding.events.upcoming.ordered
     end
   end
 end

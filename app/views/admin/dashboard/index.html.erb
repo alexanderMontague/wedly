@@ -1,7 +1,7 @@
 <div class="card">
   <h1>Dashboard</h1>
-  <% if @wedding %>
-    <p><strong><%= @wedding.title %></strong> - <%= @wedding.date&.strftime("%B %d, %Y") %></p>
+  <% if current_wedding %>
+    <p><strong><%= current_wedding.title %></strong> - <%= current_wedding.date&.strftime("%B %d, %Y") %></p>
   <% else %>
     <p>No wedding configured yet.</p>
   <% end %>
