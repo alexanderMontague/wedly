@@ -30,9 +30,7 @@ export default class extends Controller {
   async performSearch(query) {
     try {
       const response = await fetch(`${this.urlValue}?q=${encodeURIComponent(query)}`, {
-        headers: {
-          "Accept": "application/json"
-        }
+        headers: { "Accept": "application/json" }
       })
 
       if (!response.ok) throw new Error("Search failed")
@@ -57,20 +55,17 @@ export default class extends Controller {
     this.noResultsTarget.classList.add("hidden")
     this.resultsTarget.innerHTML = results.map(guest => `
       <a href="/rsvp/${guest.invite_code}"
-         class="block p-6 border-b transition-colors"
-         style="border-color: #e7e5e4; text-decoration: none;"
-         onmouseover="this.style.backgroundColor='#fafaf9'"
-         onmouseout="this.style.backgroundColor='transparent'">
+         class="block p-6 border-b border-stone-200 no-underline hover:bg-stone-50 transition-colors">
         <div class="flex justify-between items-center">
           <div>
-            <p class="text-xl mb-1" style="font-family: 'Cormorant Garamond', serif; color: #292524;">
+            <p class="text-xl mb-1 font-display text-stone-800">
               ${this.escapeHtml(guest.name)}
             </p>
-            <p class="text-sm" style="color: #78716c; font-weight: 300;">
+            <p class="text-sm text-stone-500 font-light">
               ${this.escapeHtml(guest.household)}
             </p>
           </div>
-          <svg class="w-5 h-5" style="color: #a8a29e;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <svg class="w-5 h-5 text-stone-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
           </svg>
         </div>

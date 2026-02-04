@@ -128,7 +128,14 @@
 @layer base {
   body {
     @apply text-neutral-900 leading-relaxed antialiased;
+  }
+
+  .font-body {
     font-family: var(--font-body);
+  }
+
+  .font-display {
+    font-family: var(--font-display);
   }
 
   h1,
@@ -431,12 +438,7 @@
   }
 
   .rsvp-input {
-    @apply w-full px-0 py-3 border-b border-stone-300 focus:border-stone-600 outline-none transition-colors bg-transparent text-stone-800;
-  }
-
-  .rsvp-input:focus,
-  input[data-guest-search-target="input"]:focus {
-    border-color: #292524;
+    @apply w-full px-0 py-3 border-b border-stone-300 focus:border-stone-800 outline-none transition-colors bg-transparent text-stone-800;
   }
 
   .rsvp-radio-card {
@@ -461,57 +463,42 @@
     @apply w-full bg-stone-800 text-white py-5 hover:bg-stone-900 transition-colors text-xs tracking-[0.2em] uppercase font-light shadow-lg cursor-pointer border-none;
   }
 
+  .btn-wedding-primary {
+    @apply inline-block px-12 py-4 bg-stone-800 text-white text-xs uppercase tracking-[0.2em] font-light no-underline transition-colors hover:bg-stone-900;
+  }
+
   /* --------------------------------------------------------------------------
      Wax Seal
      -------------------------------------------------------------------------- */
   .wax-seal {
-    @apply w-16 h-16 rounded-full shadow-lg flex items-center justify-center;
-    background: linear-gradient(135deg, #b45309 0%, #78350f 100%);
-    border: 2px solid rgba(146, 64, 14, 0.3);
+    @apply w-16 h-16 rounded-full shadow-lg flex items-center justify-center bg-gradient-to-br from-amber-700 to-amber-900 border-2 border-amber-800/30;
   }
 
   /* --------------------------------------------------------------------------
      Envelope Animation
      -------------------------------------------------------------------------- */
   .envelope-container {
+    @apply relative;
     perspective: 1500px;
   }
 
   .envelope {
-    position: relative;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-  }
-
-  .envelope:hover {
-    transform: scale(1.01);
+    @apply relative cursor-pointer transition-transform duration-300 ease-out hover:scale-[1.01];
   }
 
   .envelope-body {
-    position: relative;
-    background: white;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    overflow: hidden;
-    border: 1px solid rgba(231, 229, 228, 0.5);
+    @apply relative bg-white shadow-2xl overflow-hidden border border-stone-200/50;
   }
 
   .envelope-inner {
-    aspect-ratio: 3 / 2;
-    position: relative;
-    background: linear-gradient(135deg, #fafaf9 0%, rgba(254, 243, 199, 0.5) 100%);
+    @apply relative aspect-[3/2] bg-gradient-to-br from-stone-50 to-amber-50/50;
   }
 
   .envelope-flap {
-    position: absolute;
-    inset: 0;
-    top: 0;
-    height: 50%;
+    @apply absolute inset-x-0 top-0 h-1/2 z-10 border-b border-stone-500/10 bg-gradient-to-br from-stone-100 to-stone-200;
     transform-origin: top center;
     transform-style: preserve-3d;
     clip-path: polygon(0 0, 100% 0, 50% 100%);
-    background: linear-gradient(135deg, #f5f5f4 0%, #e7e5e4 100%);
-    border-bottom: 1px solid rgba(120, 113, 108, 0.1);
-    z-index: 10;
     transition: transform 1s cubic-bezier(0.43, 0.13, 0.23, 0.96);
   }
 
@@ -520,70 +507,45 @@
   }
 
   .envelope-flap-inner {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, #f5f5f4 0%, #e7e5e4 100%);
-    opacity: 0.3;
+    @apply absolute inset-0 bg-gradient-to-br from-stone-100 to-stone-200 opacity-30;
   }
 
   .envelope-flap-line {
-    position: absolute;
+    @apply absolute w-12 h-px bg-stone-400/30;
     top: 33%;
     left: 50%;
     transform: translateX(-50%);
-    width: 3rem;
-    height: 1px;
-    background-color: rgba(168, 162, 158, 0.3);
   }
 
   .envelope-seal {
-    position: absolute;
+    @apply absolute z-20 transition-all duration-400 ease-out;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 20;
-    transition: transform 0.4s ease, opacity 0.4s ease;
   }
 
   .envelope-seal.hidden {
+    @apply opacity-0;
     transform: translate(-50%, -50%) scale(0);
-    opacity: 0;
   }
 
   .envelope-bottom {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, #f5f5f4 0%, rgba(254, 243, 199, 0.4) 100%);
-    border-top: 1px solid rgba(231, 229, 228, 0.5);
+    @apply absolute inset-0 bg-gradient-to-br from-stone-100 to-amber-100/40 border-t border-stone-200/50;
     clip-path: polygon(0 50%, 50% 100%, 100% 50%, 100% 100%, 0 100%);
   }
 
   .envelope-card {
-    position: absolute;
-    inset: 1rem;
-    background: white;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    z-index: 20;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid rgba(231, 229, 228, 0.5);
-    padding: 3rem;
-    opacity: 0;
-    transform: translateY(0);
+    @apply absolute inset-4 bg-white shadow-2xl z-20 flex flex-col items-center justify-center border border-stone-200/50 p-12 opacity-0;
     transition: opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s;
   }
 
   .envelope-card.visible {
-    opacity: 1;
+    @apply opacity-100;
     transform: translateY(-30px);
   }
 
   .envelope-instruction {
-    text-align: center;
-    margin-top: 3rem;
-    opacity: 0;
+    @apply text-center mt-12 opacity-0;
     animation: fade-in 0.5s ease 1.5s forwards;
   }
 
@@ -735,6 +697,19 @@
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 1.2s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 1s ease-out 0.3s both;
+  }
+
+  .animate-grow-width {
+    animation: grow-width 1s ease-out 0.8s both;
+    width: 0;
   }
 }
 

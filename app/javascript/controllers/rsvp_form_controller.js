@@ -24,7 +24,7 @@ export default class extends Controller {
       if (acceptedRadio && acceptedRadio.checked) {
         const fields = document.getElementById(`accepted_fields_${guestId}`)
         if (fields) {
-          fields.classList.remove('hidden')
+          fields.classList.remove("hidden")
         }
       }
     })
@@ -37,7 +37,7 @@ export default class extends Controller {
 
     document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
       const siblingCard = r.nextElementSibling
-      if (siblingCard && siblingCard.hasAttribute('data-rsvp-form-target')) {
+      if (siblingCard && siblingCard.hasAttribute("data-rsvp-form-target")) {
         this.styleCardAsUnselected(siblingCard)
       }
     })
@@ -47,13 +47,13 @@ export default class extends Controller {
   }
 
   styleCardAsSelected(card) {
-    card.style.borderColor = '#292524'
-    card.style.backgroundColor = '#fafaf9'
+    card.classList.add("border-stone-800", "bg-stone-50")
+    card.classList.remove("border-stone-300")
   }
 
   styleCardAsUnselected(card) {
-    card.style.borderColor = '#d6d3d1'
-    card.style.backgroundColor = 'transparent'
+    card.classList.remove("border-stone-800", "bg-stone-50")
+    card.classList.add("border-stone-300")
   }
 
   toggleConditionalFields(radio) {
@@ -66,11 +66,12 @@ export default class extends Controller {
 
     if (!fields) return
 
-    if (status === 'accepted') {
-      fields.classList.remove('hidden')
-      fields.style.animation = 'fade-in-up 0.4s ease-out forwards'
+    if (status === "accepted") {
+      fields.classList.remove("hidden")
+      fields.classList.add("animate-fade-in-up")
     } else {
-      fields.classList.add('hidden')
+      fields.classList.add("hidden")
+      fields.classList.remove("animate-fade-in-up")
     }
   }
 }

@@ -1,81 +1,69 @@
-<div class="min-h-screen py-20 px-4" style="background: linear-gradient(to bottom, #fafaf9, rgba(254, 243, 199, 0.3), #f5f5f4);">
+<div class="min-h-screen py-20 px-4 bg-gradient-to-b from-stone-50 via-amber-50/30 to-stone-100">
   <div class="max-w-2xl mx-auto">
     <%# Header %>
-    <div class="text-center mb-16" style="animation: fade-in-up 1s ease-out forwards;">
-      <div class="wedding-divider h-12 mb-8"></div>
-      <h1 class="text-6xl mb-6 tracking-wide" style="font-family: 'Cormorant Garamond', serif; font-weight: 300; color: #292524;">
+    <div class="text-center mb-16 animate-fade-in-up">
+      <%= render "public/shared/divider" %>
+      <div class="mb-8"></div>
+      <h1 class="text-6xl mb-6 tracking-wide font-display font-light text-stone-800">
         RSVP
       </h1>
-      <p class="text-lg mb-4" style="color: #57534e; font-weight: 300;">
+      <p class="text-lg mb-4 text-stone-600 font-light">
         <%= @wedding.title %>
       </p>
-      <p class="text-sm tracking-wider" style="color: #78716c; font-weight: 300;">
+      <p class="text-sm tracking-wider text-stone-500 font-light">
         Search for your name to find your invitation
       </p>
     </div>
 
     <%# Search Card %>
-    <div class="bg-white shadow-xl p-8 md:p-12"
-         style="border: 1px solid rgba(231, 229, 228, 0.5); animation: fade-in-up 1s ease-out 0.2s both;"
+    <div class="bg-white shadow-xl p-8 md:p-12 border border-stone-200/50 animate-fade-in-up"
+         style="animation-delay: 0.2s;"
          data-controller="guest-search"
          data-guest-search-url-value="<%= public_rsvp_search_path %>">
 
       <%# Search Input %>
       <div class="mb-8">
-        <label class="block text-xs tracking-wider uppercase mb-3" style="color: #57534e; font-weight: 300;">
-          Your Name
-        </label>
+        <label class="rsvp-label">Your Name</label>
         <div class="relative">
-          <input
-            type="text"
-            data-guest-search-target="input"
-            data-action="input->guest-search#search"
-            placeholder="Enter your first or last name"
-            autocomplete="off"
-            class="w-full px-0 py-4 text-xl border-b-2 outline-none transition-colors"
-            style="border-color: #d6d3d1; background: transparent; color: #292524; font-family: 'Cormorant Garamond', serif;"
-          />
+          <input type="text"
+                 data-guest-search-target="input"
+                 data-action="input->guest-search#search"
+                 placeholder="Enter your first or last name"
+                 autocomplete="off"
+                 class="w-full px-0 py-4 text-xl border-b-2 border-stone-300 outline-none transition-colors bg-transparent font-display text-stone-800 focus:border-stone-800" />
           <div class="absolute right-0 top-1/2 -translate-y-1/2">
-            <svg class="w-6 h-6" style="color: #a8a29e;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-            </svg>
+            <%= render "public/shared/icon", name: "search" %>
           </div>
         </div>
       </div>
 
       <%# Searching Indicator %>
       <div data-guest-search-target="searching" class="hidden text-center py-8">
-        <p class="text-sm" style="color: #78716c; font-weight: 300;">Searching...</p>
+        <p class="text-sm text-stone-500 font-light">Searching...</p>
       </div>
 
       <%# Results %>
       <div data-guest-search-target="results" class="hidden">
-        <p class="text-xs tracking-wider uppercase mb-4" style="color: #78716c; font-weight: 300;">
-          Select your name
-        </p>
-        <div class="border" style="border-color: #e7e5e4;">
-          <%# Results will be injected here by JavaScript %>
+        <p class="rsvp-label mb-4">Select your name</p>
+        <div class="border border-stone-200">
+          <%# Results injected by JavaScript %>
         </div>
       </div>
 
       <%# No Results %>
       <div data-guest-search-target="noResults" class="hidden text-center py-8">
-        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full mb-6" style="border: 1px solid #d6d3d1;">
-          <svg class="w-8 h-8" style="color: #a8a29e;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 16.318A4.486 4.486 0 0012.016 15a4.486 4.486 0 00-3.198 1.318M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
-          </svg>
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full border border-stone-300 mb-6">
+          <%= render "public/shared/icon", name: "sad" %>
         </div>
-        <p class="text-lg mb-2" style="font-family: 'Cormorant Garamond', serif; color: #292524;">
-          No guests found
-        </p>
-        <p class="text-sm" style="color: #78716c; font-weight: 300;">
+        <p class="text-lg mb-2 font-display text-stone-800">No guests found</p>
+        <p class="text-sm text-stone-500 font-light">
           Please check the spelling or try a different name
         </p>
       </div>
 
       <%# Hint %>
-      <div class="mt-8 pt-8" style="border-top: 1px solid #e7e5e4;">
-        <p class="text-center text-sm" style="color: #a8a29e; font-weight: 300;">
+      <div class="mt-8 pt-8 border-t border-stone-200">
+        <p class="text-center text-sm text-stone-400 font-light">
           If you received an invitation link, you can use that to go directly to your RSVP
         </p>
       </div>
@@ -83,7 +71,7 @@
 
     <%# Back Link %>
     <div class="text-center mt-12">
-      <%= link_to root_path, class: "text-xs uppercase tracking-wider transition-colors", style: "color: #78716c; text-decoration: none;" do %>
+      <%= link_to root_path, class: "text-xs uppercase tracking-wider text-stone-500 no-underline hover:text-stone-800 transition-colors" do %>
         &larr; Back to Wedding
       <% end %>
     </div>

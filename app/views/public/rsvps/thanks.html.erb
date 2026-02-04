@@ -1,34 +1,32 @@
-<div class="min-h-screen flex items-center justify-center px-4" style="background: linear-gradient(to bottom, #fafaf9, rgba(254, 243, 199, 0.3));">
-  <div class="max-w-md w-full bg-white shadow-xl p-12 text-center" style="animation: scale-in 0.6s ease-out forwards; border: 1px solid rgba(231, 229, 228, 0.5);">
+<div class="min-h-screen flex items-center justify-center px-4 bg-gradient-to-b from-stone-50 to-amber-50/30">
+  <div class="max-w-md w-full bg-white shadow-xl p-12 text-center border border-stone-200/50 animate-scale-in">
     <%# Check Icon %>
-    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full mb-8" style="border: 1px solid #d6d3d1; background-color: #fafaf9;">
-      <svg class="w-9 h-9" style="color: #44403c;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-      </svg>
+    <div class="inline-flex items-center justify-center w-20 h-20 border border-stone-300 rounded-full mb-8 bg-stone-50">
+      <%= render "public/shared/icon", name: "check" %>
     </div>
 
-    <h1 class="text-5xl mb-6" style="font-family: 'Cormorant Garamond', serif; font-weight: 300; color: #292524;">
+    <h1 class="text-5xl mb-6 font-display font-light text-stone-800">
       Thank You
     </h1>
 
-    <p class="mb-8 leading-relaxed" style="color: #57534e; font-weight: 300;">
+    <p class="mb-8 leading-relaxed text-stone-600 font-light">
       We have received your response and look forward to celebrating with you.
     </p>
 
-    <div class="wedding-divider h-8 mb-8"></div>
+    <%= render "public/shared/divider", height: 8 %>
+    <div class="mb-8"></div>
 
-    <p class="text-sm mb-8" style="color: #78716c; font-weight: 300;">
+    <p class="text-sm mb-8 text-stone-500 font-light">
       <%= @wedding.title %>
       <% if @wedding.date %>
         <br>
-        <span class="text-xs"><%= @wedding.date.strftime("%B %e, %Y").gsub(/\s+/, ' ') %></span>
+        <span class="text-xs"><%= @wedding.date_formatted %></span>
       <% end %>
     </p>
 
     <div class="space-y-4">
       <%= link_to "Return to Wedding Page", root_path,
-          class: "text-xs uppercase tracking-wider transition-colors",
-          style: "color: #57534e; text-decoration: none;" %>
+          class: "text-xs uppercase tracking-wider text-stone-600 no-underline hover:text-stone-800 transition-colors" %>
     </div>
   </div>
 </div>

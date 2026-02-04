@@ -1,11 +1,24 @@
 # Wedding Configuration
-# This file defines the single wedding this site is built for.
-# These values are used to seed/sync the wedding record in the database.
+# All wedding content is driven by this file.
+# Update these values to customize your wedding website.
 
 default: &default
-  title: "Alex & Britt's Wedding"
+  # Core Details
+  title: "Britt & Alex's Wedding"
+  couple:
+    partner1: "Britt"
+    partner2: "Alex"
+    initials: "B & A"
+
+  # Date & Location
   date: "2026-09-05"
-  location: "Toronto, Ontario"
+  ceremony_time: "4:00 PM"
+  venue:
+    name: "The Venue"
+    city: "Toronto"
+    region: "Ontario"
+
+  # RSVP Settings
   rsvp_deadline: "2026-08-01"
   meal_options:
     - Chicken
@@ -13,12 +26,49 @@ default: &default
     - Vegetarian
     - Vegan
 
+  # Content - Our Story Section
+  story:
+    enabled: true
+    title: "Our Story"
+    paragraphs:
+      - "In the autumn of 2020, serendipity brought us together in a quiet corner of the city. What began as shared glances over morning coffee blossomed into endless conversations that stretched into the night."
+      - "Through adventures near and far, countless Sunday mornings, and the beautiful ordinary moments in between, we discovered that home isn't a place—it's a person. Now, we embark on life's greatest journey together."
+    closing: "And we would be honoured to have you witness our union."
+
+  # Content - Hero Section
+  hero:
+    tagline: "Request the Honour of Your Presence"
+    image_url: "https://images.unsplash.com/photo-1768900044120-650653953a6a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1920"
+
+  # Content - Gallery Section
+  gallery:
+    enabled: true
+    title: "Gallery"
+    images:
+      - url: "https://images.unsplash.com/photo-1571332760709-8943098311f1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
+        alt: "Wedding ceremony"
+      - url: "https://images.unsplash.com/photo-1674223975974-0fd3869bb2ed?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
+        alt: "Wedding flowers"
+      - url: "https://images.unsplash.com/photo-1625619080917-7d6ff39e0675?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
+        alt: "Wedding venue"
+
+  # Content - RSVP Section
+  rsvp:
+    title: "Join Us"
+    description: "We would be delighted to have you celebrate with us. Please let us know if you can attend."
+    button_text: "RSVP Now"
+    lookup_hint: "Or use the personalized link in your invitation"
+
 development:
   <<: *default
 
 test:
   <<: *default
   title: "Test Wedding"
+  couple:
+    partner1: "Test"
+    partner2: "Partner"
+    initials: "T & P"
 
 production:
   <<: *default

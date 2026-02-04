@@ -1,0 +1,75 @@
+<%# RSVP fields for a single guest %>
+<div class="<%= 'pt-10 mt-10 border-t border-stone-200' if index > 0 %>">
+  <h3 class="text-2xl mb-8 font-display text-stone-700">
+    <%= guest.full_name %>
+  </h3>
+
+  <%= fields_for "rsvps[#{guest.id}]", guest.rsvp do |rsvp_f| %>
+    <%# Attendance Selection %>
+    <div class="mb-8">
+      <label class="rsvp-label">
+        Will you be attending? <span class="text-stone-400">*</span>
+      </label>
+      <div class="grid grid-cols-2 gap-6">
+        <label class="cursor-pointer">
+          <%= rsvp_f.radio_button :status, "accepted",
+              id: "guest_#{guest.id}_accepted",
+              class: "sr-only",
+              required: true %>
+          <div class="rsvp-radio-card border-stone-300 <%= 'border-stone-800 bg-stone-50' if guest.rsvp&.accepted? %>"
+               data-rsvp-form-target="radioCard"
+               data-action="click->rsvp-form#selectRadio">
+            <span class="rsvp-radio-label">Joyfully Accepts</span>
+          </div>
+        </label>
+        <label class="cursor-pointer">
+          <%= rsvp_f.radio_button :status, "declined",
+              id: "guest_#{guest.id}_declined",
+              class: "sr-only" %>
+          <div class="rsvp-radio-card border-stone-300 <%= 'border-stone-800 bg-stone-50' if guest.rsvp&.declined? %>"
+               data-rsvp-form-target="radioCard"
+               data-action="click->rsvp-form#selectRadio">
+            <span class="rsvp-radio-label">Regretfully Declines</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <%# Conditional Fields %>
+    <div id="accepted_fields_<%= guest.id %>"
+         class="space-y-8 <%= guest.rsvp&.accepted? ? '' : 'hidden' %>"
+         data-rsvp-form-target="conditionalFields">
+      <% if @meal_options.any? %>
+        <div>
+          <label for="rsvps_<%= guest.id %>_meal_choice" class="rsvp-label">
+            Meal Preference
+          </label>
+          <%= rsvp_f.select :meal_choice,
+              @meal_options.map { |opt| [opt, opt] },
+              { include_blank: "Select your preference" },
+              { class: "rsvp-input cursor-pointer appearance-none" } %>
+        </div>
+      <% end %>
+
+      <div>
+        <label for="rsvps_<%= guest.id %>_dietary_restrictions" class="rsvp-label">
+          Dietary Restrictions or Allergies
+        </label>
+        <%= rsvp_f.text_field :dietary_restrictions,
+            class: "rsvp-input",
+            placeholder: "None" %>
+      </div>
+    </div>
+
+    <%# Notes %>
+    <div class="mt-8">
+      <label for="rsvps_<%= guest.id %>_notes" class="rsvp-label">
+        Message to the Couple
+      </label>
+      <%= rsvp_f.text_area :notes,
+          rows: 3,
+          class: "rsvp-input resize-none",
+          placeholder: "Your well wishes..." %>
+    </div>
+  <% end %>
+</div>
