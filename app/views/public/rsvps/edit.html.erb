@@ -76,8 +76,8 @@
                 </div>
 
                 <div class="text-center">
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     data-action="click->envelope#showForm"
                     class="px-8 py-3 text-xs uppercase tracking-[0.2em] transition-colors cursor-pointer"
                     style="background-color: #292524; color: white; border: none; font-weight: 300;"
@@ -132,23 +132,23 @@
                   </label>
                   <div class="grid grid-cols-2 gap-6">
                     <label class="cursor-pointer">
-                      <%= rsvp_f.radio_button :status, "accepted", 
+                      <%= rsvp_f.radio_button :status, "accepted",
                           id: "guest_#{guest.id}_accepted",
                           class: "sr-only",
                           required: true %>
-                      <div class="rsvp-radio-card" 
-                           style="border-color: #d6d3d1;" 
+                      <div class="rsvp-radio-card"
+                           style="border-color: #d6d3d1;"
                            data-rsvp-form-target="radioCard"
                            data-action="click->rsvp-form#selectRadio">
                         <span class="rsvp-radio-label">Joyfully Accepts</span>
                       </div>
                     </label>
                     <label class="cursor-pointer">
-                      <%= rsvp_f.radio_button :status, "declined", 
+                      <%= rsvp_f.radio_button :status, "declined",
                           id: "guest_#{guest.id}_declined",
                           class: "sr-only" %>
-                      <div class="rsvp-radio-card" 
-                           style="border-color: #d6d3d1;" 
+                      <div class="rsvp-radio-card"
+                           style="border-color: #d6d3d1;"
                            data-rsvp-form-target="radioCard"
                            data-action="click->rsvp-form#selectRadio">
                         <span class="rsvp-radio-label">Regretfully Declines</span>
@@ -158,7 +158,7 @@
                 </div>
 
                 <%# Conditional Fields (shown when accepted) %>
-                <div id="accepted_fields_<%= guest.id %>" 
+                <div id="accepted_fields_<%= guest.id %>"
                      class="space-y-8 <%= guest.rsvp&.accepted? ? '' : 'hidden' %>"
                      data-rsvp-form-target="conditionalFields">
                   <%# Meal Choice %>
