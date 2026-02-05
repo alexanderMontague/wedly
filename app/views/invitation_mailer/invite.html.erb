@@ -6,7 +6,7 @@
 
 <% if current_wedding.date %>
   <p style="text-align: center; font-size: 18px;">
-    <%= current_wedding.date.strftime("%B %d, %Y") %>
+    <%= format_date(current_wedding.date) %>
   </p>
 <% end %>
 

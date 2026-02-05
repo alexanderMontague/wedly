@@ -2,8 +2,8 @@
 # All wedding content is driven by this file.
 # Update these values to customize your wedding website.
 
-default: &default
-  # Core Details
+# Core Details
+- id: "britt-and-alex"
   title: "Britt & Alex's Wedding"
   couple:
     partner1: "Britt"
@@ -19,6 +19,7 @@ default: &default
     region: "Ontario"
 
   # RSVP Settings
+  show_rsvp_section_date: "2026-06-01"
   rsvp_deadline: "2026-08-01"
   meal_options:
     - Chicken
@@ -59,16 +60,3 @@ default: &default
     button_text: "RSVP Now"
     lookup_hint: "Or use the personalized link in your invitation"
 
-development:
-  <<: *default
-
-test:
-  <<: *default
-  title: "Test Wedding"
-  couple:
-    partner1: "Test"
-    partner2: "Partner"
-    initials: "T & P"
-
-production:
-  <<: *default

@@ -15,7 +15,7 @@ A clean, Rails-native wedding planning and RSVP management system built with zer
 ## Stack
 
 - **Rails 7.1**: Modern Rails with Turbo support
-- **MySQL**: Reliable database with JSON column support
+- **sqlite**: Reliable database with JSON column support
 - **Tailwind CSS v4**: Utility-first CSS framework
 - **Propshaft**: Modern asset pipeline
 - **ERB Views**: Server-rendered templates
@@ -28,7 +28,7 @@ A clean, Rails-native wedding planning and RSVP management system built with zer
 ### Prerequisites
 
 - Ruby 3.2.0
-- MySQL 5.7+
+- sqlite 5.7+
 - SMTP credentials (optional, for sending invitations)
 
 ### Setup

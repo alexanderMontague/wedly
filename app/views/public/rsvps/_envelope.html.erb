@@ -36,9 +36,9 @@
                 </p>
               <% end %>
               <div class="space-y-1">
-                <p class="text-stone-600 font-light"><%= current_wedding.venue_name %></p>
+                <p class="text-stone-600 font-light"><%= current_wedding.venue['name'] %></p>
                 <p class="text-sm text-stone-500 font-light">
-                  <%= [current_wedding.venue_city, current_wedding.venue_region].compact.join(", ") %>
+                  <%= full_venue_name(current_wedding.venue) %>
                 </p>
               </div>
             </div>

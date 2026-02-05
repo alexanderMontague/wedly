@@ -1,5 +1,4 @@
 class Guest < ApplicationRecord
-  belongs_to :wedding
   belongs_to :household
   has_one :rsvp, dependent: :destroy
   has_many :invitations, dependent: :destroy
@@ -27,6 +26,10 @@ class Guest < ApplicationRecord
 
   def has_responded?
     rsvp&.status != "pending"
+  end
+
+  def wedding
+    Wedding.find(wedding_id)
   end
 
   private

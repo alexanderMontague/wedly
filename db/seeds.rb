@@ -10,32 +10,34 @@ wedding = Wedding.current
 Rails.logger.debug "Creating sample events..."
 if wedding.events.empty?
   Event.create!([
-    {
-      wedding: wedding,
-      name: "Ceremony",
-      datetime: wedding.date&.to_datetime&.change(hour: 15) || DateTime.new(2026, 9, 5, 15, 0),
-      location: wedding.location,
-      description: "Join us for our wedding ceremony"
-    },
-    {
-      wedding: wedding,
-      name: "Reception",
-      datetime: wedding.date&.to_datetime&.change(hour: 18) || DateTime.new(2026, 9, 5, 18, 0),
-      location: wedding.location,
-      description: "Dinner and dancing to follow"
-    }
-  ])
+                  {
+                    wedding_id: wedding.id,
+                    name: "Ceremony",
+                    datetime: wedding.date&.to_datetime&.change(hour: 15) || DateTime.new(2026, 9, 5, 15, 0),
+                    location: [wedding.venue["name"], wedding.venue["city"],
+                               wedding.venue["region"]].compact.join(", "),
+                    description: "Join us for our wedding ceremony"
+                  },
+                  {
+                    wedding_id: wedding.id,
+                    name: "Reception",
+                    datetime: wedding.date&.to_datetime&.change(hour: 18) || DateTime.new(2026, 9, 5, 18, 0),
+                    location: [wedding.venue["name"], wedding.venue["city"],
+                               wedding.venue["region"]].compact.join(", "),
+                    description: "Dinner and dancing to follow"
+                  }
+                ])
 end
 
 Rails.logger.debug "Creating sample household and guests..."
 if wedding.households.empty?
   household = Household.create!(
-    wedding: wedding,
+    wedding_id: wedding.id,
     name: "The Smith Family"
   )
 
   guest1 = Guest.create!(
-    wedding: wedding,
+    wedding_id: wedding.id,
     household: household,
     first_name: "Robert",
     last_name: "Smith",
@@ -45,7 +47,7 @@ if wedding.households.empty?
   )
 
   guest2 = Guest.create!(
-    wedding: wedding,
+    wedding_id: wedding.id,
     household: household,
     first_name: "Sarah",
     last_name: "Smith",

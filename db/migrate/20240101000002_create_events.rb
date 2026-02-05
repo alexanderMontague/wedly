@@ -1,7 +1,7 @@
 class CreateEvents < ActiveRecord::Migration[7.1]
   def change
     create_table :events do |t|
-      t.references :wedding, null: false, foreign_key: true
+      t.integer :wedding_id, null: false
       t.string :name, null: false
       t.datetime :datetime
       t.string :location
@@ -9,5 +9,7 @@ class CreateEvents < ActiveRecord::Migration[7.1]
 
       t.timestamps
     end
+
+    add_index :events, :wedding_id
   end
 end

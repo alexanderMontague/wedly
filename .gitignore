@@ -79,3 +79,7 @@ design/
 *~
 
 .ruby-lsp/
+
+wedly_development
+wedly_development-shm
+wedly_development-wal

@@ -1,5 +1,4 @@
 class Household < ApplicationRecord
-  belongs_to :wedding
   has_many :guests, dependent: :destroy
 
   validates :name, presence: true
@@ -14,5 +13,9 @@ class Household < ApplicationRecord
 
   def rsvpd?
     guests.all?(&:has_responded?)
+  end
+
+  def wedding
+    Wedding.find(wedding_id)
   end
 end

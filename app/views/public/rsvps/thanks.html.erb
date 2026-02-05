@@ -20,7 +20,7 @@
       <%= current_wedding.title %>
       <% if current_wedding.date %>
         <br>
-        <span class="text-xs"><%= current_wedding.date_formatted %></span>
+        <span class="text-xs"><%= format_date(current_wedding.date) %></span>
       <% end %>
     </p>
 

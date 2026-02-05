@@ -2,7 +2,7 @@ You're Invited!
 
 <%= current_wedding.title %>
 <% if current_wedding.date %>
-<%= current_wedding.date.strftime("%B %d, %Y") %>
+<%= format_date_elegant(current_wedding.date) %>
 <% end %>
 <% if current_wedding.location %>
 <%= current_wedding.location %>
