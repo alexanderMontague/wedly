@@ -19,7 +19,6 @@
     region: "Ontario"
 
   # RSVP Settings
-  show_rsvp_section_date: "2026-06-01"
   rsvp_deadline: "2026-08-01"
   meal_options:
     - Chicken

@@ -14,8 +14,7 @@ module Admin
     def show; end
 
     def new
-      @guest = current_wedding.guests.build
-      @households = current_wedding.households.order(:name)
+      redirect_to new_admin_household_path, notice: "Please create guests via the household form"
     end
 
     def edit
@@ -23,14 +22,7 @@ module Admin
     end
 
     def create
-      @guest = current_wedding.guests.build(guest_params)
-
-      if @guest.save
-        redirect_to admin_guests_path, notice: "Guest added successfully"
-      else
-        @households = current_wedding.households.order(:name)
-        render :new, status: :unprocessable_content
-      end
+      redirect_to new_admin_household_path, notice: "Please create guests via the household form"
     end
 
     def update
@@ -91,7 +83,7 @@ module Admin
             guest.last_name,
             guest.email,
             guest.phone_number,
-            guest.household.name,
+            guest.household.display_name,
             guest.rsvp&.status,
             guest.rsvp&.meal_choice,
             guest.rsvp&.dietary_restrictions

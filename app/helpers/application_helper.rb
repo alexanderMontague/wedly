@@ -5,9 +5,9 @@ module ApplicationHelper
   end
 
   def format_date(date)
-    return nil unless date.present? && date.is_a?(String)
+    raise "Missing date" if date.blank?
 
-    date = Date.parse(date)
+    date = Date.parse(date) if date.is_a?(String)
 
     date.strftime("%B %d, %Y")
   end
@@ -21,17 +21,17 @@ module ApplicationHelper
   end
 
   def format_date_short(date)
-    return nil unless date.present? && date.is_a?(String)
+    raise "Missing date" if date.blank?
 
-    date = Date.parse(date)
+    date = Date.parse(date) if date.is_a?(String)
 
     date.strftime("%m.%d.%Y")
   end
 
   def format_date_elegant(date)
-    return nil unless date.present? && date.is_a?(String)
+    raise "Missing date" if date.blank?
 
-    date = Date.parse(date)
+    date = Date.parse(date) if date.is_a?(String)
 
     day_words = {
       1 => "First", 2 => "Second", 3 => "Third", 4 => "Fourth", 5 => "Fifth",
@@ -64,5 +64,45 @@ module ApplicationHelper
                 end
 
     content_tag(:span, status.capitalize, class: "badge #{css_class}")
+  end
+
+  def calendar_url
+    return "#" unless current_wedding&.date
+
+    user_agent = request&.user_agent&.to_s&.downcase || ""
+
+    if ios_device?(user_agent) || macos_device?(user_agent)
+      calendar_ics_url
+    else
+      google_calendar_url
+    end
+  end
+
+  def calendar_ics_url
+    public_calendar_ics_path(format: :ics)
+  end
+
+  private
+
+  def ios_device?(user_agent)
+    user_agent.match?(/iphone|ipad|ipod/)
+  end
+
+  def macos_device?(user_agent)
+    user_agent.match?(/macintosh|mac os x/) && !user_agent.match?(/iphone|ipad|ipod/)
+  end
+
+  def google_calendar_url
+    wedding_date = current_wedding.date
+    title = ERB::Util.url_encode(current_wedding.title)
+    details = ERB::Util.url_encode("Join us for our wedding celebration!")
+    location = current_wedding.venue ? ERB::Util.url_encode(full_venue_name(current_wedding.venue)) : ""
+
+    start_time = wedding_date.beginning_of_day
+    end_time = wedding_date.end_of_day
+
+    dates = "#{start_time.strftime('%Y%m%dT%H%M%S')}/#{end_time.strftime('%Y%m%dT%H%M%S')}"
+
+    "https://calendar.google.com/calendar/render?action=TEMPLATE&text=#{title}&dates=#{dates}&details=#{details}&location=#{location}"
   end
 end

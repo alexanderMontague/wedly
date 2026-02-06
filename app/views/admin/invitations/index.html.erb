@@ -45,7 +45,7 @@
             </td>
             <td><%= guest.full_name %></td>
             <td><%= guest.email %></td>
-            <td><%= guest.household.name %></td>
+            <td><%= guest.household.display_name %></td>
             <td>
               <% last_invitation = guest.invitations.last %>
               <span class="<%= last_invitation&.status == 'sent' ? 'text-success' : 'text-warning' %>">

@@ -8,6 +8,7 @@ class Guest < ApplicationRecord
   validates :invite_code, presence: true, uniqueness: true
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
 
+  before_validation :set_wedding_id_from_household, on: :create
   before_validation :generate_invite_code, on: :create
   after_create :create_default_rsvp
 
@@ -33,6 +34,10 @@ class Guest < ApplicationRecord
   end
 
   private
+
+  def set_wedding_id_from_household
+    self.wedding_id = household.wedding_id if household.present? && wedding_id.blank?
+  end
 
   def generate_invite_code
     return if invite_code.present?

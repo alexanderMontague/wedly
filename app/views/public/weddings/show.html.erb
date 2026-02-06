@@ -58,7 +58,7 @@
       <div class="grid md:grid-cols-3 gap-20">
         <%= render "public/shared/event_detail", icon: "calendar", title: "Date" do %>
           <% if current_wedding.date %>
-            <p class="text-stone-600 font-light"><%= Date.parse(current_wedding.date).strftime("%A") %></p>
+            <p class="text-stone-600 font-light"><%= current_wedding.date.strftime("%A") %></p>
             <p class="text-stone-600 font-light"><%= format_date(current_wedding.date) %></p>
           <% end %>
         <% end %>

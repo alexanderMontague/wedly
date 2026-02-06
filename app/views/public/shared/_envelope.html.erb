@@ -1,0 +1,33 @@
+<%# Reusable envelope component that accepts a block for card content %>
+<div class="envelope-container relative" data-envelope-target="container">
+  <div class="envelope" data-action="click->envelope#open">
+    <div class="envelope-body">
+      <div class="envelope-inner">
+        <%# Envelope Flap %>
+        <div class="envelope-flap" data-envelope-target="flap">
+          <div class="envelope-flap-inner"></div>
+          <div class="envelope-flap-line"></div>
+        </div>
+
+        <%# Wax Seal %>
+        <div class="envelope-seal" data-envelope-target="seal">
+          <%= render "public/shared/wax_seal" %>
+        </div>
+
+        <%# Card Inside - content passed via block %>
+        <div class="envelope-card" data-envelope-target="card">
+          <div class="w-full max-h-[calc(100%-2rem)] overflow-y-auto">
+            <%= yield %>
+          </div>
+        </div>
+
+        <%# Envelope Bottom %>
+        <div class="envelope-bottom" data-envelope-target="bottom"></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="envelope-instruction text-stone-400 text-xs tracking-wider font-light" data-envelope-target="instruction">
+    Click to open
+  </p>
+</div>

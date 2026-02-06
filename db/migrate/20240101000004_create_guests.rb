@@ -1,7 +1,7 @@
 class CreateGuests < ActiveRecord::Migration[7.1]
   def change
     create_table :guests do |t|
-      t.integer :wedding_id, null: false
+      t.string :wedding_id, null: false
       t.references :household, null: false, foreign_key: true
       t.string :first_name, null: false
       t.string :last_name, null: false

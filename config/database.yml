@@ -8,14 +8,14 @@ default: &default
 
 development:
   <<: *default
-  database: ../db/wedly_development.sqlite3
+  database: db/wedly_development.sqlite3
 
 test:
   <<: *default
-  database: ../db/wedly_test.sqlite3
+  database: db/wedly_test.sqlite3
 
 production:
   <<: *default
-  database: ../db/wedly_production.sqlite3
+  database: db/wedly_production.sqlite3
   username: <%= ENV["DATABASE_USERNAME"] %>
   password: <%= ENV["DATABASE_PASSWORD"] %>

@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get "/save-the-date", to: "public/save_the_dates#show", as: :public_save_the_date
+  get "/calendar.ics", to: "public/save_the_dates#calendar", as: :public_calendar_ics
+
   get "/rsvp", to: "public/rsvps#index", as: :public_rsvp_lookup
   get "/rsvp/search", to: "public/rsvps#search", as: :public_rsvp_search
   get "/rsvp/:code", to: "public/rsvps#edit", as: :public_rsvp

@@ -21,7 +21,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_05_052706) do
   end
 
   create_table "events", force: :cascade do |t|
-    t.integer "wedding_id", null: false
+    t.string "wedding_id", null: false
     t.string "name", null: false
     t.datetime "datetime"
     t.string "location"
@@ -32,7 +32,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_05_052706) do
   end
 
   create_table "guests", force: :cascade do |t|
-    t.integer "wedding_id", null: false
+    t.string "wedding_id", null: false
     t.integer "household_id", null: false
     t.string "first_name", null: false
     t.string "last_name", null: false
@@ -48,7 +48,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_05_052706) do
   end
 
   create_table "households", force: :cascade do |t|
-    t.integer "wedding_id", null: false
+    t.string "wedding_id", null: false
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

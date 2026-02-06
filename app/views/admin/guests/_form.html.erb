@@ -12,7 +12,7 @@
 
   <div class="form-group">
     <%= f.label :household_id, "Household" %>
-    <%= f.collection_select :household_id, @households, :id, :name,
+    <%= f.collection_select :household_id, @households, :id, :display_name,
                            { prompt: "Select a household" },
                            { class: "form-control", required: true } %>
   </div>

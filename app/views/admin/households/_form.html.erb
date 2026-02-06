@@ -1,4 +1,4 @@
-<%= form_with model: [:admin, household] do |f| %>
+<%= form_with model: [:admin, household], data: { controller: "household-form" } do |f| %>
   <% if household.errors.any? %>
     <div class="alert alert-error">
       <h3><%= pluralize(household.errors.count, "error") %> prohibited this household from being saved:</h3>
@@ -6,14 +6,78 @@
         <% household.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
+        <% household.guests.each_with_index do |guest, index| %>
+          <% if guest.errors.any? %>
+            <li>Guest <%= index + 1 %>: <%= guest.errors.full_messages.join(", ") %></li>
+          <% end %>
+        <% end %>
       </ul>
     </div>
   <% end %>
 
   <div class="form-group">
-    <%= f.label :name %>
-    <%= f.text_field :name, class: "form-control", required: true,
+    <%= f.label :name, "Household Name (Optional)" %>
+    <%= f.text_field :name, class: "form-control",
                      placeholder: "e.g., The Smith Family" %>
+    <small class="text-muted">Leave blank to use guest names instead</small>
+  </div>
+
+  <div class="form-group">
+    <div class="flex justify-between items-center mb-2">
+      <label>Guests</label>
+      <button type="button" class="btn btn-secondary btn-sm" data-action="click->household-form#addGuest">
+        Add Guest
+      </button>
+    </div>
+
+    <div data-household-form-target="guestsContainer">
+      <%= f.fields_for :guests do |guest_form| %>
+        <div class="guest-fields border border-stone-200 rounded p-4 mb-4" data-household-form-target="guestFields">
+          <div class="flex justify-between items-start mb-3">
+            <h4 class="text-sm font-semibold text-stone-700">Guest</h4>
+            <% unless guest_form.object.new_record? %>
+              <div class="flex items-center gap-2">
+                <%= guest_form.check_box :_destroy, { class: "form-checkbox" }, "1", "0" %>
+                <%= guest_form.label :_destroy, "Remove", class: "text-sm text-stone-600 cursor-pointer" %>
+              </div>
+            <% else %>
+              <button type="button" class="text-sm text-red-600 hover:text-red-800" data-action="click->household-form#removeGuest">
+                Remove
+              </button>
+            <% end %>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="form-group">
+              <%= guest_form.label :first_name, "First Name" %>
+              <%= guest_form.text_field :first_name, class: "form-control", required: true %>
+            </div>
+
+            <div class="form-group">
+              <%= guest_form.label :last_name, "Last Name" %>
+              <%= guest_form.text_field :last_name, class: "form-control", required: true %>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="form-group">
+              <%= guest_form.label :email %>
+              <%= guest_form.email_field :email, class: "form-control" %>
+            </div>
+
+            <div class="form-group">
+              <%= guest_form.label :phone_number, "Phone" %>
+              <%= guest_form.text_field :phone_number, class: "form-control" %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= guest_form.label :address %>
+            <%= guest_form.text_area :address, class: "form-control", rows: 2 %>
+          </div>
+        </div>
+      <% end %>
+    </div>
   </div>
 
   <div class="flex gap-4">

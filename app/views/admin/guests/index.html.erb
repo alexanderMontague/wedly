@@ -3,14 +3,14 @@
     <h1>Guests</h1>
     <div class="flex gap-4">
       <%= link_to "Export CSV", export_admin_guests_path(format: :csv), class: "btn btn-secondary" %>
-      <%= link_to "New Guest", new_admin_guest_path, class: "btn btn-primary" %>
+      <%= link_to "New Household", new_admin_household_path, class: "btn btn-primary" %>
     </div>
   </div>
 
   <%= form_with url: admin_guests_path, method: :get, class: "filter-form" do |f| %>
     <div class="form-group mb-0 min-w-[200px]">
       <%= f.label :household_id, "Filter by Household" %>
-      <%= f.collection_select :household_id, @households, :id, :name,
+      <%= f.collection_select :household_id, @households, :id, :display_name,
                              { include_blank: "All Households" },
                              { class: "form-control", onchange: "this.form.submit()" } %>
     </div>
@@ -41,7 +41,7 @@
           <tr>
             <td><%= guest.full_name %></td>
             <td><%= guest.email %></td>
-            <td><%= guest.household.name %></td>
+            <td><%= guest.household.display_name %></td>
             <td>
               <span class="<%= guest.rsvp.accepted? ? 'text-success' : guest.rsvp.declined? ? 'text-danger' : 'text-warning' %>">
                 <%= guest.rsvp.status.capitalize %>

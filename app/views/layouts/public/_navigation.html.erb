@@ -9,9 +9,11 @@
 
       <div class="flex gap-12">
         <%= link_to "Home", root_path,
-            class: "wedding-nav-link #{current_page?(root_path) ? 'active' : ''}" %>
+            class: class_names("wedding-nav-link", { active: current_page?(root_path) }) %>
+         <%= link_to "Save the Date", public_save_the_date_path,
+            class: class_names("wedding-nav-link", { active: current_page?(public_save_the_date_path) }) %>
         <%= link_to "RSVP", public_rsvp_lookup_path,
-            class: "wedding-nav-link #{request.path.start_with?('/rsvp') ? 'active' : ''}" %>
+            class: class_names("wedding-nav-link", { active: request.path.start_with?('/rsvp') }) %>
       </div>
     </div>
   </div>

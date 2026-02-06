@@ -18,7 +18,7 @@ module Public
           {
             id: guest.id,
             name: guest.full_name,
-            household: guest.household.name,
+            household: guest.household.display_name,
             invite_code: guest.invite_code
           }
         end

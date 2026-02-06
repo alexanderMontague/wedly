@@ -1,65 +1,35 @@
-<%# Envelope animation container %>
-<div class="envelope-container relative" data-envelope-target="container">
-  <div class="envelope" data-action="click->envelope#open">
-    <div class="envelope-body">
-      <div class="envelope-inner">
-        <%# Envelope Flap %>
-        <div class="envelope-flap" data-envelope-target="flap">
-          <div class="envelope-flap-inner"></div>
-          <div class="envelope-flap-line"></div>
-        </div>
+<%= render "public/shared/envelope" do %>
+  <div class="text-center space-y-6 mb-8">
+    <%= render "public/shared/divider", height: 8 %>
+    <div class="mb-6"></div>
+    <p class="uppercase tracking-[0.3em] text-[10px] text-stone-500 font-light">
+      You're Invited
+    </p>
+    <h2 class="text-4xl font-display font-light text-stone-800">
+      <%= @household.display_name %>
+    </h2>
+    <div class="w-16 h-px mx-auto bg-stone-300"></div>
+  </div>
 
-        <%# Wax Seal %>
-        <div class="envelope-seal" data-envelope-target="seal">
-          <%= render "public/shared/wax_seal" %>
-        </div>
-
-        <%# Card Inside (RSVP Preview) %>
-        <div class="envelope-card" data-envelope-target="card">
-          <div class="w-full max-h-[calc(100%-2rem)] overflow-y-auto">
-            <div class="text-center space-y-6 mb-8">
-              <%= render "public/shared/divider", height: 8 %>
-              <div class="mb-6"></div>
-              <p class="uppercase tracking-[0.3em] text-[10px] text-stone-500 font-light">
-                You're Invited
-              </p>
-              <h2 class="text-4xl font-display font-light text-stone-800">
-                <%= @household.name %>
-              </h2>
-              <div class="w-16 h-px mx-auto bg-stone-300"></div>
-            </div>
-
-            <div class="space-y-4 text-center mb-8">
-              <% if current_wedding.date %>
-                <p class="text-2xl font-display text-stone-800">
-                  <%= current_wedding.date_formatted %>
-                </p>
-              <% end %>
-              <div class="space-y-1">
-                <p class="text-stone-600 font-light"><%= current_wedding.venue['name'] %></p>
-                <p class="text-sm text-stone-500 font-light">
-                  <%= full_venue_name(current_wedding.venue) %>
-                </p>
-              </div>
-            </div>
-
-            <div class="text-center">
-              <button type="button"
-                      data-action="click->envelope#showForm"
-                      class="btn-wedding-primary">
-                Respond Now
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <%# Envelope Bottom %>
-        <div class="envelope-bottom" data-envelope-target="bottom"></div>
-      </div>
+  <div class="space-y-4 text-center mb-8">
+    <% if current_wedding.date %>
+      <p class="text-2xl font-display text-stone-800">
+        <%= format_date(current_wedding.date) %>
+      </p>
+    <% end %>
+    <div class="space-y-1">
+      <p class="text-stone-600 font-light"><%= current_wedding.venue['name'] %></p>
+      <p class="text-sm text-stone-500 font-light">
+        <%= full_venue_name(current_wedding.venue) %>
+      </p>
     </div>
   </div>
 
-  <p class="envelope-instruction text-stone-400 text-xs tracking-wider font-light" data-envelope-target="instruction">
-    Click to open
-  </p>
-</div>
+  <div class="text-center">
+    <button type="button"
+            data-action="click->envelope#showForm"
+            class="btn-wedding-primary">
+      Respond Now
+    </button>
+  </div>
+<% end %>

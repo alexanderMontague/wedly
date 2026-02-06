@@ -24,14 +24,14 @@
       <div class="rsvp-form-card animate-fade-in-up">
         <div class="mb-12">
           <h2 class="text-3xl mb-2 font-display font-light text-stone-800">
-            <%= @household.name %>
+            <%= @household.display_name %>
           </h2>
           <p class="text-stone-500 font-light">
             Please respond for each guest in your party
           </p>
           <% if current_wedding.rsvp_deadline %>
             <p class="text-sm mt-2 text-stone-400 font-light">
-              Kindly respond by <%= format_date(current_wedding.rsvp_deadline)
+              Kindly respond by <%= format_date(current_wedding.rsvp_deadline) %>
             </p>
           <% end %>
         </div>
