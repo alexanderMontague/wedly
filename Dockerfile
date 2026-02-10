@@ -49,6 +49,9 @@ RUN bundle exec bootsnap precompile app/ lib/
 # Adjust binfiles to be executable on Linux
 RUN chmod +x bin/*
 
+# Build Tailwind CSS before asset precompilation
+RUN bundle exec tailwindcss -i app/assets/stylesheets/application.tailwind.css -o app/assets/builds/application.css --config config/tailwind.config.js
+
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
