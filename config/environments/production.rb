@@ -13,6 +13,7 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   config.force_ssl = true
+  config.ssl_options = { redirect: { exclude: ->(req) { req.path == "/ping" } } }
 
   config.log_level = :info
   config.log_tags = [:request_id]

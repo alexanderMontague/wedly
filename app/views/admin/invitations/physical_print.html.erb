@@ -1,0 +1,15 @@
+<div class="p-4">
+  <div class="print:hidden mb-4">
+    <button type="button" onclick="window.print()" class="btn btn-primary">Print</button>
+    <a href="javascript:window.close()" class="btn btn-ghost ml-2">Close</a>
+  </div>
+  <% if @households.empty? %>
+    <p class="text-stone-600">No households with guests to print.</p>
+  <% else %>
+  <% @households.each_with_index do |household, index| %>
+    <div class="invitation-print-sheet" style="<%= 'page-break-after: always;' if index < @households.size - 1 %>">
+      <%= render "invitation_card", household: household %>
+    </div>
+  <% end %>
+  <% end %>
+</div>

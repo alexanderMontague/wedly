@@ -688,6 +688,48 @@
   .text-warning {
     @apply text-warning-600;
   }
+
+  /* --------------------------------------------------------------------------
+     Physical Invitation Print
+     -------------------------------------------------------------------------- */
+  .invitation-card {
+    @apply shadow-card;
+  }
+
+  .invitation-background-pattern {
+    background-image: radial-gradient(circle at center, currentColor 0.5px, transparent 0.5px);
+    background-size: 16px 16px;
+  }
+
+  .qr-code-wrapper {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  }
+}
+
+@media print {
+  .print\:hidden {
+    display: none !important;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .invitation-print-sheet {
+    page-break-after: always;
+  }
+
+  .invitation-print-sheet:last-child {
+    page-break-after: auto;
+  }
+
+  .invitation-card {
+    max-width: 7in;
+    margin: 0 auto;
+    box-shadow: none;
+    border: 1px solid #e7e5e4;
+  }
 }
 
 /* ==========================================================================

@@ -1,0 +1,18 @@
+<%# Delicate botanical branch/sprig - flows from corner inward %>
+<% placement = local_assigns[:placement] || "top-left" %>
+<% rotate_class = case placement
+   when "top-left" then ""
+   when "top-right" then "rotate-90"
+   when "bottom-left" then "-rotate-90"
+   when "bottom-right" then "rotate-180"
+   else ""
+   end %>
+
+<svg class="invitation-botanical-accent w-24 h-24 sm:w-28 sm:h-28 text-stone-400 <%= rotate_class %>" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="0.75" aria-hidden="true">
+  <path d="M8 56 Q14 46 22 36 Q28 28 34 22 M34 22 Q40 16 46 12 L52 8" stroke-linecap="round"/>
+  <path d="M34 22 Q30 16 28 10 Q26 4 24 0" stroke-linecap="round"/>
+  <path d="M34 22 Q38 18 44 14 Q48 10 52 8" stroke-linecap="round"/>
+  <ellipse cx="24" cy="2" rx="2.5" ry="4" transform="rotate(-25 24 2)"/>
+  <ellipse cx="50" cy="10" rx="2" ry="3" transform="rotate(20 50 10)"/>
+  <ellipse cx="40" cy="20" rx="1.5" ry="2.5" transform="rotate(-15 40 20)"/>
+</svg>

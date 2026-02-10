@@ -1,0 +1,24 @@
+<% rsvp_url = public_rsvp_url(household.primary_guest.invite_code) %>
+
+<div class="invitation-back invitation-panel bg-white p-8 sm:p-12 flex flex-col items-center justify-center text-center relative overflow-hidden" style="aspect-ratio: 5/7;">
+  <div class="absolute inset-0 invitation-background-pattern text-stone-300 opacity-20" aria-hidden="true"></div>
+  <div class="absolute top-0 right-0 pointer-events-none">
+  <%= render "botanical_accent", placement: "top-right" %>
+</div>
+  <div class="relative z-10 w-full max-w-sm">
+    <p class="text-sm text-stone-600 font-light mb-6" style="font-family: var(--font-body);">
+      Scan the code to RSVP and view ceremony, reception, and accommodation details.
+    </p>
+    <div class="qr-code-wrapper inline-flex items-center justify-center p-4 rounded-xl bg-stone-50/80 mb-4">
+      <div class="w-[120px] h-[120px] sm:w-[140px] sm:h-[140px] [&>svg]:w-full [&>svg]:h-full">
+        <%= qr_code_svg(rsvp_url) %>
+      </div>
+    </div>
+    <p class="text-xs tracking-wider text-stone-500 font-light" style="font-family: var(--font-body);">
+      <%= request.base_url %>/rsvp/<%= household.primary_guest.invite_code %>
+    </p>
+  </div>
+  <div class="absolute bottom-0 left-0 pointer-events-none">
+  <%= render "botanical_accent", placement: "bottom-left" %>
+</div>
+</div>

@@ -1,0 +1,9 @@
+<%# Print layout: front and back side by side %>
+<div class="invitation-card flex flex-col sm:flex-row gap-0">
+  <div class="invitation-front flex-1 border-r border-stone-200">
+    <%= render "invitation_front", household: household %>
+  </div>
+  <div class="invitation-back flex-1">
+    <%= render "invitation_back", household: household %>
+  </div>
+</div>

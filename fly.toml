@@ -29,7 +29,7 @@ console_command = '/rails/bin/rails console'
   processes = ['app']
 
   [[http_service.checks]]
-    grace_period = "30s"
+    grace_period = "60s"
     interval = "30s"
     method = "GET"
     timeout = "5s"

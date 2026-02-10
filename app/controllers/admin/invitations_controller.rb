@@ -5,6 +5,16 @@ module Admin
       @invitation_stats = calculate_invitation_stats
     end
 
+    def physical
+      @households = current_wedding.households.joins(:guests).distinct.includes(:guests)
+      @household = @households.find_by(id: params[:household_id]) || @households.first
+    end
+
+    def physical_print
+      @households = current_wedding.households.joins(:guests).distinct.includes(:guests)
+      render layout: "print"
+    end
+
     def create
       guest_ids = params[:guest_ids] || []
 

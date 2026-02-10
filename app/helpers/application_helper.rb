@@ -20,6 +20,13 @@ module ApplicationHelper
     datetime.strftime("%B %d, %Y at %I:%M %p")
   end
 
+  def format_date_invitation(date)
+    raise "Missing date" if date.blank?
+
+    date = Date.parse(date) if date.is_a?(String)
+    date.strftime("%A, %B #{date.day}, %Y").downcase
+  end
+
   def format_date_short(date)
     raise "Missing date" if date.blank?
 

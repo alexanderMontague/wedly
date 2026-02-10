@@ -24,7 +24,12 @@ Rails.application.routes.draw do
       end
     end
     resources :households
-    resources :invitations, only: %i[index create]
+    resources :invitations, only: %i[index create] do
+      collection do
+        get :physical
+        get :physical_print
+      end
+    end
     resource :settings, only: %i[show update]
   end
 
