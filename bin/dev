@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-eval "$(rbenv init - zsh)"
+command -v rbenv >/dev/null 2>&1 && eval "$(rbenv init - bash 2>/dev/null)" || true
 
 if ! command -v foreman &> /dev/null; then
   echo "Installing foreman..."

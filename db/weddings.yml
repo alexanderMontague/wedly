@@ -4,7 +4,7 @@
 
 # Core Details
 - id: "britt-and-alex"
-  title: "Britt & Alex's Wedding"
+  title: "Britt & Alex"
   couple:
     partner1: "Britt"
     partner2: "Alex"
@@ -58,4 +58,3 @@
     description: "We would be delighted to have you celebrate with us. Please let us know if you can attend."
     button_text: "RSVP Now"
     lookup_hint: "Or use the personalized link in your invitation"
-

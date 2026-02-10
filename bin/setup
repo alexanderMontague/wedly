@@ -1,11 +1,12 @@
 #!/bin/bash
 
-eval "$(rbenv init - zsh)"
+command -v rbenv >/dev/null 2>&1 && eval "$(rbenv init - bash 2>/dev/null)" || true
 
 echo "🔧 Setting up Wedly..."
 echo ""
 
-cd "$(dirname "$0")"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$SCRIPT_DIR/.."
 
 echo "✓ Ruby version: $(ruby --version)"
 echo ""
@@ -13,27 +14,27 @@ echo ""
 echo "📦 Installing dependencies..."
 bundle install
 
-if [ ! -f ../.env ]; then
+if [ ! -f .env ]; then
   echo ""
   echo "📝 Creating .env file..."
-  cp ../.env.example ../.env
+  cp .env.example .env
   echo "✓ .env created (configure SMTP settings before sending emails)"
 fi
 
 echo ""
 echo "🧹 Clearing logs and temp files..."
-rails log:clear
-rails tmp:clear
+bin/rails log:clear
+bin/rails tmp:clear
 
 echo ""
 echo "🗄️  Setting up database..."
-rails db:create
-rails db:migrate
-rails db:seed
+bin/rails db:create
+bin/rails db:migrate
+bin/rails db:seed
 
 echo ""
 echo "🎨 Building CSS..."
-bundle exec tailwindcss -i app/assets/stylesheets/application.tailwind.css -o app/assets/builds/application.css --config config/tailwind.config.js
+bin/rails tailwindcss:build
 
 echo ""
 echo "✅ Setup complete!"
