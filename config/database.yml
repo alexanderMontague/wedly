@@ -2,9 +2,6 @@ default: &default
   adapter: sqlite3
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: <%= ENV.fetch("DATABASE_USERNAME", "root") %>
-  password: <%= ENV.fetch("DATABASE_PASSWORD", "") %>
-  host: <%= ENV.fetch("DATABASE_HOST", "localhost") %>
 
 development:
   <<: *default
@@ -17,5 +14,3 @@ test:
 production:
   <<: *default
   database: db/wedly_production.sqlite3
-  username: <%= ENV["DATABASE_USERNAME"] %>
-  password: <%= ENV["DATABASE_PASSWORD"] %>
