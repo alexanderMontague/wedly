@@ -10,7 +10,7 @@
   </head>
 
   <body class="font-sans m-0 bg-bg-admin">
-    <nav class="bg-secondary text-white py-4">
+    <nav class="print:hidden bg-secondary text-white py-4">
       <div class="max-w-container mx-auto flex justify-between items-center px-4">
         <div>
           <%= link_to "Wedly Admin", admin_root_path, class: "text-white no-underline text-2xl font-bold" %>
@@ -27,14 +27,16 @@
       </div>
     </nav>
 
-    <main class="max-w-container mx-auto my-8 px-4">
-      <% if flash[:notice] %>
-        <div class="alert alert-success"><%= flash[:notice] %></div>
-      <% end %>
+    <main class="max-w-container mx-auto my-8 px-4 print:max-w-none print:mx-0 print:my-0 print:p-0">
+      <div class="print:hidden">
+        <% if flash[:notice] %>
+          <div class="alert alert-success"><%= flash[:notice] %></div>
+        <% end %>
 
-      <% if flash[:alert] %>
-        <div class="alert alert-error"><%= flash[:alert] %></div>
-      <% end %>
+        <% if flash[:alert] %>
+          <div class="alert alert-error"><%= flash[:alert] %></div>
+        <% end %>
+      </div>
 
       <%= yield %>
     </main>

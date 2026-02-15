@@ -1,10 +1,10 @@
 <% ceremony_time_val = current_wedding.ceremony_time.is_a?(Hash) ? current_wedding.ceremony_time["time"] : current_wedding.ceremony_time %>
 
-<div class="invitation-front invitation-panel bg-stone-50 p-8 sm:p-12 flex flex-col justify-between relative overflow-hidden" style="aspect-ratio: 5/7;">
+<div class="invitation-front invitation-panel bg-stone-50 p-6 flex flex-col justify-between relative overflow-hidden">
   <div class="absolute inset-0 invitation-background-pattern text-stone-300 opacity-20" aria-hidden="true"></div>
-  <div class="absolute top-0 left-0 pointer-events-none">
-  <%= render "botanical_accent", placement: "top-left" %>
-</div>
+  <div class="absolute top-0 left-0 w-14 h-14 overflow-hidden pointer-events-none">
+    <%= render "botanical_accent", placement: "top-left" %>
+  </div>
   <div class="relative z-10">
     <p class="text-xs tracking-[0.2em] uppercase text-stone-500 font-light mb-4" style="font-family: var(--font-body);">
       To <%= household.display_name %>
@@ -42,7 +42,7 @@
   <p class="relative z-10 text-sm italic text-stone-500 font-light text-center mt-6" style="font-family: var(--font-body);">
     reception to follow
   </p>
-  <div class="absolute bottom-0 right-0 pointer-events-none">
-  <%= render "botanical_accent", placement: "bottom-right" %>
-</div>
+  <div class="absolute bottom-0 right-0 w-14 h-14 overflow-hidden pointer-events-none">
+    <%= render "botanical_accent", placement: "bottom-right" %>
+  </div>
 </div>

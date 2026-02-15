@@ -690,8 +690,14 @@
   }
 
   /* --------------------------------------------------------------------------
-     Physical Invitation Print
+     Physical Invitation - 5×7 inch cardstock
      -------------------------------------------------------------------------- */
+  .invitation-panel {
+    width: 5in;
+    height: 7in;
+    flex-shrink: 0;
+  }
+
   .invitation-card {
     @apply shadow-card;
   }
@@ -702,7 +708,13 @@
   }
 
   .qr-code-wrapper {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+  }
+
+  .invitation-botanical-accent {
+    width: 2.5rem;
+    height: 2.5rem;
   }
 }
 
@@ -711,24 +723,36 @@
     display: none !important;
   }
 
+  .print\:block {
+    display: block !important;
+  }
+
+  html,
   body {
+    margin: 0;
+    padding: 0;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
 
   .invitation-print-sheet {
+    width: 5in;
+    height: 7in;
     page-break-after: always;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
   }
 
   .invitation-print-sheet:last-child {
     page-break-after: auto;
   }
 
-  .invitation-card {
-    max-width: 7in;
-    margin: 0 auto;
+  .invitation-panel {
+    width: 5in;
+    height: 7in;
     box-shadow: none;
-    border: 1px solid #e7e5e4;
+    margin: 0;
   }
 }
 
