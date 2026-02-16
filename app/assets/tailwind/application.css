@@ -487,11 +487,19 @@
   }
 
   .envelope-body {
-    @apply relative bg-white shadow-2xl overflow-hidden border border-stone-200/50;
+    @apply relative bg-white shadow-2xl border border-stone-200/50;
   }
 
   .envelope-inner {
     @apply relative aspect-[3/2] bg-gradient-to-br from-stone-50 to-amber-50/50;
+  }
+
+  .envelope-inner::before {
+    content: '';
+    @apply absolute inset-x-0 top-0 h-1/2 border-b border-stone-500/10 bg-gradient-to-br from-stone-100 to-stone-200;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    z-index: 1;
+    pointer-events: none;
   }
 
   .envelope-flap {
@@ -536,12 +544,12 @@
 
   .envelope-card {
     @apply absolute inset-4 bg-white shadow-2xl z-20 flex flex-col items-center justify-center border border-stone-200/50 p-12 opacity-0;
-    transition: opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s;
+    /* transition: opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s; */
   }
 
   .envelope-card.visible {
     @apply opacity-100;
-    transform: translateY(-30px);
+    /* transform: translateY(-30px); */
   }
 
   .envelope-instruction {
