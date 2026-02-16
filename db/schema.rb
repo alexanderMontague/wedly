@@ -49,7 +49,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_05_052706) do
 
   create_table "households", force: :cascade do |t|
     t.string "wedding_id", null: false
-    t.string "name", null: false
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["wedding_id"], name: "index_households_on_wedding_id"

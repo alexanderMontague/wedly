@@ -35,8 +35,7 @@ if wedding.households.empty?
     wedding_id: wedding.id,
     name: "The Smith Family"
   )
-
-  guest1 = Guest.create!(
+  Guest.create!(
     wedding_id: wedding.id,
     household: household,
     first_name: "Robert",
@@ -45,8 +44,7 @@ if wedding.households.empty?
     address: "123 Main St, Toronto, ON M5V 1A1",
     phone_number: "+1-555-0100"
   )
-
-  guest2 = Guest.create!(
+  Guest.create!(
     wedding_id: wedding.id,
     household: household,
     first_name: "Sarah",
@@ -54,7 +52,52 @@ if wedding.households.empty?
     email: "sarah.smith@example.com"
   )
 
-  Rails.logger.debug { "Guest RSVP codes: #{guest1.invite_code}, #{guest2.invite_code}" }
+  household_monty = Household.create!(
+    wedding_id: wedding.id,
+    name: "The Montague Family"
+  )
+  household_monty.guests.create!(
+    wedding_id: wedding.id,
+    household: household_monty,
+    first_name: "Steve",
+    last_name: "Montague",
+    email: "steve@perspective.ca"
+  )
+  household_monty.guests.create!(
+    wedding_id: wedding.id,
+    household: household_monty,
+    first_name: "Kelly",
+    last_name: "Montague",
+    email: "kelly@metrolandmedia.ca"
+  )
+
+  household_emary = Household.create!(
+    wedding_id: wedding.id,
+    name: "The Emary Family"
+  )
+  household_emary.guests.create!(
+    wedding_id: wedding.id,
+    household: household_emary,
+    first_name: "James",
+    last_name: "Emary",
+    email: "james@emary.ca"
+  )
+  household_emary.guests.create!(
+    wedding_id: wedding.id,
+    household: household_emary,
+    first_name: "Janet",
+    last_name: "Emary"
+  )
+
+  household_liam = Household.create!(
+    wedding_id: wedding.id
+  )
+  household_liam.guests.create!(
+    wedding_id: wedding.id,
+    household: household_liam,
+    first_name: "Liam",
+    last_name: "Bettinson"
+  )
 end
 
 Rails.logger.debug "✓ Seed data created successfully!"

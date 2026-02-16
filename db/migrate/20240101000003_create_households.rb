@@ -2,7 +2,7 @@ class CreateHouseholds < ActiveRecord::Migration[7.1]
   def change
     create_table :households do |t|
       t.string :wedding_id, null: false
-      t.string :name, null: false
+      t.string :name, null: true
 
       t.timestamps
     end
