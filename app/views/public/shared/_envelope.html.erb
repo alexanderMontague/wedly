@@ -3,6 +3,9 @@
   <div class="envelope" data-action="click->envelope#open">
     <div class="envelope-body">
       <div class="envelope-inner">
+        <%# Envelope Front Pocket %>
+        <div class="envelope-bottom" data-envelope-target="bottom"></div>
+
         <%# Envelope Flap %>
         <div class="envelope-flap" data-envelope-target="flap">
           <div class="envelope-flap-inner"></div>
@@ -14,15 +17,12 @@
           <%= render "public/shared/wax_seal" %>
         </div>
 
-        <%# Card Inside - content passed via block %>
+        <%# Card Layer - sibling to envelope body for independent stacking %>
         <div class="envelope-card" data-envelope-target="card">
           <div class="w-full max-h-[calc(100%-2rem)] overflow-y-auto">
             <%= yield %>
           </div>
         </div>
-
-        <%# Envelope Bottom %>
-        <div class="envelope-bottom" data-envelope-target="bottom"></div>
       </div>
     </div>
   </div>

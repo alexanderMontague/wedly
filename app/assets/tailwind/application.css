@@ -487,26 +487,35 @@
   }
 
   .envelope-body {
-    @apply relative bg-white shadow-2xl border border-stone-200/50;
+    @apply relative shadow-2xl border border-stone-200/50;
   }
 
   .envelope-inner {
     @apply relative aspect-[3/2] bg-gradient-to-br from-stone-50 to-amber-50/50;
+    isolation: isolate;
   }
 
   .envelope-inner::before {
     content: '';
     @apply absolute inset-x-0 top-0 h-1/2 border-b border-stone-500/10 bg-gradient-to-br from-stone-100 to-stone-200;
-    clip-path: polygon(0 0, 100% 0, 50% 100%);
-    z-index: 1;
+    clip-path: polygon(0 0, 50% 0, 50% 100%);
+    z-index: 8;
+    pointer-events: none;
+  }
+
+  .envelope-inner::after {
+    content: '';
+    @apply absolute inset-x-0 top-0 h-1/2 border-b border-stone-500/10 bg-gradient-to-bl from-stone-100 to-stone-200;
+    clip-path: polygon(50% 0, 100% 0, 50% 100%);
+    z-index: 9;
     pointer-events: none;
   }
 
   .envelope-flap {
-    @apply absolute inset-x-0 top-0 h-1/2 z-10 border-b border-stone-500/10 bg-gradient-to-br from-stone-100 to-stone-200;
+    @apply absolute inset-x-0 top-0 h-1/2 z-30 border-b border-stone-500/10 bg-gradient-to-br from-stone-100 to-stone-200;
     transform-origin: top center;
     transform-style: preserve-3d;
-    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    clip-path: polygon(0 0, 100% 0, 50% 105%);
     transition: transform 1s cubic-bezier(0.43, 0.13, 0.23, 0.96);
   }
 
@@ -526,7 +535,7 @@
   }
 
   .envelope-seal {
-    @apply absolute z-20 transition-all duration-400 ease-out;
+    @apply absolute z-40 transition-all duration-400 ease-out;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -538,17 +547,44 @@
   }
 
   .envelope-bottom {
-    @apply absolute inset-0 bg-gradient-to-br from-stone-100 to-amber-100/40 border-t border-stone-200/50;
-    clip-path: polygon(0 50%, 50% 100%, 100% 50%, 100% 100%, 0 100%);
+    @apply absolute inset-0 z-20 bg-gradient-to-br from-stone-100 to-amber-100 border-t border-stone-200;
+    overflow: hidden;
+    clip-path: polygon(0 0, 0% 0, 50% 52%, 100% 0, 100% 0, 100% 100%, 0 100%);
+    -webkit-clip-path: polygon(0 0, 0% 0, 50% 52%, 100% 0, 100% 0, 100% 100%, 0 100%);
+  }
+
+  .envelope-bottom::before {
+    content: '';
+    @apply absolute inset-0;
+    @apply bg-gradient-to-br from-stone-50 to-stone-100;
+    clip-path: polygon(0 50%, 50% 100%, 0 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .envelope-bottom::after {
+    content: '';
+    @apply absolute inset-0;
+    @apply bg-gradient-to-bl from-stone-50 to-stone-100;
+    clip-path: polygon(100% 50%, 50% 100%, 100% 100%);
+    z-index: 2;
+    pointer-events: none;
   }
 
   .envelope-card {
-    @apply absolute inset-4 bg-white shadow-2xl z-20 flex flex-col items-center justify-center border border-stone-200/50 p-12 opacity-0;
+    @apply absolute bg-white flex flex-col items-center justify-center border border-stone-200/50 p-12 opacity-0;
+    left: 1rem;
+    right: 1rem;
+    top: 14%;
+    bottom: 1rem;
+    z-index: 10;
+    box-shadow: none;
     /* transition: opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s; */
   }
 
   .envelope-card.visible {
     @apply opacity-100;
+    z-index: 10;
     /* transform: translateY(-30px); */
   }
 
