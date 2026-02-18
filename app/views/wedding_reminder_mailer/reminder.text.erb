@@ -1,0 +1,9 @@
+Hi <%= @guest.first_name %>,
+
+This is a reminder for <%= @wedding.title %>.
+The wedding is <%= distance_of_time_in_words_to_now(@wedding.date.to_time, include_seconds: false) %> away.
+
+Please RSVP here:
+<%= @rsvp_url %>
+
+Thank you.

@@ -8,6 +8,8 @@ A clean, Rails-native wedding planning and RSVP management system built with zer
 - **RSVP Management**: Household-based RSVP system with meal preferences and dietary restrictions
 - **Guest Management**: Complete guest and household management with filtering and search
 - **Email Invitations**: SMTP-based invitation system with tracking
+- **Reminder Pipeline**: Config-driven email/SMS reminders with idempotent delivery tracking
+- **Disposable Camera**: Standalone `/dispo` camera capture flow with shared public gallery
 - **Admin Dashboard**: Comprehensive analytics and RSVP tracking
 - **Theme Customization**: JSON-based theme configuration for colors and fonts
 - **CSV Export**: Export guest lists and RSVP data
@@ -21,6 +23,7 @@ A clean, Rails-native wedding planning and RSVP management system built with zer
 - **ERB Views**: Server-rendered templates
 - **Action Mailer**: Native email delivery via SMTP
 - **Active Job**: Background job processing
+- **AWS SDK S3**: Direct object upload for disposable camera photos
 - **Bcrypt**: Native password hashing for admin authentication
 
 ## Quick Start
@@ -53,6 +56,8 @@ This starts both:
 ### Access
 
 - **Public site**: http://localhost:3000
+- **Disposable camera**: http://localhost:3000/dispo
+- **Disposable gallery**: http://localhost:3000/dispo/gallery
 - **Admin login**: http://localhost:3000/admin/login
   - Email: `admin@wedly.com`
   - Password: `password`
@@ -115,6 +120,40 @@ Custom colors:
 ```bash
 rails test
 ```
+
+### Reminder Cron Pipeline
+
+Wedding reminders are fully configured in `db/weddings.yml` under `notifications.reminders`.
+
+Trigger the scheduler manually:
+```bash
+bundle exec rails notifications:process_reminders
+```
+
+Recommended cron entry (runs every 15 minutes; delivery is idempotent):
+```bash
+*/15 * * * * cd /path/to/wedly && /usr/bin/env RAILS_ENV=production bundle exec rails notifications:process_reminders
+```
+You can copy the same entry from `config/cron.example`.
+
+Defaults include reminders at 7 days, 1 day, and day-of wedding date. To enable SMS, set:
+- `WEDLY_SMS_MODE=webhook`
+- `WEDLY_SMS_WEBHOOK_URL=https://your-sms-dispatch-endpoint`
+
+### Disposable Camera Bucket Setup
+
+Disposable camera photos upload to a shared object bucket and are rendered in `/dispo/gallery`.
+
+Required environment variables:
+- `WEDLY_DISPO_BUCKET=your-public-bucket-name`
+
+Optional environment variables:
+- `WEDLY_DISPO_REGION=us-east-1` (defaults to `us-east-1`)
+- `WEDLY_DISPO_ACCESS_KEY_ID=...` (needed when not using instance role credentials)
+- `WEDLY_DISPO_SECRET_ACCESS_KEY=...` (needed when not using instance role credentials)
+- `WEDLY_DISPO_ENDPOINT=https://s3-compatible-endpoint` (for S3-compatible storage)
+- `WEDLY_DISPO_FORCE_PATH_STYLE=true` (for MinIO/compatibility endpoints)
+- `WEDLY_DISPO_PUBLIC_BASE_URL=https://cdn.example.com` (preferred when using CDN/custom domain)
 
 ### Database Console
 ```bash

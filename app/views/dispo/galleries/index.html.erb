@@ -1,0 +1,28 @@
+<main class="dispo-gallery">
+  <header class="dispo-gallery__header">
+    <h1>Disposable Camera Gallery</h1>
+    <a href="<%= dispo_camera_path %>" class="dispo-camera-link">Open Camera</a>
+  </header>
+
+  <% if @photos.empty? %>
+    <p class="dispo-gallery__empty">No photos yet. Be the first to take one.</p>
+  <% else %>
+    <section class="dispo-gallery__grid">
+      <% @photos.each do |photo| %>
+        <article class="dispo-gallery__item">
+          <img
+            src="<%= DisposableCamera::StorageClient.public_url_for(photo.object_key) %>"
+            alt="Disposable camera guest photo"
+            loading="lazy"
+          >
+          <p>
+            <%= photo.captured_at.in_time_zone("America/Los_Angeles").strftime("%b %-d, %Y %l:%M %p") %>
+            <% if photo.flash_enabled? %>
+              · Flash On
+            <% end %>
+          </p>
+        </article>
+      <% end %>
+    </section>
+  <% end %>
+</main>

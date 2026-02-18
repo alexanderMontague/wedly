@@ -2,6 +2,7 @@ class Guest < ApplicationRecord
   belongs_to :household
   has_one :rsvp, dependent: :destroy
   has_many :invitations, dependent: :destroy
+  has_many :notification_deliveries, dependent: :destroy
 
   validates :first_name, presence: true
   validates :last_name, presence: true

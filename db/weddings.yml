@@ -58,3 +58,29 @@
     description: "We would be delighted to have you celebrate with us. Please let us know if you can attend."
     button_text: "RSVP Now"
     lookup_hint: "Or use the personalized link in your invitation"
+
+  # Notification Pipeline
+  notifications:
+    reminders:
+      enabled: true
+      timezone: "America/Toronto"
+      send_time: "10:00"
+      audience: "pending_rsvp" # all, pending_rsvp, accepted, declined
+      channels:
+        email:
+          enabled: true
+        sms:
+          enabled: false
+      schedule:
+        - key: "week_before"
+          days_before: 7
+          channels: ["email"]
+          email_subject: "Your wedding RSVP: one week to go"
+        - key: "day_before"
+          days_before: 1
+          channels: ["email"]
+          email_subject: "Your wedding RSVP: tomorrow is the big day"
+        - key: "day_of"
+          days_before: 0
+          channels: ["email"]
+          email_subject: "Today is wedding day"

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_02_05_052706) do
+ActiveRecord::Schema[7.1].define(version: 2026_02_18_113000) do
   create_table "admin_users", force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest", null: false
@@ -19,6 +19,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_05_052706) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
   end
+
+# Could not dump table "disposable_photos" because of following StandardError
+#   Unknown type 'uuid' for column 'id'
 
   create_table "events", force: :cascade do |t|
     t.string "wedding_id", null: false
@@ -65,6 +68,21 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_05_052706) do
     t.index ["guest_id"], name: "index_invitations_on_guest_id"
   end
 
+  create_table "notification_deliveries", force: :cascade do |t|
+    t.integer "guest_id", null: false
+    t.string "wedding_id", null: false
+    t.string "reminder_key", null: false
+    t.string "channel", null: false
+    t.date "scheduled_for", null: false
+    t.string "status", default: "queued", null: false
+    t.datetime "sent_at"
+    t.text "error_message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["guest_id", "wedding_id", "reminder_key", "channel"], name: "index_notification_deliveries_uniqueness", unique: true
+    t.index ["guest_id"], name: "index_notification_deliveries_on_guest_id"
+  end
+
   create_table "rsvps", force: :cascade do |t|
     t.integer "guest_id", null: false
     t.string "status", default: "pending", null: false
@@ -80,7 +98,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_05_052706) do
 # Could not dump table "wedding_metadata" because of following StandardError
 #   Unknown type 'uuid' for column 'id'
 
+  add_foreign_key "disposable_photos", "guests"
   add_foreign_key "guests", "households"
   add_foreign_key "invitations", "guests"
+  add_foreign_key "notification_deliveries", "guests"
   add_foreign_key "rsvps", "guests"
 end

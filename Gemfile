@@ -7,6 +7,7 @@ gem "bcrypt", "~> 3.1.7"
 gem "bootsnap", require: false
 gem "frozen_record"
 gem "rqrcode"
+gem "aws-sdk-s3"
 gem "importmap-rails"
 gem "jbuilder"
 gem "propshaft"

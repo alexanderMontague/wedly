@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
   get "/ping", to: "application#ping"
 
+  scope :dispo, module: :dispo do
+    get "/", to: "cameras#show", as: :dispo_camera
+    post "/upload", to: "uploads#create", as: :dispo_upload
+    get "/gallery", to: "galleries#index", as: :dispo_gallery
+  end
+
   get "/save-the-date", to: "public/save_the_dates#show", as: :public_save_the_date
   get "/calendar.ics", to: "public/save_the_dates#calendar", as: :public_calendar_ics
 
