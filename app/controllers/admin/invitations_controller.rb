@@ -6,8 +6,11 @@ module Admin
     end
 
     def physical
-      @households = current_wedding.households.joins(:guests).distinct.includes(:guests)
+      @households = current_wedding.households.joins(:guests).distinct.includes(:guests).order(:id)
       @household = @households.find_by(id: params[:household_id]) || @households.first
+      @print_count = resolve_print_count(params[:print_count], @households.count)
+      @print_side = resolve_print_side(params[:print_side])
+      @print_households = @households.first(@print_count)
     end
 
     def create
@@ -40,6 +43,18 @@ module Admin
         pending: guests.count - invitations.sent.count,
         opened: invitations.opened.count
       }
+    end
+
+    def resolve_print_count(raw_print_count, max_count)
+      return 0 if max_count.zero?
+
+      requested_print_count = raw_print_count.presence&.to_i || max_count
+      requested_print_count.clamp(1, max_count)
+    end
+
+    def resolve_print_side(raw_print_side)
+      allowed_print_sides = %w[both fronts backs]
+      allowed_print_sides.include?(raw_print_side) ? raw_print_side : "both"
     end
   end
 end

@@ -742,6 +742,14 @@
     flex-shrink: 0;
   }
 
+  .screen-only {
+    display: block;
+  }
+
+  .print-only {
+    display: none;
+  }
+
   .invitation-card {
     @apply shadow-card;
   }
@@ -763,6 +771,11 @@
 }
 
 @media print {
+  @page {
+    size: 5in 7in;
+    margin: 0;
+  }
+
   .print\:hidden {
     display: none !important;
   }
@@ -773,15 +786,25 @@
 
   html,
   body {
+    width: 5in;
     margin: 0;
     padding: 0;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
 
+  .screen-only {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
   .invitation-print-sheet {
     width: 5in;
     height: 7in;
+    break-after: page;
     page-break-after: always;
     box-sizing: border-box;
     margin: 0;
