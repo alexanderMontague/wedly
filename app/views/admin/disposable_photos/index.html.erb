@@ -1,0 +1,115 @@
+<div class="card">
+  <div class="flex justify-between items-center gap-4 mb-6 flex-wrap">
+    <div>
+      <h1 class="mb-2">Disposable Photos</h1>
+      <p class="text-muted m-0"><%= pluralize(@photos.size, "photo") %> in gallery</p>
+    </div>
+    <%= button_to "Delete All Photos",
+                  destroy_all_admin_disposable_photos_path,
+                  method: :delete,
+                  data: { confirm: "Delete every disposable photo for this wedding?" },
+                  class: "btn btn-danger" %>
+  </div>
+
+  <% if @photos.empty? %>
+    <p>No disposable photos yet.</p>
+  <% else %>
+    <%= form_with url: destroy_selected_admin_disposable_photos_path, method: :delete, local: true do %>
+      <div class="admin-photo-controls">
+        <label class="admin-photo-select-all">
+          <input type="checkbox" id="select-all-photos">
+          Select all on page
+        </label>
+        <span class="text-muted">
+          <strong id="selected-photo-count">0</strong> selected
+        </span>
+        <button type="submit"
+                class="btn btn-danger btn-sm"
+                data-confirm="Delete selected photos?"
+                id="delete-selected-button"
+                disabled>
+          Delete Selected
+        </button>
+      </div>
+
+      <section class="admin-photo-grid">
+        <% @photos.each do |photo| %>
+          <article class="admin-photo-card">
+            <label class="admin-photo-checkbox">
+              <input
+                type="checkbox"
+                name="photo_ids[]"
+                value="<%= photo.id %>"
+                class="photo-select-checkbox"
+              >
+              Select
+            </label>
+            <img
+              src="<%= DisposableCamera::StorageClient.public_url_for(photo.object_key) %>"
+              alt="Disposable camera photo"
+              loading="lazy"
+            >
+            <dl class="admin-photo-meta">
+              <div>
+                <dt>Captured</dt>
+                <dd><%= photo.captured_at.in_time_zone("America/Los_Angeles").strftime("%b %-d, %Y %l:%M %p") %></dd>
+              </div>
+              <div>
+                <dt>Uploaded By</dt>
+                <dd><%= photo.guest&.full_name || "Unknown guest" %></dd>
+              </div>
+              <div>
+                <dt>Size</dt>
+                <dd><%= number_to_human_size(photo.byte_size) %></dd>
+              </div>
+              <div>
+                <dt>Type</dt>
+                <dd><%= photo.content_type %></dd>
+              </div>
+              <div>
+                <dt>Flash</dt>
+                <dd><%= photo.flash_enabled? ? "On" : "Off" %></dd>
+              </div>
+              <div>
+                <dt>IP</dt>
+                <dd><%= photo.source_ip.presence || "Unknown" %></dd>
+              </div>
+            </dl>
+          </article>
+        <% end %>
+      </section>
+    <% end %>
+  <% end %>
+</div>
+
+<script>
+  (() => {
+    const selectAll = document.getElementById("select-all-photos");
+    if (!selectAll) return;
+
+    const checkboxes = Array.from(document.querySelectorAll(".photo-select-checkbox"));
+    const selectedCountNode = document.getElementById("selected-photo-count");
+    const deleteButton = document.getElementById("delete-selected-button");
+
+    const refreshSelectionState = () => {
+      const selectedCount = checkboxes.filter((checkbox) => checkbox.checked).length;
+      selectedCountNode.textContent = String(selectedCount);
+      deleteButton.disabled = selectedCount === 0;
+      selectAll.checked = selectedCount > 0 && selectedCount === checkboxes.length;
+      selectAll.indeterminate = selectedCount > 0 && selectedCount < checkboxes.length;
+    };
+
+    selectAll.addEventListener("change", () => {
+      checkboxes.forEach((checkbox) => {
+        checkbox.checked = selectAll.checked;
+      });
+      refreshSelectionState();
+    });
+
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", refreshSelectionState);
+    });
+
+    refreshSelectionState();
+  })();
+</script>

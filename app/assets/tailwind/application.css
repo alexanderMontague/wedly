@@ -551,6 +551,7 @@
     overflow: hidden;
     clip-path: polygon(0 0, 0% 0, 50% 52%, 100% 0, 100% 0, 100% 100%, 0 100%);
     -webkit-clip-path: polygon(0 0, 0% 0, 50% 52%, 100% 0, 100% 0, 100% 100%, 0 100%);
+    transition: transform 0.8s cubic-bezier(0.25, 0.85, 0.35, 1), opacity 0.55s ease;
   }
 
   .envelope-bottom::before {
@@ -579,13 +580,30 @@
     bottom: 1rem;
     z-index: 10;
     box-shadow: none;
-    /* transition: opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s; */
+    transform-origin: top center;
+    transform: translateY(10px) scale(0.96);
+    transition: transform 0.85s cubic-bezier(0.22, 0.8, 0.28, 1), opacity 0.45s ease;
   }
 
   .envelope-card.visible {
     @apply opacity-100;
     z-index: 10;
-    /* transform: translateY(-30px); */
+    transform: translateY(-8px) scale(1);
+    transition-delay: 0.22s;
+  }
+
+  .envelope-inner:has(.envelope-flap.open) .envelope-bottom {
+    transform: translateY(120%) scale(0.97);
+    opacity: 0;
+    transition-delay: 0.2s;
+  }
+
+  .envelope-inner:has(.envelope-flap.open)::before,
+  .envelope-inner:has(.envelope-flap.open)::after {
+    transform: translateY(80%);
+    opacity: 0;
+    transition: transform 0.7s cubic-bezier(0.25, 0.85, 0.35, 1), opacity 0.5s ease;
+    transition-delay: 0.2s;
   }
 
   .envelope-instruction {
@@ -685,6 +703,70 @@
 
   .nav-link-active {
     @apply bg-white/20;
+  }
+
+  .admin-shell {
+    @apply min-h-screen lg:grid lg:grid-cols-[16rem_minmax(0,1fr)];
+  }
+
+  .admin-side-nav {
+    @apply bg-secondary text-white px-4 py-5 lg:px-5 lg:py-6;
+  }
+
+  .admin-side-nav-brand {
+    @apply text-white no-underline text-2xl font-bold;
+  }
+
+  .admin-side-nav-links {
+    @apply mt-6 grid gap-2;
+  }
+
+  .admin-side-nav-link {
+    @apply text-white no-underline px-4 py-2 rounded-md transition-colors hover:bg-white/10;
+  }
+
+  .admin-side-nav-link-active {
+    @apply bg-white/20;
+  }
+
+  .admin-main {
+    @apply max-w-container w-full mx-auto my-8 px-4 print:max-w-none print:mx-0 print:my-0 print:p-0;
+  }
+
+  .admin-photo-controls {
+    @apply flex items-center gap-4 mb-6 flex-wrap;
+  }
+
+  .admin-photo-select-all {
+    @apply inline-flex items-center gap-2;
+  }
+
+  .admin-photo-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4;
+  }
+
+  .admin-photo-card {
+    @apply bg-neutral-50 border border-border rounded-card overflow-hidden;
+  }
+
+  .admin-photo-checkbox {
+    @apply flex items-center gap-2 p-3 text-sm font-medium text-neutral-700 border-b border-border;
+  }
+
+  .admin-photo-card img {
+    @apply w-full aspect-square object-cover;
+  }
+
+  .admin-photo-meta {
+    @apply grid gap-2 p-3;
+  }
+
+  .admin-photo-meta dt {
+    @apply text-xs uppercase tracking-wide text-neutral-500;
+  }
+
+  .admin-photo-meta dd {
+    @apply m-0 text-sm text-neutral-800 break-words;
   }
 
   /* --------------------------------------------------------------------------

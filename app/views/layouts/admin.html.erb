@@ -10,35 +10,38 @@
   </head>
 
   <body class="font-sans m-0 bg-bg-admin">
-    <nav class="print:hidden bg-secondary text-white py-4">
-      <div class="max-w-container mx-auto flex justify-between items-center px-4">
+    <div class="admin-shell">
+      <aside class="admin-side-nav print:hidden">
         <div>
-          <%= link_to "Wedly Admin", admin_root_path, class: "text-white no-underline text-2xl font-bold" %>
+          <%= link_to "Wedly Admin", admin_root_path, class: "admin-side-nav-brand" %>
         </div>
-        <div class="flex gap-6 items-center">
-          <%= link_to "Dashboard", admin_root_path, class: "nav-link" %>
-          <%= link_to "Events", admin_events_path, class: "nav-link" %>
-          <%= link_to "Guests", admin_guests_path, class: "nav-link" %>
-          <%= link_to "Households", admin_households_path, class: "nav-link" %>
-          <%= link_to "Invitations", admin_invitations_path, class: "nav-link" %>
-          <%= link_to "Settings", admin_settings_path, class: "nav-link" %>
-          <%= button_to "Logout", admin_logout_path, method: :delete, class: "btn btn-sm btn-danger" %>
+
+        <nav class="admin-side-nav-links">
+          <%= admin_nav_link("Dashboard", admin_root_path, exact: true) %>
+          <%= admin_nav_link("Events", admin_events_path, active_prefixes: [admin_events_path]) %>
+          <%= admin_nav_link("Guests", admin_guests_path, active_prefixes: [admin_guests_path]) %>
+          <%= admin_nav_link("Households", admin_households_path, active_prefixes: [admin_households_path]) %>
+          <%= admin_nav_link("Invitations", admin_invitations_path, active_prefixes: [admin_invitations_path]) %>
+          <%= admin_nav_link("Disposable Photos", admin_disposable_photos_path, active_prefixes: [admin_disposable_photos_path]) %>
+          <%= admin_nav_link("Settings", admin_settings_path, exact: true) %>
+        </nav>
+
+        <%= button_to "Logout", admin_logout_path, method: :delete, class: "btn btn-sm btn-danger w-full mt-4" %>
+      </aside>
+
+      <main class="admin-main">
+        <div class="print:hidden">
+          <% if flash[:notice] %>
+            <div class="alert alert-success"><%= flash[:notice] %></div>
+          <% end %>
+
+          <% if flash[:alert] %>
+            <div class="alert alert-error"><%= flash[:alert] %></div>
+          <% end %>
         </div>
-      </div>
-    </nav>
 
-    <main class="max-w-container mx-auto my-8 px-4 print:max-w-none print:mx-0 print:my-0 print:p-0">
-      <div class="print:hidden">
-        <% if flash[:notice] %>
-          <div class="alert alert-success"><%= flash[:notice] %></div>
-        <% end %>
-
-        <% if flash[:alert] %>
-          <div class="alert alert-error"><%= flash[:alert] %></div>
-        <% end %>
-      </div>
-
-      <%= yield %>
-    </main>
+        <%= yield %>
+      </main>
+    </div>
   </body>
 </html>

@@ -89,6 +89,18 @@ module ApplicationHelper
     public_calendar_ics_path(format: :ics)
   end
 
+  def admin_nav_link(label, path, active_prefixes: [path], exact: false)
+    active = if exact
+               request.path == path
+             else
+               active_prefixes.any? { |prefix| request.path.start_with?(prefix) }
+             end
+    css_class = "admin-side-nav-link"
+    css_class = "#{css_class} admin-side-nav-link-active" if active
+
+    link_to(label, path, class: css_class)
+  end
+
   private
 
   def ios_device?(user_agent)

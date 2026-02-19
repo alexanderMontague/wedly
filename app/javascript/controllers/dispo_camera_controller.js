@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
+import { Turbo } from "@hotwired/turbo-rails";
 
 export default class extends Controller {
   static targets = [
@@ -247,14 +248,26 @@ export default class extends Controller {
       method: "POST",
       headers: {
         "X-CSRF-Token": csrfToken || "",
+        Accept: "text/vnd.turbo-stream.html, application/json",
       },
       body: formData,
       credentials: "same-origin",
     });
 
     if (!response.ok) {
-      const errorPayload = await response.json().catch(() => ({}));
-      throw new Error(errorPayload.error || "Upload failed.");
+      const contentType = response.headers.get("content-type") || "";
+      if (contentType.includes("application/json")) {
+        const errorPayload = await response.json().catch(() => ({}));
+        throw new Error(errorPayload.error || "Upload failed.");
+      }
+
+      throw new Error("Upload failed.");
+    }
+
+    const contentType = response.headers.get("content-type") || "";
+    if (contentType.includes("text/vnd.turbo-stream.html")) {
+      const streamMessage = await response.text();
+      Turbo.renderStreamMessage(streamMessage);
     }
   }
 

@@ -12,16 +12,18 @@
   <section class="dispo-camera-shell">
     <header class="dispo-camera-top">
       <div class="dispo-camera-brand-wrap">
-        <p class="dispo-camera-brand">WEDLY 35MM</p>
+        <p class="dispo-camera-brand"><%=  current_wedding.last_name %> Dispo</p>
         <p class="dispo-camera-meta">400 ISO • 27 EXP</p>
+        <p class="dispo-camera-meta"><%= format_date_short(current_wedding.date) %></p>
       </div>
 
       <div class="dispo-camera-top-right">
         <div class="dispo-film-counter">
-          <span class="dispo-film-counter__label">Frames</span>
-          <span class="dispo-film-counter__value">27</span>
+          <span class="dispo-film-counter__label"># of photos</span>
+          <span class="dispo-film-counter__value">
+            <%= render "total_photos", total_photos: @total_photos %>
+          </span>
         </div>
-        <a href="<%= dispo_gallery_path %>" class="dispo-camera-link">Gallery</a>
       </div>
     </header>
 

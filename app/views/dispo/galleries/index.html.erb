@@ -1,7 +1,6 @@
 <main class="dispo-gallery">
   <header class="dispo-gallery__header">
     <h1>Disposable Camera Gallery</h1>
-    <a href="<%= dispo_camera_path %>" class="dispo-camera-link">Open Camera</a>
   </header>
 
   <% if @photos.empty? %>
@@ -24,5 +23,23 @@
         </article>
       <% end %>
     </section>
+
+    <div class="flex justify-between items-center gap-3 mt-5 flex-wrap">
+      <p class="text-sm m-0 text-stone-300">
+        Page <%= @page %> of <%= @total_pages %> · <%= pluralize(@total_photos, "photo") %>
+      </p>
+      <div class="flex items-center gap-2">
+        <% if @has_previous_page %>
+          <%= link_to "Previous",
+                      dispo_gallery_path(page: @page - 1, per_page: @per_page),
+                      class: "dispo-camera-link" %>
+        <% end %>
+        <% if @has_next_page %>
+          <%= link_to "Next",
+                      dispo_gallery_path(page: @page + 1, per_page: @per_page),
+                      class: "dispo-camera-link" %>
+        <% end %>
+      </div>
+    </div>
   <% end %>
 </main>

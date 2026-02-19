@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   scope :dispo, module: :dispo do
     get "/", to: "cameras#show", as: :dispo_camera
-    post "/upload", to: "uploads#create", as: :dispo_upload
+    post "/upload", to: "cameras#create", as: :dispo_upload
     get "/gallery", to: "galleries#index", as: :dispo_gallery
   end
 
@@ -33,6 +33,12 @@ Rails.application.routes.draw do
     resources :invitations, only: %i[index create] do
       collection do
         get :physical
+      end
+    end
+    resources :disposable_photos, only: :index do
+      collection do
+        delete :destroy_selected
+        delete :destroy_all
       end
     end
     resource :settings, only: %i[show update]
