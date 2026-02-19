@@ -2,9 +2,11 @@ module DisposableCamera
   class Configuration
     BUCKET_ENV_KEY = "BUCKET_NAME".freeze
     REGION_ENV_KEY = "AWS_REGION".freeze
-    PUBLIC_BASE_URL_ENV_KEY = "AWS_ENDPOINT_URL_S3".freeze
+    ENDPOINT_ENV_KEY = "AWS_ENDPOINT_URL_S3".freeze
+    PUBLIC_BASE_URL_ENV_KEY = "DISPOSABLE_CAMERA_PUBLIC_BASE_URL".freeze
     SSL_VERIFY_PEER_ENV_KEY = "AWS_SSL_VERIFY_PEER".freeze
     SSL_CA_BUNDLE_ENV_KEY = "AWS_SSL_CA_BUNDLE".freeze
+    TIGRIS_FLY_ENDPOINT = "https://fly.storage.tigris.dev".freeze
 
     class << self
       def bucket
@@ -16,7 +18,7 @@ module DisposableCamera
       end
 
       def endpoint
-        ENV["AWS_ENDPOINT_URL_S3"].presence
+        ENV[ENDPOINT_ENV_KEY].presence || TIGRIS_FLY_ENDPOINT
       end
 
       def force_path_style?

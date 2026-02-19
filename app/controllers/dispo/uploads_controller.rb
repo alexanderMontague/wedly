@@ -6,7 +6,7 @@ module Dispo
       uploaded_file = upload_params.fetch(:photo)
       content_type = uploaded_file.content_type
       ensure_supported_upload!(uploaded_file:, content_type:)
-      object_key = DisposableCamera::ObjectKeyBuilder.build(wedding_id: current_wedding.id, content_type: content_type)
+      object_key = DisposableCamera::ObjectKeyBuilder.build(wedding_code: current_wedding.id, content_type: content_type)
 
       DisposableCamera::StorageClient.upload!(io: uploaded_file.tempfile, object_key:, content_type:)
 

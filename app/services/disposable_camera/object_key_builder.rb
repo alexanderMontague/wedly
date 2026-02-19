@@ -1,14 +1,15 @@
 module DisposableCamera
   class ObjectKeyBuilder
-    DIRECTORY_PREFIX = "wedly/disposable".freeze
+    PHOTOS_DIRECTORY = "photos".freeze
 
     class << self
-      def build(wedding_id:, content_type:)
+      def build(wedding_code:, content_type:)
         extension = extension_for(content_type)
         timestamp = Time.current.utc.strftime("%Y%m%d-%H%M%S")
         nonce = SecureRandom.hex(8)
+        environment = Rails.env
 
-        "#{DIRECTORY_PREFIX}/#{wedding_id}/#{timestamp}-#{nonce}.#{extension}"
+        "#{environment}/#{wedding_code}/#{PHOTOS_DIRECTORY}/#{timestamp}-#{nonce}.#{extension}"
       end
 
       private
