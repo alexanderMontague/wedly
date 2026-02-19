@@ -9,6 +9,8 @@ export default class extends Controller {
     "shutterButton",
     "status",
     "orientationWarning",
+    "permissionGate",
+    "permissionButton",
   ];
 
   static values = {
@@ -18,14 +20,18 @@ export default class extends Controller {
   async connect() {
     this.flashEnabled = false;
     this.torchSupported = false;
+    this.cameraReady = false;
+    this.isUploading = false;
+    this.isStartingCamera = false;
     this.orientationMediaQuery = window.matchMedia("(orientation: portrait)");
     this.orientationHandler = () => this.updateOrientationState();
     this.resizeHandler = () => this.updateOrientationState();
 
     this.orientationMediaQuery.addEventListener("change", this.orientationHandler);
     window.addEventListener("resize", this.resizeHandler);
+    this.renderFlashButton();
     this.updateOrientationState();
-    await this.startCamera();
+    await this.initializeCameraAccess();
   }
 
   disconnect() {
@@ -35,7 +41,7 @@ export default class extends Controller {
   }
 
   async toggleFlash() {
-    if (!this.torchSupported || !this.track) return;
+    if (!this.torchSupported || !this.track || !this.cameraReady) return;
 
     this.flashEnabled = !this.flashEnabled;
 
@@ -52,7 +58,7 @@ export default class extends Controller {
   }
 
   async takePhoto() {
-    if (!this.stream) {
+    if (!this.stream || !this.cameraReady) {
       this.setStatus("Camera is not ready yet.");
       return;
     }
@@ -62,7 +68,8 @@ export default class extends Controller {
       return;
     }
 
-    this.shutterButtonTarget.disabled = true;
+    this.isUploading = true;
+    this.updateShutterState();
     this.shutterButtonTarget.textContent = "Saving...";
 
     try {
@@ -73,12 +80,50 @@ export default class extends Controller {
     } catch (error) {
       this.setStatus(error.message || "Could not upload photo.");
     } finally {
-      this.shutterButtonTarget.disabled = false;
-      this.shutterButtonTarget.textContent = "Snap";
+      this.isUploading = false;
+      this.updateShutterState();
+      this.shutterButtonTarget.textContent = "Capture";
+    }
+  }
+
+  async requestCameraAccess() {
+    await this.startCamera();
+  }
+
+  async initializeCameraAccess() {
+    if (!navigator.mediaDevices?.getUserMedia) {
+      this.hidePermissionGate();
+      this.setStatus("Camera API is not available on this browser.");
+      return;
+    }
+
+    if (!navigator.permissions?.query) {
+      this.showPermissionGate();
+      return;
+    }
+
+    try {
+      const result = await navigator.permissions.query({ name: "camera" });
+
+      if (result.state === "granted") {
+        await this.startCamera();
+      } else if (result.state === "denied") {
+        this.showPermissionGate();
+        this.setStatus("Camera access is blocked in browser settings.");
+      } else {
+        this.showPermissionGate();
+      }
+    } catch (_error) {
+      this.showPermissionGate();
     }
   }
 
   async startCamera() {
+    if (this.isStartingCamera || this.cameraReady) return;
+
+    this.isStartingCamera = true;
+    this.setPermissionButtonState(true, "Requesting...");
+
     try {
       this.stream = await navigator.mediaDevices.getUserMedia({
         audio: false,
@@ -92,10 +137,22 @@ export default class extends Controller {
       this.videoTarget.srcObject = this.stream;
       await this.videoTarget.play();
       this.track = this.stream.getVideoTracks()[0];
+      this.cameraReady = true;
       this.setupTorchSupport();
+      this.hidePermissionGate();
+      this.updateShutterState();
       this.setStatus("Camera ready.");
     } catch (error) {
-      this.setStatus("Camera access denied. Allow access and refresh.");
+      this.cameraReady = false;
+      this.stream = null;
+      this.track = null;
+      this.renderFlashButton();
+      this.updateShutterState();
+      this.showPermissionGate();
+      this.setStatus(this.cameraErrorMessage(error));
+    } finally {
+      this.isStartingCamera = false;
+      this.setPermissionButtonState(false, "Enable Camera");
     }
   }
 
@@ -105,6 +162,9 @@ export default class extends Controller {
     this.stream.getTracks().forEach((track) => track.stop());
     this.stream = null;
     this.track = null;
+    this.cameraReady = false;
+    this.renderFlashButton();
+    this.updateShutterState();
   }
 
   setupTorchSupport() {
@@ -122,6 +182,12 @@ export default class extends Controller {
   renderFlashButton() {
     if (!this.flashButtonTarget) return;
 
+    if (!this.cameraReady) {
+      this.flashButtonTarget.textContent = "Flash: Off";
+      this.flashButtonTarget.disabled = true;
+      return;
+    }
+
     if (!this.torchSupported) {
       this.flashButtonTarget.textContent = "Flash: Unsupported";
       this.flashButtonTarget.disabled = true;
@@ -135,7 +201,7 @@ export default class extends Controller {
   updateOrientationState() {
     const portrait = this.isPortrait();
     this.orientationWarningTarget.classList.toggle("hidden", !portrait);
-    this.shutterButtonTarget.disabled = portrait;
+    this.updateShutterState();
   }
 
   isPortrait() {
@@ -200,6 +266,49 @@ export default class extends Controller {
       this.flashPopTarget.classList.remove("is-active");
       this.flashPopTarget.classList.add("hidden");
     }, 180);
+  }
+
+  updateShutterState() {
+    if (!this.hasShutterButtonTarget) return;
+
+    const portrait = this.isPortrait();
+    this.shutterButtonTarget.disabled = portrait || !this.cameraReady || this.isUploading;
+  }
+
+  showPermissionGate() {
+    if (!this.hasPermissionGateTarget) return;
+    this.permissionGateTarget.classList.remove("hidden");
+    this.updateShutterState();
+  }
+
+  hidePermissionGate() {
+    if (!this.hasPermissionGateTarget) return;
+    this.permissionGateTarget.classList.add("hidden");
+    this.updateShutterState();
+  }
+
+  setPermissionButtonState(disabled, label) {
+    if (!this.hasPermissionButtonTarget) return;
+    this.permissionButtonTarget.disabled = disabled;
+    this.permissionButtonTarget.textContent = label;
+  }
+
+  cameraErrorMessage(error) {
+    if (!error?.name) return "Could not start camera. Try again.";
+
+    if (error.name === "NotAllowedError") {
+      return "Camera access denied. Allow access and try again.";
+    }
+
+    if (error.name === "NotFoundError") {
+      return "No camera device detected on this browser.";
+    }
+
+    if (error.name === "NotReadableError") {
+      return "Camera is in use by another app or tab.";
+    }
+
+    return "Could not start camera. Try again.";
   }
 
   setStatus(message) {

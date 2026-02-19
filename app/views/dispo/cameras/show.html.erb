@@ -10,26 +10,56 @@
   </section>
 
   <section class="dispo-camera-shell">
-    <header class="dispo-camera-header">
-      <p class="dispo-camera-brand">Wedly 35mm</p>
-      <a href="<%= dispo_gallery_path %>" class="dispo-camera-link">Gallery</a>
+    <header class="dispo-camera-top">
+      <div class="dispo-camera-brand-wrap">
+        <p class="dispo-camera-brand">WEDLY 35MM</p>
+        <p class="dispo-camera-meta">400 ISO • 27 EXP</p>
+      </div>
+
+      <div class="dispo-camera-top-right">
+        <div class="dispo-film-counter">
+          <span class="dispo-film-counter__label">Frames</span>
+          <span class="dispo-film-counter__value">27</span>
+        </div>
+        <a href="<%= dispo_gallery_path %>" class="dispo-camera-link">Gallery</a>
+      </div>
     </header>
 
-    <div class="dispo-viewfinder-wrap">
-      <video class="dispo-viewfinder" data-dispo-camera-target="video" autoplay playsinline muted></video>
-      <canvas class="hidden" data-dispo-camera-target="canvas"></canvas>
-      <div class="dispo-flash-pop hidden" data-dispo-camera-target="flashPop"></div>
-    </div>
+    <section class="dispo-camera-body">
+      <aside class="dispo-camera-rail">
+        <button type="button" class="dispo-flash-btn" data-action="dispo-camera#toggleFlash" data-dispo-camera-target="flashButton">
+          Flash: Off
+        </button>
+        <p class="dispo-rail-text">Single use digital disposable</p>
+      </aside>
+
+      <div class="dispo-viewfinder-wrap">
+        <video class="dispo-viewfinder" data-dispo-camera-target="video" autoplay playsinline muted></video>
+        <canvas class="hidden" data-dispo-camera-target="canvas"></canvas>
+        <div class="dispo-flash-pop hidden" data-dispo-camera-target="flashPop"></div>
+
+        <div class="dispo-permission-gate" data-dispo-camera-target="permissionGate">
+          <p class="dispo-permission-title">Enable camera access</p>
+          <p class="dispo-permission-copy">Tap to allow browser camera permissions for disposable captures.</p>
+          <button type="button" class="dispo-permission-btn" data-action="dispo-camera#requestCameraAccess" data-dispo-camera-target="permissionButton">
+            Enable Camera
+          </button>
+        </div>
+
+        <div class="dispo-viewfinder-overlay">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </section>
 
     <footer class="dispo-controls">
-      <button type="button" class="dispo-flash-btn" data-action="dispo-camera#toggleFlash" data-dispo-camera-target="flashButton">
-        Flash: Off
-      </button>
+      <p class="dispo-status" data-dispo-camera-target="status">Tap "Enable Camera" to begin.</p>
       <button type="button" class="dispo-shutter-btn" data-action="dispo-camera#takePhoto" data-dispo-camera-target="shutterButton">
-        Snap
+        Capture
       </button>
     </footer>
-
-    <p class="dispo-status" data-dispo-camera-target="status">Allow camera access to begin.</p>
   </section>
 </main>

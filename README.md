@@ -37,6 +37,7 @@ A clean, Rails-native wedding planning and RSVP management system built with zer
 ### Setup
 
 Run the setup script (one time only):
+
 ```bash
 ./bin/setup
 ```
@@ -50,6 +51,7 @@ This installs dependencies, creates your `.env` file, sets up the database, and 
 ```
 
 This starts both:
+
 - Rails server on http://localhost:3000
 - Tailwind CSS watch process (auto-rebuilds styles when files change)
 
@@ -83,15 +85,19 @@ app/
 ## Key Concepts
 
 ### Households
+
 Guests are grouped into households (e.g., "The Smith Family"), allowing multiple people to RSVP together using a single invitation code.
 
 ### Invite Codes
+
 Each guest receives a unique 10-character alphanumeric code for RSVP access. No user accounts required.
 
 ### Theme Configuration
+
 Customize your wedding site appearance via JSON configuration in the admin settings panel.
 
 ### RSVP Workflow
+
 1. Admin creates guests and households
 2. Admin sends email invitations
 3. Guests click link with their unique code
@@ -105,6 +111,7 @@ Customize your wedding site appearance via JSON configuration in the admin setti
 The app uses Tailwind CSS v4. The watch process (`./bin/dev`) automatically rebuilds CSS when you make changes.
 
 Custom component classes are available:
+
 - Buttons: `.btn`, `.btn-primary`, `.btn-success`, `.btn-danger`
 - Forms: `.form-group`, `.form-control`
 - Cards: `.card`, `.card-header`
@@ -113,10 +120,12 @@ Custom component classes are available:
 You can also use any Tailwind utility classes directly in your views.
 
 Custom colors:
+
 - Primary: `var(--color-primary)` - #C89B7B
 - Secondary: `var(--color-secondary)` - #2C3E50
 
 ### Running Tests
+
 ```bash
 rails test
 ```
@@ -126,17 +135,21 @@ rails test
 Wedding reminders are fully configured in `db/weddings.yml` under `notifications.reminders`.
 
 Trigger the scheduler manually:
+
 ```bash
 bundle exec rails notifications:process_reminders
 ```
 
 Recommended cron entry (runs every 15 minutes; delivery is idempotent):
+
 ```bash
 */15 * * * * cd /path/to/wedly && /usr/bin/env RAILS_ENV=production bundle exec rails notifications:process_reminders
 ```
+
 You can copy the same entry from `config/cron.example`.
 
 Defaults include reminders at 7 days, 1 day, and day-of wedding date. To enable SMS, set:
+
 - `WEDLY_SMS_MODE=webhook`
 - `WEDLY_SMS_WEBHOOK_URL=https://your-sms-dispatch-endpoint`
 
@@ -145,22 +158,18 @@ Defaults include reminders at 7 days, 1 day, and day-of wedding date. To enable 
 Disposable camera photos upload to a shared object bucket and are rendered in `/dispo/gallery`.
 
 Required environment variables:
-- `WEDLY_DISPO_BUCKET=your-public-bucket-name`
 
-Optional environment variables:
-- `WEDLY_DISPO_REGION=us-east-1` (defaults to `us-east-1`)
-- `WEDLY_DISPO_ACCESS_KEY_ID=...` (needed when not using instance role credentials)
-- `WEDLY_DISPO_SECRET_ACCESS_KEY=...` (needed when not using instance role credentials)
-- `WEDLY_DISPO_ENDPOINT=https://s3-compatible-endpoint` (for S3-compatible storage)
-- `WEDLY_DISPO_FORCE_PATH_STYLE=true` (for MinIO/compatibility endpoints)
-- `WEDLY_DISPO_PUBLIC_BASE_URL=https://cdn.example.com` (preferred when using CDN/custom domain)
+- `BUCKET_NAME=your-public-bucket-name`
+- Use fly storage create
 
 ### Database Console
+
 ```bash
 rails dbconsole
 ```
 
 ### Rails Console
+
 ```bash
 rails console
 ```

@@ -1,4 +1,6 @@
 class DisposablePhoto < ApplicationRecord
+  include UuidPrimaryKey
+
   CONTENT_TYPES = %w[image/jpeg image/png image/webp].freeze
 
   belongs_to :guest, optional: true

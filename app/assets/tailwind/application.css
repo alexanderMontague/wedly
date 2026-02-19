@@ -854,8 +854,8 @@
   .dispo-body {
     margin: 0;
     min-height: 100dvh;
-    background: #1f1f1f;
-    color: #fdfbf4;
+    background: linear-gradient(170deg, var(--color-neutral-800), var(--color-neutral-900));
+    color: var(--color-stone-100);
     font-family: var(--font-body);
   }
 
@@ -863,8 +863,11 @@
     min-height: 100dvh;
     display: grid;
     place-items: center;
-    padding: 1rem;
-    background: radial-gradient(circle at top, #3f3a2f 0%, #1e1e1e 55%, #121212 100%);
+    padding: 1rem 0.75rem;
+    background:
+      radial-gradient(circle at 10% 5%, rgba(200, 155, 123, 0.2), transparent 35%),
+      radial-gradient(circle at 90% 100%, rgba(52, 73, 94, 0.25), transparent 40%),
+      linear-gradient(165deg, var(--color-neutral-800), var(--color-neutral-900));
   }
 
   .dispo-orientation-warning {
@@ -874,67 +877,162 @@
     display: grid;
     place-items: center;
     padding: 1.5rem;
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(12, 12, 12, 0.88);
+    backdrop-filter: blur(4px);
   }
 
   .dispo-orientation-warning__card {
     width: min(28rem, 100%);
     border-radius: 1rem;
-    border: 2px solid #c8a66a;
-    background: #1b1b1b;
+    border: 1px solid color-mix(in srgb, var(--color-primary) 65%, transparent);
+    background: linear-gradient(170deg, rgba(24, 24, 24, 0.96), rgba(12, 12, 12, 0.96));
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
     padding: 1.25rem;
     text-align: center;
-    font-size: 1rem;
+    font-size: 0.95rem;
     line-height: 1.5;
   }
 
   .dispo-camera-shell {
-    width: min(100%, 62rem);
-    border: 10px solid #2f2c25;
-    border-radius: 1.25rem;
-    background: linear-gradient(165deg, #4f4532 0%, #3b3527 35%, #2f2b22 100%);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
-    padding: 1rem;
+    width: min(100%, 64rem);
+    border-radius: 1.4rem;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background:
+      radial-gradient(circle at 18% 20%, rgba(255, 255, 255, 0.05), transparent 38%),
+      linear-gradient(155deg, #202325 0%, #17191b 45%, #111214 100%);
+    box-shadow:
+      0 30px 80px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.45);
+    padding: clamp(0.85rem, 1.4vw, 1.1rem);
     display: grid;
-    gap: 0.75rem;
+    gap: 0.8rem;
   }
 
-  .dispo-camera-header {
+  .dispo-camera-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 0.8rem;
+    padding: 0.35rem 0.45rem 0.6rem;
+    border-radius: 0.95rem;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.2));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  }
+
+  .dispo-camera-brand-wrap {
+    display: grid;
+    gap: 0.1rem;
   }
 
   .dispo-camera-brand {
     margin: 0;
-    color: #efe3c4;
-    font-size: 0.95rem;
-    letter-spacing: 0.08em;
+    color: color-mix(in srgb, var(--color-stone-100) 88%, var(--color-primary) 12%);
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .dispo-camera-meta {
+    margin: 0;
+    color: color-mix(in srgb, var(--color-stone-400) 80%, var(--color-primary) 20%);
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
   }
 
+  .dispo-camera-top-right {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .dispo-film-counter {
+    min-width: 4.6rem;
+    padding: 0.3rem 0.45rem;
+    border-radius: 0.45rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: linear-gradient(180deg, #080808, #151515);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .dispo-film-counter__label {
+    font-size: 0.5rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--color-stone-400) 85%, transparent);
+  }
+
+  .dispo-film-counter__value {
+    font-size: 0.86rem;
+    font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    color: #d8ff7a;
+  }
+
   .dispo-camera-link {
-    color: #fff2cf;
+    color: color-mix(in srgb, var(--color-stone-100) 90%, var(--color-primary) 10%);
     text-decoration: none;
-    border: 1px solid rgba(255, 242, 207, 0.4);
+    border: 1px solid color-mix(in srgb, var(--color-stone-100) 40%, transparent);
     border-radius: 999px;
-    font-size: 0.8rem;
-    padding: 0.35rem 0.8rem;
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.36rem 0.8rem;
   }
 
   .dispo-camera-link:hover {
-    color: #2f2b22;
-    background: #fff2cf;
+    color: var(--color-neutral-900);
+    background: var(--color-stone-100);
+  }
+
+  .dispo-camera-body {
+    display: grid;
+    grid-template-columns: minmax(5.4rem, 7rem) minmax(0, 1fr);
+    align-items: stretch;
+    gap: 0.8rem;
+  }
+
+  .dispo-camera-rail {
+    border-radius: 0.95rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0.48)),
+      radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.06), transparent 40%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    padding: 0.75rem 0.55rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.65rem;
+  }
+
+  .dispo-rail-text {
+    margin: 0;
+    font-size: 0.55rem;
+    color: var(--color-stone-400);
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+    line-height: 1.45;
   }
 
   .dispo-viewfinder-wrap {
     position: relative;
-    border-radius: 0.9rem;
+    border-radius: 1rem;
     overflow: hidden;
-    border: 4px solid #151515;
+    border: 4px solid #0e0e0f;
     background: #000;
     aspect-ratio: 16 / 9;
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+      inset 0 0 28px rgba(0, 0, 0, 0.65),
+      0 8px 16px rgba(0, 0, 0, 0.35);
   }
 
   .dispo-viewfinder {
@@ -951,6 +1049,98 @@
     background: rgba(255, 255, 255, 0.88);
   }
 
+  .dispo-viewfinder-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 8;
+  }
+
+  .dispo-viewfinder-overlay span {
+    position: absolute;
+    width: 0.9rem;
+    height: 0.9rem;
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+
+  .dispo-viewfinder-overlay span:nth-child(1) {
+    top: 0.65rem;
+    left: 0.65rem;
+    border-top-width: 1px;
+    border-left-width: 1px;
+  }
+
+  .dispo-viewfinder-overlay span:nth-child(2) {
+    top: 0.65rem;
+    right: 0.65rem;
+    border-top-width: 1px;
+    border-right-width: 1px;
+  }
+
+  .dispo-viewfinder-overlay span:nth-child(3) {
+    bottom: 0.65rem;
+    left: 0.65rem;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+  }
+
+  .dispo-viewfinder-overlay span:nth-child(4) {
+    right: 0.65rem;
+    bottom: 0.65rem;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+  }
+
+  .dispo-permission-gate {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: grid;
+    place-content: center;
+    text-align: center;
+    gap: 0.6rem;
+    padding: 1rem;
+    background: linear-gradient(180deg, rgba(6, 6, 6, 0.86), rgba(0, 0, 0, 0.95));
+  }
+
+  .dispo-permission-title {
+    margin: 0;
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    letter-spacing: 0.04em;
+    color: var(--color-stone-100);
+  }
+
+  .dispo-permission-copy {
+    margin: 0;
+    font-size: 0.83rem;
+    color: var(--color-stone-300);
+    max-width: 24rem;
+  }
+
+  .dispo-permission-btn {
+    border: 0;
+    cursor: pointer;
+    justify-self: center;
+    min-width: 11rem;
+    padding: 0.6rem 1rem;
+    border-radius: 999px;
+    font-size: 0.74rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--color-neutral-900);
+    background: linear-gradient(180deg, var(--color-stone-50), var(--color-stone-200));
+    box-shadow:
+      0 6px 14px rgba(0, 0, 0, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.75),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  }
+
+  .dispo-permission-btn:disabled {
+    opacity: 0.65;
+    cursor: wait;
+  }
+
   .dispo-flash-pop.is-active {
     animation: dispo-flash-pop 180ms ease-out forwards;
   }
@@ -960,6 +1150,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 0.75rem;
+    padding: 0.4rem 0.25rem 0.15rem;
   }
 
   .dispo-flash-btn,
@@ -972,31 +1163,105 @@
   }
 
   .dispo-flash-btn {
-    padding: 0.7rem 1rem;
-    background: #1f1f1f;
-    color: #f8edd0;
-    border: 1px solid rgba(248, 237, 208, 0.35);
+    width: 100%;
+    padding: 0.68rem 0.7rem;
+    background: linear-gradient(180deg, #191b1d, #111214);
+    color: var(--color-stone-200);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 3px 6px rgba(0, 0, 0, 0.32);
   }
 
   .dispo-shutter-btn {
-    min-width: 7.25rem;
-    padding: 0.85rem 1.4rem;
-    background: #ef4444;
+    min-width: 8rem;
+    padding: 0.9rem 1.3rem;
     color: #fff;
-    box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.22);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    background:
+      radial-gradient(circle at 50% 15%, rgba(255, 255, 255, 0.26), transparent 42%),
+      linear-gradient(180deg, #ef5959 0%, #dc3030 52%, #b91c1c 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow:
+      0 6px 0 #7f1212,
+      0 12px 18px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.35),
+      inset 0 -2px 3px rgba(0, 0, 0, 0.25);
+    transform: translateY(-1px);
+  }
+
+  .dispo-shutter-btn:active:not(:disabled) {
+    transform: translateY(3px);
+    box-shadow:
+      0 2px 0 #7f1212,
+      0 5px 10px rgba(0, 0, 0, 0.32),
+      inset 0 2px 5px rgba(0, 0, 0, 0.3);
   }
 
   .dispo-shutter-btn:disabled,
   .dispo-flash-btn:disabled {
-    opacity: 0.6;
+    opacity: 0.58;
     cursor: not-allowed;
   }
 
   .dispo-status {
     margin: 0;
     min-height: 1.5rem;
-    color: #f6eccf;
-    font-size: 0.9rem;
+    color: var(--color-stone-300);
+    font-size: 0.82rem;
+  }
+
+  @media (max-width: 640px) {
+    .dispo-camera-shell {
+      border-radius: 1rem;
+      padding: 0.7rem;
+      gap: 0.65rem;
+    }
+
+    .dispo-camera-top {
+      padding: 0.32rem 0.4rem 0.5rem;
+    }
+
+    .dispo-camera-body {
+      grid-template-columns: minmax(4.9rem, 6rem) minmax(0, 1fr);
+      gap: 0.6rem;
+    }
+
+    .dispo-shutter-btn {
+      min-width: 7rem;
+      padding: 0.76rem 1rem;
+      font-size: 0.72rem;
+    }
+
+    .dispo-status {
+      font-size: 0.72rem;
+    }
+  }
+
+  @media (max-height: 520px) and (orientation: landscape) {
+    .dispo-stage {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .dispo-camera-shell {
+      gap: 0.5rem;
+      padding: 0.6rem;
+    }
+
+    .dispo-camera-meta,
+    .dispo-rail-text {
+      display: none;
+    }
+
+    .dispo-shutter-btn {
+      min-width: 6.7rem;
+      padding-top: 0.68rem;
+      padding-bottom: 0.68rem;
+    }
   }
 
   .dispo-gallery {

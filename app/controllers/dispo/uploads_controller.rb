@@ -26,7 +26,9 @@ module Dispo
         captured_at: photo.captured_at.iso8601
       }, status: :created
     rescue KeyError, ArgumentError => e
-      render json: { error: e.message }, status: :unprocessable_entity
+      render json: { error: e.message }, status: :unprocessable_content
+    rescue Aws::S3::Errors::ServiceError, Seahorse::Client::NetworkingError
+      render json: { error: "Upload service is temporarily unavailable. Please try again." }, status: :service_unavailable
     end
 
     private

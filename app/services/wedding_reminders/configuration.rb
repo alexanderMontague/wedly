@@ -1,6 +1,6 @@
 module WeddingReminders
   class Configuration
-    DEFAULT_TIMEZONE = "UTC"
+    DEFAULT_TIMEZONE = "America/Toronto"
     DEFAULT_SEND_TIME = "10:00"
     DEFAULT_AUDIENCE = "pending_rsvp"
     VALID_AUDIENCES = %w[all pending_rsvp accepted declined].freeze
