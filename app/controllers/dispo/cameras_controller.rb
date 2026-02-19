@@ -1,5 +1,11 @@
 module Dispo
-  class CamerasController < BaseController
+  class CamerasController < ApplicationController
+    layout "dispo"
+
+    include WeddingConcern
+
+    helper_method :dispo_total_photos_stream
+
     MAX_UPLOAD_BYTES = 15.megabytes
 
     def show
@@ -26,24 +32,18 @@ module Dispo
       )
 
       @total_photos = DisposablePhoto.where(wedding_id: current_wedding.id).count
+      Turbo::StreamsChannel.broadcast_replace_to(
+        dispo_total_photos_stream,
+        target: "dispo-total-photos",
+        partial: "dispo/cameras/total_photos",
+        locals: { total_photos: @total_photos }
+      )
 
-      respond_to do |format|
-        format.json do
-          render json: {
-            id: photo.id,
-            image_url: DisposableCamera::StorageClient.public_url_for(photo.object_key),
-            captured_at: photo.captured_at.iso8601
-          }, status: :created
-        end
-
-        format.turbo_stream do
-          render turbo_stream: turbo_stream.replace(
-            "dispo-total-photos",
-            partial: "dispo/cameras/total_photos",
-            locals: { total_photos: @total_photos }
-          ), status: :created
-        end
-      end
+      render json: {
+        id: photo.id,
+        image_url: DisposableCamera::StorageClient.public_url_for(photo.object_key),
+        captured_at: photo.captured_at.iso8601
+      }, status: :created
     rescue KeyError, ArgumentError => e
       render json: { error: e.message }, status: :unprocessable_content
     rescue Aws::S3::Errors::ServiceError, Seahorse::Client::NetworkingError
@@ -52,6 +52,10 @@ module Dispo
     end
 
     private
+
+    def dispo_total_photos_stream
+      "dispo:total-photos:#{current_wedding.id}"
+    end
 
     def upload_params
       params.permit(:photo, :flash_enabled, :captured_at)

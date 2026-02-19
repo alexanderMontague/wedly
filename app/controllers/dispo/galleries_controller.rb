@@ -1,5 +1,9 @@
 module Dispo
-  class GalleriesController < BaseController
+  class GalleriesController < ApplicationController
+    layout "dispo"
+
+    include WeddingConcern
+
     DEFAULT_PER_PAGE = 48
     MAX_PER_PAGE = 96
 

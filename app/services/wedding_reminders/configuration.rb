@@ -83,6 +83,8 @@ module WeddingReminders
       notifications = @wedding.attributes["notifications"]
       return {} unless notifications.is_a?(Hash)
 
+      notifications["timezone"] = @wedding.timezone
+
       deep_stringify_keys(notifications).fetch("reminders", {})
     end
 

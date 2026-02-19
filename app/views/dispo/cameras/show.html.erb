@@ -3,6 +3,8 @@
   data-controller="dispo-camera"
   data-dispo-camera-upload-url-value="<%= dispo_upload_path %>"
 >
+  <%= turbo_stream_from dispo_total_photos_stream %>
+
   <section class="dispo-orientation-warning" data-dispo-camera-target="orientationWarning">
     <div class="dispo-orientation-warning__card">
       <p>Rotate your phone horizontally to use the disposable camera.</p>

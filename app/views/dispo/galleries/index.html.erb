@@ -15,10 +15,7 @@
             loading="lazy"
           >
           <p>
-            <%= photo.captured_at.in_time_zone("America/Los_Angeles").strftime("%b %-d, %Y %l:%M %p") %>
-            <% if photo.flash_enabled? %>
-              · Flash On
-            <% end %>
+            <%= photo.captured_at.in_time_zone(current_wedding.timezone).strftime("%b %-d, %Y %l:%M %p") %>
           </p>
         </article>
       <% end %>

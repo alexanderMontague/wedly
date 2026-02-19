@@ -60,11 +60,12 @@
     button_text: "RSVP Now"
     lookup_hint: "Or use the personalized link in your invitation"
 
+  timezone: "America/Toronto"
+
   # Notification Pipeline
   notifications:
     reminders:
       enabled: true
-      timezone: "America/Toronto"
       send_time: "10:00"
       audience: "pending_rsvp" # all, pending_rsvp, accepted, declined
       channels:
