@@ -515,6 +515,7 @@
     @apply absolute inset-x-0 top-0 h-1/2 z-30 border-b border-stone-500/10 bg-gradient-to-br from-stone-100 to-stone-200;
     transform-origin: top center;
     transform-style: preserve-3d;
+    backface-visibility: visible;
     clip-path: polygon(0 0, 100% 0, 50% 105%);
     transition: transform 1s cubic-bezier(0.43, 0.13, 0.23, 0.96);
   }
@@ -551,7 +552,6 @@
     overflow: hidden;
     clip-path: polygon(0 0, 0% 0, 50% 52%, 100% 0, 100% 0, 100% 100%, 0 100%);
     -webkit-clip-path: polygon(0 0, 0% 0, 50% 52%, 100% 0, 100% 0, 100% 100%, 0 100%);
-    transition: transform 0.8s cubic-bezier(0.25, 0.85, 0.35, 1), opacity 0.55s ease;
   }
 
   .envelope-bottom::before {
@@ -580,30 +580,45 @@
     bottom: 1rem;
     z-index: 10;
     box-shadow: none;
-    transform-origin: top center;
-    transform: translateY(10px) scale(0.96);
-    transition: transform 0.85s cubic-bezier(0.22, 0.8, 0.28, 1), opacity 0.45s ease;
+    /* transition: opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s; */
   }
 
   .envelope-card.visible {
     @apply opacity-100;
     z-index: 10;
-    transform: translateY(-8px) scale(1);
-    transition-delay: 0.22s;
+    /* transform: translateY(-30px); */
   }
 
-  .envelope-inner:has(.envelope-flap.open) .envelope-bottom {
-    transform: translateY(120%) scale(0.97);
-    opacity: 0;
-    transition-delay: 0.2s;
+  .envelope-inner > :not(.envelope-card):not(.envelope-flap) {
+    transition: transform 1.35s cubic-bezier(0.2, 0.82, 0.28, 1), opacity 0.8s ease;
   }
 
+  .envelope-inner::before,
+  .envelope-inner::after {
+    transition: transform 1.35s cubic-bezier(0.2, 0.82, 0.28, 1), opacity 0.8s ease;
+  }
+
+  .envelope-inner:has(.envelope-flap.open) > :not(.envelope-card):not(.envelope-flap),
   .envelope-inner:has(.envelope-flap.open)::before,
   .envelope-inner:has(.envelope-flap.open)::after {
-    transform: translateY(80%);
+    transform: translateY(140%);
     opacity: 0;
-    transition: transform 0.7s cubic-bezier(0.25, 0.85, 0.35, 1), opacity 0.5s ease;
-    transition-delay: 0.2s;
+    transition-delay: 1.15s;
+  }
+
+  .envelope-inner:has(.envelope-flap.open) .envelope-flap {
+    animation: envelope-flap-drop 1.35s cubic-bezier(0.2, 0.82, 0.28, 1) 1.15s forwards;
+  }
+
+  @keyframes envelope-flap-drop {
+    from {
+      transform: rotateX(-180deg) translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: rotateX(-180deg) translateY(140%);
+      opacity: 1;
+    }
   }
 
   .envelope-instruction {
