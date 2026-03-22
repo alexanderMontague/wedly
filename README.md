@@ -52,15 +52,15 @@ This installs dependencies, creates your `.env` file, sets up the database, and 
 
 This starts both:
 
-- Rails server on http://localhost:3000
+- Rails server on http://localhost:3003
 - Tailwind CSS watch process (auto-rebuilds styles when files change)
 
 ### Access
 
-- **Public site**: http://localhost:3000
-- **Disposable camera**: http://localhost:3000/dispo
-- **Disposable gallery**: http://localhost:3000/dispo/gallery
-- **Admin login**: http://localhost:3000/admin/login
+- **Public site**: http://localhost:3003
+- **Disposable camera**: http://localhost:3003/dispo
+- **Disposable gallery**: http://localhost:3003/dispo/gallery
+- **Admin login**: http://localhost:3003/admin/login
   - Email: `admin@wedly.com`
   - Password: `password`
 

@@ -7,7 +7,7 @@
     <%= button_to "Delete All Photos",
                   destroy_all_admin_disposable_photos_path,
                   method: :delete,
-                  data: { confirm: "Delete every disposable photo for this wedding?" },
+                  data: { turbo_confirm: "Delete every disposable photo for this wedding? This cannot be undone." },
                   class: "btn btn-danger" %>
   </div>
 
@@ -16,16 +16,12 @@
   <% else %>
     <%= form_with url: destroy_selected_admin_disposable_photos_path, method: :delete, local: true do %>
       <div class="admin-photo-controls">
-        <label class="admin-photo-select-all">
-          <input type="checkbox" id="select-all-photos">
-          Select all on page
-        </label>
         <span class="text-muted">
           <strong id="selected-photo-count">0</strong> selected
         </span>
         <button type="submit"
                 class="btn btn-danger btn-sm"
-                data-confirm="Delete selected photos?"
+                data-turbo-confirm="Delete the selected photos? This cannot be undone."
                 id="delete-selected-button"
                 disabled>
           Delete Selected
@@ -81,35 +77,3 @@
     <% end %>
   <% end %>
 </div>
-
-<script>
-  (() => {
-    const selectAll = document.getElementById("select-all-photos");
-    if (!selectAll) return;
-
-    const checkboxes = Array.from(document.querySelectorAll(".photo-select-checkbox"));
-    const selectedCountNode = document.getElementById("selected-photo-count");
-    const deleteButton = document.getElementById("delete-selected-button");
-
-    const refreshSelectionState = () => {
-      const selectedCount = checkboxes.filter((checkbox) => checkbox.checked).length;
-      selectedCountNode.textContent = String(selectedCount);
-      deleteButton.disabled = selectedCount === 0;
-      selectAll.checked = selectedCount > 0 && selectedCount === checkboxes.length;
-      selectAll.indeterminate = selectedCount > 0 && selectedCount < checkboxes.length;
-    };
-
-    selectAll.addEventListener("change", () => {
-      checkboxes.forEach((checkbox) => {
-        checkbox.checked = selectAll.checked;
-      });
-      refreshSelectionState();
-    });
-
-    checkboxes.forEach((checkbox) => {
-      checkbox.addEventListener("change", refreshSelectionState);
-    });
-
-    refreshSelectionState();
-  })();
-</script>

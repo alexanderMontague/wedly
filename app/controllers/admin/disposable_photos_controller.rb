@@ -12,7 +12,10 @@ module Admin
         return
       end
 
-      deleted_count = scoped_photos.where(id: photo_ids).destroy_all.size
+      relation = scoped_photos.where(id: photo_ids)
+      object_keys = relation.pluck(:object_key)
+      deleted_count = relation.delete_all
+      DisposableCamera::StorageClient.delete_objects!(object_keys: object_keys)
 
       redirect_to(
         admin_disposable_photos_path,
@@ -21,7 +24,9 @@ module Admin
     end
 
     def destroy_all
-      deleted_count = scoped_photos.destroy_all.size
+      object_keys = scoped_photos.pluck(:object_key)
+      deleted_count = scoped_photos.delete_all
+      DisposableCamera::StorageClient.delete_objects!(object_keys: object_keys)
 
       redirect_to(
         admin_disposable_photos_path,

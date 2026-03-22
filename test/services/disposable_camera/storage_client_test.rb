@@ -62,6 +62,25 @@ module DisposableCamera
       end
     end
 
+    test "deletes multiple objects in batches via delete_objects" do
+      with_environment("BUCKET_NAME" => "wedly") do
+        calls = []
+        fake_client = Object.new
+        fake_client.define_singleton_method(:delete_objects) do |params|
+          calls << params
+          Aws::S3::Types::DeleteObjectsOutput.new(errors: [])
+        end
+
+        StorageClient.stub(:client, fake_client) do
+          StorageClient.delete_objects!(object_keys: %w[a.jpg b.jpg])
+        end
+
+        assert_equal 1, calls.size
+        assert_equal "wedly", calls.first[:bucket]
+        assert_equal %w[a.jpg b.jpg], calls.first[:delete][:objects].pluck(:key)
+      end
+    end
+
     private
 
     def with_environment(overrides)

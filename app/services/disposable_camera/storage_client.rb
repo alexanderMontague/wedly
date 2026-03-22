@@ -23,6 +23,25 @@ module DisposableCamera
         )
       end
 
+      # S3 DeleteObjects allows up to 1000 keys per request.
+      def delete_objects!(object_keys:)
+        keys = Array(object_keys).filter_map(&:presence)
+        return if keys.empty?
+
+        bucket = DisposableCamera::Configuration.bucket
+        keys.each_slice(1000) do |batch|
+          response = client.delete_objects(
+            bucket: bucket,
+            delete: { objects: batch.map { |key| { key: key } }, quiet: true }
+          )
+          response.errors.each do |err|
+            Rails.logger.error(
+              "Disposable photo bulk delete failed: key=#{err.key} code=#{err.code} message=#{err.message}"
+            )
+          end
+        end
+      end
+
       def public_url_for(object_key)
         if DisposableCamera::Configuration.public_base_url.present?
           return "#{DisposableCamera::Configuration.public_base_url}/#{object_path_for_public_base_url(object_key)}"

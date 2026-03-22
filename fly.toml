@@ -14,14 +14,14 @@ console_command = '/rails/bin/rails console'
   RAILS_SERVE_STATIC_FILES = "true"
   RAILS_LOG_TO_STDOUT = "true"
   RAILS_MAX_THREADS = "5"
-  PORT = "3000"
+  PORT = "3003"
 
 [[mounts]]
   source = 'data'
   destination = '/data'
 
 [http_service]
-  internal_port = 3000
+  internal_port = 3003
   force_https = true
   auto_stop_machines = 'stop'
   auto_start_machines = true
@@ -36,10 +36,9 @@ console_command = '/rails/bin/rails console'
     path = "/ping"
 
 [[vm]]
-  memory = '1gb'
-  cpu_kind = 'shared'
+  memory = '512mb'
   cpus = 1
-  memory_mb = 1024
+  memory_mb = 512
 
 [[processes]]
   app = "./bin/rails server"

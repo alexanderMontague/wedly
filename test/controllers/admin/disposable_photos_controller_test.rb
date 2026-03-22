@@ -45,7 +45,7 @@ module Admin
     end
 
     test "deletes selected photos scoped to current wedding" do
-      DisposableCamera::StorageClient.stub(:delete!, true) do
+      DisposableCamera::StorageClient.stub(:delete_objects!, true) do
         assert_difference("DisposablePhoto.count", -2) do
           delete destroy_selected_admin_disposable_photos_path, params: { photo_ids: [@photo_one.id, @photo_two.id] }
         end
@@ -59,7 +59,7 @@ module Admin
     end
 
     test "deletes all photos only for current wedding" do
-      DisposableCamera::StorageClient.stub(:delete!, true) do
+      DisposableCamera::StorageClient.stub(:delete_objects!, true) do
         assert_difference("DisposablePhoto.count", -3) do
           delete destroy_all_admin_disposable_photos_path
         end
