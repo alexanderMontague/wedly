@@ -14,15 +14,20 @@
   <% if @photos.empty? %>
     <p>No disposable photos yet.</p>
   <% else %>
-    <%= form_with url: destroy_selected_admin_disposable_photos_path, method: :delete, local: true do %>
+    <%= form_with url: destroy_selected_admin_disposable_photos_path, method: :delete, local: true,
+                  data: {
+                    controller: "bulk-checkboxes",
+                    bulk_checkboxes_checkbox_selector_value: ".photo-select-checkbox",
+                    bulk_checkboxes_require_selection_value: true
+                  } do %>
       <div class="admin-photo-controls">
         <span class="text-muted">
-          <strong id="selected-photo-count">0</strong> selected
+          <strong data-bulk-checkboxes-target="count">0</strong> selected
         </span>
         <button type="submit"
                 class="btn btn-danger btn-sm"
                 data-turbo-confirm="Delete the selected photos? This cannot be undone."
-                id="delete-selected-button"
+                data-bulk-checkboxes-target="submit"
                 disabled>
           Delete Selected
         </button>

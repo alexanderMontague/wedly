@@ -30,12 +30,16 @@
     </div>
   </div>
 
-  <%= form_with url: admin_invitations_path, method: :post do |f| %>
+  <%= form_with url: admin_invitations_path, method: :post,
+                data: {
+                  controller: "bulk-checkboxes",
+                  bulk_checkboxes_checkbox_selector_value: ".guest-checkbox"
+                } do |f| %>
     <table>
       <thead>
         <tr>
           <th class="w-12">
-            <input type="checkbox" id="select-all">
+            <input type="checkbox" id="select-all" data-bulk-checkboxes-target="master" aria-label="Select all guests">
           </th>
           <th>Guest</th>
           <th>Email</th>
@@ -69,15 +73,7 @@
 
     <div class="mt-8">
       <%= f.submit "Send Invitations to Selected", class: "btn btn-primary",
-                   data: { confirm: "Send invitations to selected guests?" } %>
+                   data: { turbo_confirm: "Send invitations to selected guests?" } %>
     </div>
   <% end %>
 </div>
-
-<script>
-  document.getElementById('select-all')?.addEventListener('change', function(e) {
-    document.querySelectorAll('.guest-checkbox').forEach(cb => {
-      cb.checked = e.target.checked;
-    });
-  });
-</script>
