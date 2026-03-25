@@ -5,23 +5,24 @@
 >
   <%= turbo_stream_from dispo_total_photos_stream %>
 
-  <section class="dispo-orientation-warning" data-dispo-camera-target="orientationWarning">
-    <div class="dispo-orientation-warning__card">
-      <p>Rotate your phone horizontally to use the disposable camera.</p>
-    </div>
-  </section>
+  <div class="dispo-camera-shell">
+    <span class="dispo-rivet dispo-rivet--tl"></span>
+    <span class="dispo-rivet dispo-rivet--tr"></span>
+    <span class="dispo-rivet dispo-rivet--bl"></span>
+    <span class="dispo-rivet dispo-rivet--br"></span>
 
-  <section class="dispo-camera-shell">
     <header class="dispo-camera-top">
-      <div class="dispo-camera-brand-wrap">
-        <p class="dispo-camera-brand"><%=  current_wedding.last_name %> Dispo</p>
-        <p class="dispo-camera-meta">400 ISO • 27 EXP</p>
-        <p class="dispo-camera-meta"><%= format_date_short(current_wedding.date) %></p>
+      <div class="dispo-brand-wrap">
+        <span class="dispo-burst">✺</span>
+        <div class="dispo-brand-text">
+          <p class="dispo-camera-brand"><%= current_wedding.last_name %> Dispo</p>
+          <p class="dispo-camera-meta">400 ISO · 27 EXP · <%= format_date_short(current_wedding.date) %></p>
+        </div>
       </div>
-
-      <div class="dispo-camera-top-right">
+      <div class="dispo-top-right">
+        <span class="dispo-led"></span>
         <div class="dispo-film-counter">
-          <span class="dispo-film-counter__label"># of photos</span>
+          <span class="dispo-film-counter__label">Photos</span>
           <span class="dispo-film-counter__value">
             <%= render "total_photos", total_photos: @total_photos %>
           </span>
@@ -29,41 +30,35 @@
       </div>
     </header>
 
-    <section class="dispo-camera-body">
-      <aside class="dispo-camera-rail">
-        <button type="button" class="dispo-flash-btn" data-action="dispo-camera#toggleFlash" data-dispo-camera-target="flashButton">
-          Flash: Off
-        </button>
-        <p class="dispo-rail-text">Single use digital disposable</p>
-      </aside>
-
-      <div class="dispo-viewfinder-wrap">
+    <div class="dispo-viewfinder-section">
+      <div class="dispo-viewfinder-frame">
         <video class="dispo-viewfinder" data-dispo-camera-target="video" autoplay playsinline muted></video>
         <canvas class="hidden" data-dispo-camera-target="canvas"></canvas>
         <div class="dispo-flash-pop hidden" data-dispo-camera-target="flashPop"></div>
 
         <div class="dispo-permission-gate" data-dispo-camera-target="permissionGate">
-          <p class="dispo-permission-title">Enable camera access</p>
-          <p class="dispo-permission-copy">Tap to allow browser camera permissions for disposable captures.</p>
+          <span class="dispo-permission-icon">✺</span>
+          <p class="dispo-permission-title">Enable Camera Access</p>
+          <p class="dispo-permission-copy">Tap to allow camera permissions and start capturing disposable memories.</p>
           <button type="button" class="dispo-permission-btn" data-action="dispo-camera#requestCameraAccess" data-dispo-camera-target="permissionButton">
             Enable Camera
           </button>
         </div>
 
         <div class="dispo-viewfinder-overlay">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
+          <span></span><span></span><span></span><span></span>
         </div>
       </div>
-    </section>
+    </div>
 
     <footer class="dispo-controls">
-      <p class="dispo-status" data-dispo-camera-target="status">Tap "Enable Camera" to begin.</p>
+      <button type="button" class="dispo-flash-btn" data-action="dispo-camera#toggleFlash" data-dispo-camera-target="flashButton">
+        Flash: Off
+      </button>
+      <p class="dispo-status" data-dispo-camera-target="status">Enable camera to begin.</p>
       <button type="button" class="dispo-shutter-btn" data-action="dispo-camera#takePhoto" data-dispo-camera-target="shutterButton">
         Capture
       </button>
     </footer>
-  </section>
+  </div>
 </main>

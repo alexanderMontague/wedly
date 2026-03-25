@@ -8,7 +8,6 @@ export default class extends Controller {
     "flashButton",
     "shutterButton",
     "status",
-    "orientationWarning",
     "permissionGate",
     "permissionButton",
   ];
@@ -23,20 +22,11 @@ export default class extends Controller {
     this.cameraReady = false;
     this.isUploading = false;
     this.isStartingCamera = false;
-    this.orientationMediaQuery = window.matchMedia("(orientation: portrait)");
-    this.orientationHandler = () => this.updateOrientationState();
-    this.resizeHandler = () => this.updateOrientationState();
-
-    this.orientationMediaQuery.addEventListener("change", this.orientationHandler);
-    window.addEventListener("resize", this.resizeHandler);
     this.renderFlashButton();
-    this.updateOrientationState();
     await this.initializeCameraAccess();
   }
 
   disconnect() {
-    this.orientationMediaQuery?.removeEventListener("change", this.orientationHandler);
-    window.removeEventListener("resize", this.resizeHandler);
     this.stopCamera();
   }
 
@@ -60,11 +50,6 @@ export default class extends Controller {
   async takePhoto() {
     if (!this.stream || !this.cameraReady) {
       this.setStatus("Camera is not ready yet.");
-      return;
-    }
-
-    if (this.isPortrait()) {
-      this.setStatus("Rotate your device horizontally first.");
       return;
     }
 
@@ -198,16 +183,6 @@ export default class extends Controller {
     this.flashButtonTarget.textContent = this.flashEnabled ? "Flash: On" : "Flash: Off";
   }
 
-  updateOrientationState() {
-    const portrait = this.isPortrait();
-    this.orientationWarningTarget.classList.toggle("hidden", !portrait);
-    this.updateShutterState();
-  }
-
-  isPortrait() {
-    return this.orientationMediaQuery.matches || window.innerHeight > window.innerWidth;
-  }
-
   captureFrame() {
     return new Promise((resolve, reject) => {
       const width = this.videoTarget.videoWidth;
@@ -261,7 +236,6 @@ export default class extends Controller {
 
       throw new Error("Upload failed.");
     }
-
   }
 
   showFlashPop() {
@@ -276,9 +250,7 @@ export default class extends Controller {
 
   updateShutterState() {
     if (!this.hasShutterButtonTarget) return;
-
-    const portrait = this.isPortrait();
-    this.shutterButtonTarget.disabled = portrait || !this.cameraReady || this.isUploading;
+    this.shutterButtonTarget.disabled = !this.cameraReady || this.isUploading;
   }
 
   showPermissionGate() {
