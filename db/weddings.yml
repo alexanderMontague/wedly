@@ -14,13 +14,14 @@
   # Date & Location
   date: "2027-07-10"
   ceremony_time: "4:00 PM"
+  wedding_duration_hours: 10 # used to lock disposable camera photos
   venue:
     name: "Liberty Grand"
     city: "Toronto"
     region: "Ontario"
 
   # RSVP Settings
-  rsvp_deadline: "2026-08-01"
+  rsvp_deadline: "2027-05-10"
   meal_options:
     - Chicken
     - Beef

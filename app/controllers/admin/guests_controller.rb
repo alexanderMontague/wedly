@@ -1,3 +1,5 @@
+require "csv"
+
 module Admin
   class GuestsController < Admin::BaseController
     before_action :set_guest, only: %i[show edit update destroy]

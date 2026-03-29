@@ -1,37 +1,56 @@
-<div class="card">
-  <h1>Wedding Settings</h1>
+<div class="max-w-3xl">
+  <div class="mb-8">
+    <h1 class="text-2xl font-semibold text-neutral-800">Feature Flags</h1>
+    <p class="text-sm text-muted mt-1">
+      Override time-based or config-based defaults. Set to <strong>Automatic</strong> to restore scheduled behaviour from <code>weddings.yml</code>.
+    </p>
+  </div>
 
-  <%= form_with url: admin_settings_path, method: :post do |f| %>
-    <h3>Basic Information</h3>
+  <%= form_with url: admin_settings_path, method: :patch do |f| %>
+    <% @flag_definitions.each do |category, flags| %>
+      <div class="card mb-6">
+        <h2 class="text-xs font-semibold uppercase tracking-widest text-neutral-400 mb-5">
+          <%= WeddingFeatureFlags.category_label(category) %>
+        </h2>
 
-    <div class="form-group">
-      <%= f.label :title, "Wedding Title" %>
-      <%= f.text_field :title, class: "form-control", required: true %>
+        <div class="divide-y divide-neutral-100">
+          <% flags.each do |flag| %>
+            <% override = @flag_overrides[flag.key] %>
+            <% scheduled_on = flag.scheduled_state.call(current_wedding) %>
+            <% effective_on = override ? ActiveModel::Type::Boolean.new.cast(override.value) : scheduled_on %>
+
+            <div class="py-5 first:pt-0 last:pb-0 flex items-start gap-6">
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="font-medium text-neutral-800 text-sm"><%= flag.label %></span>
+                  <span class="badge <%= effective_on ? 'badge-success' : 'badge-neutral' %>">
+                    <%= effective_on ? "Active" : "Inactive" %>
+                  </span>
+                  <% if override %>
+                    <span class="badge badge-warning">Overridden</span>
+                  <% end %>
+                </div>
+                <p class="text-sm text-muted mb-2"><%= flag.description %></p>
+                <p class="text-xs text-neutral-400">
+                  Schedule: <span class="font-medium text-neutral-500"><%= flag.scheduled_label.call(current_wedding) %></span>
+                </p>
+              </div>
+
+              <div class="shrink-0 w-40">
+                <%= f.select "flags[#{flag.key}]",
+                    [["Automatic", ""], ["Force On", "true"], ["Force Off", "false"]],
+                    { selected: override&.value || "" },
+                    class: "form-control text-sm" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="flex items-center gap-3">
+      <%= f.submit "Save Settings", class: "btn btn-primary" %>
+      <p class="text-xs text-muted">Changes take effect immediately.</p>
     </div>
-
-    <div class="form-group">
-      <%= f.label :date, "Wedding Date" %>
-      <%= f.date_field :date, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :location %>
-      <%= f.text_field :location, class: "form-control" %>
-    </div>
-
-    <h3 class="mt-8">RSVP Settings</h3>
-
-    <div class="form-group">
-      <%= f.label :rsvp_deadline, "RSVP Deadline" %>
-      <%= f.date_field :rsvp_deadline, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :meal_options_text, "Meal Options (one per line)" %>
-      <%= f.text_area :meal_options_text, class: "form-control", rows: 4 %>
-      <small class="form-hint">Enter each meal option on a new line</small>
-    </div>
-
-    <%= f.submit "Save Settings", class: "btn btn-primary" %>
   <% end %>
 </div>

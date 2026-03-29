@@ -6,14 +6,18 @@ export default class extends Controller {
     "canvas",
     "flashPop",
     "flashButton",
+    "flipButton",
     "shutterButton",
     "status",
     "permissionGate",
     "permissionButton",
+    "lockedGate",
   ];
 
   static values = {
     uploadUrl: String,
+    closesAt: Number,
+    forcedLocked: Boolean,
   };
 
   async connect() {
@@ -22,11 +26,22 @@ export default class extends Controller {
     this.cameraReady = false;
     this.isUploading = false;
     this.isStartingCamera = false;
+    this.lockTimer = null;
+    this.facingMode = "environment";
+
     this.renderFlashButton();
+
+    if (this.isCameraLocked()) {
+      this.applyLock();
+      return;
+    }
+
+    this.scheduleLockAt(this.closesAtValue);
     await this.initializeCameraAccess();
   }
 
   disconnect() {
+    clearTimeout(this.lockTimer);
     this.stopCamera();
   }
 
@@ -113,7 +128,7 @@ export default class extends Controller {
       this.stream = await navigator.mediaDevices.getUserMedia({
         audio: false,
         video: {
-          facingMode: { ideal: "environment" },
+          facingMode: { ideal: this.facingMode },
           width: { ideal: 1920 },
           height: { ideal: 1080 },
         },
@@ -127,6 +142,7 @@ export default class extends Controller {
       this.hidePermissionGate();
       this.updateShutterState();
       this.setStatus("Camera ready.");
+      await this.checkFlipSupport();
     } catch (error) {
       this.cameraReady = false;
       this.stream = null;
@@ -138,6 +154,55 @@ export default class extends Controller {
     } finally {
       this.isStartingCamera = false;
       this.setPermissionButtonState(false, "Enable Camera");
+    }
+  }
+
+  async flipCamera() {
+    if (!this.cameraReady || this.isUploading) return;
+
+    const prevFacing = this.facingMode;
+    this.facingMode = prevFacing === "environment" ? "user" : "environment";
+
+    this.stream?.getTracks().forEach((t) => t.stop());
+    this.stream = null;
+    this.track = null;
+    this.cameraReady = false;
+    this.torchSupported = false;
+    this.flashEnabled = false;
+    this.renderFlashButton();
+    this.updateShutterState();
+
+    try {
+      this.stream = await navigator.mediaDevices.getUserMedia({
+        audio: false,
+        video: {
+          facingMode: { ideal: this.facingMode },
+          width: { ideal: 1920 },
+          height: { ideal: 1080 },
+        },
+      });
+
+      this.videoTarget.srcObject = this.stream;
+      await this.videoTarget.play();
+      this.track = this.stream.getVideoTracks()[0];
+      this.cameraReady = true;
+      this.setupTorchSupport();
+      this.updateShutterState();
+    } catch (error) {
+      this.facingMode = prevFacing;
+      this.setStatus("Could not switch camera.");
+    }
+  }
+
+  async checkFlipSupport() {
+    if (!this.hasFlipButtonTarget) return;
+
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const videoInputCount = devices.filter((d) => d.kind === "videoinput").length;
+      this.flipButtonTarget.classList.toggle("hidden", videoInputCount < 2);
+    } catch {
+      // leave hidden
     }
   }
 
@@ -250,7 +315,42 @@ export default class extends Controller {
 
   updateShutterState() {
     if (!this.hasShutterButtonTarget) return;
-    this.shutterButtonTarget.disabled = !this.cameraReady || this.isUploading;
+    const locked = this.isCameraLocked();
+    this.shutterButtonTarget.disabled = locked || !this.cameraReady || this.isUploading;
+  }
+
+  isCameraLocked() {
+    if (this.hasForcedLockedValue && this.forcedLockedValue) return true;
+    return this.hasClosesAtValue && this.closesAtValue > 0 && Date.now() >= this.closesAtValue;
+  }
+
+  // Recursively reschedules if `closesAtMs` exceeds the JS setTimeout cap (~24.8 days),
+  // so the lock fires correctly even for weddings far in the future.
+  scheduleLockAt(closesAtMs) {
+    if (!closesAtMs || closesAtMs <= 0) return;
+
+    const MAX_TIMEOUT_MS = 0x7fffffff;
+    const delay = closesAtMs - Date.now();
+
+    if (delay <= 0) {
+      this.applyLock();
+      return;
+    }
+
+    this.lockTimer = setTimeout(
+      () => this.scheduleLockAt(closesAtMs),
+      Math.min(delay, MAX_TIMEOUT_MS),
+    );
+  }
+
+  applyLock() {
+    this.stopCamera();
+    this.setStatus("The camera is now closed.");
+    if (this.hasLockedGateTarget) this.lockedGateTarget.classList.remove("hidden");
+    if (this.hasPermissionGateTarget) this.permissionGateTarget.classList.add("hidden");
+    if (this.hasFlashButtonTarget) this.flashButtonTarget.disabled = true;
+    if (this.hasFlipButtonTarget) this.flipButtonTarget.disabled = true;
+    this.updateShutterState();
   }
 
   showPermissionGate() {

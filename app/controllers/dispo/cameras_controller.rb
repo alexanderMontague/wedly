@@ -13,6 +13,10 @@ module Dispo
     end
 
     def create
+      unless current_wedding.dispo_accepting_photos?
+        return render json: { error: "The disposable camera is no longer accepting photos." }, status: :forbidden
+      end
+
       uploaded_file = upload_params.fetch(:photo)
       content_type = uploaded_file.content_type
       ensure_supported_upload!(uploaded_file:, content_type:)

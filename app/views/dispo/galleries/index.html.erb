@@ -1,4 +1,6 @@
-<main class="dispo-gallery">
+<% content_for :body_class, "dispo-body--gallery" %>
+
+<main class="dispo-gallery" data-controller="dispo-lightbox">
   <header class="dispo-gallery__header">
     <h1>Disposable Camera Gallery</h1>
   </header>
@@ -8,7 +10,8 @@
   <% else %>
     <section class="dispo-gallery__grid">
       <% @photos.each do |photo| %>
-        <article class="dispo-gallery__item">
+        <article class="dispo-gallery__item"
+                 data-action="click->dispo-lightbox#open">
           <img
             src="<%= DisposableCamera::StorageClient.public_url_for(photo.object_key) %>"
             alt="Disposable camera guest photo"
@@ -39,4 +42,16 @@
       </div>
     </div>
   <% end %>
+
+  <div class="dispo-lightbox"
+       data-dispo-lightbox-target="overlay"
+       data-action="click->dispo-lightbox#closeOnBackdrop">
+    <button type="button"
+            class="dispo-lightbox__close"
+            data-action="click->dispo-lightbox#close"
+            aria-label="Close">
+      ✕
+    </button>
+    <img class="dispo-lightbox__img" data-dispo-lightbox-target="image" src="" alt="">
+  </div>
 </main>

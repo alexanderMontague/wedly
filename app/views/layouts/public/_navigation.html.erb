@@ -12,8 +12,10 @@
             class: class_names("wedding-nav-link", { active: current_page?(root_path) }) %>
          <%= link_to "Save the Date", public_save_the_date_path,
             class: class_names("wedding-nav-link", { active: current_page?(public_save_the_date_path) }) %>
-        <%= link_to "RSVP", public_rsvp_lookup_path,
-            class: class_names("wedding-nav-link", { active: request.path.start_with?('/rsvp') }) %>
+        <% if current_wedding.rsvp_visible? %>
+          <%= link_to "RSVP", public_rsvp_lookup_path,
+              class: class_names("wedding-nav-link", { active: request.path.start_with?('/rsvp') }) %>
+        <% end %>
       </div>
     </div>
   </div>

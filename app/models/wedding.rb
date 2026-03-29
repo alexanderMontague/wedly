@@ -33,8 +33,46 @@ class Wedding < FrozenRecord::Base
     WeddingMetadata.where(wedding_id: id)
   end
 
+  # Returns the effective boolean state of a feature flag, checking metadata overrides
+  # first and falling back to the time/config-based scheduled state.
+  def feature_flag(key)
+    override = metadata.find_by(key: key.to_s)
+    return ActiveModel::Type::Boolean.new.cast(override.value) unless override.nil?
+
+    definition = WeddingFeatureFlags.find(key)
+    return false unless definition
+
+    definition.scheduled_state.call(self)
+  end
+
+  def rsvp_visible?
+    feature_flag("rsvp_visible")
+  end
+
+  def dispo_accepting_photos?
+    feature_flag("dispo_accepting_photos")
+  end
+
+  def dispo_gallery_on_main_page?
+    feature_flag("dispo_gallery_on_main_page")
+  end
+
   def date
     Date.parse(super)
+  end
+
+  # Returns the Time at which the disposable camera stops accepting photos.
+  # otherwise derives the time from ceremony_time + wedding_duration_hours.
+  def dispo_camera_closes_at
+    tz = ActiveSupport::TimeZone[timezone] || Time.zone
+
+    tz.parse("#{date} #{ceremony_time}") + wedding_duration_hours.to_i.hours
+  rescue ArgumentError, TypeError
+    tz.local(date.year, date.month, date.day) + 1.day
+  end
+
+  def dispo_camera_locked?
+    Time.current >= dispo_camera_closes_at
   end
 
   def rsvp_stats

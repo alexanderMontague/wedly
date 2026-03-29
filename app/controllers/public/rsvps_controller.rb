@@ -1,6 +1,7 @@
 module Public
   class RsvpsController < Public::BaseController
     before_action :set_guest, only: %i[edit update thanks]
+    before_action :check_rsvp_open, except: :thanks
 
     def index
     end
@@ -66,6 +67,15 @@ module Public
 
     def rsvp_params
       params.require(:rsvps).permit!
+    end
+
+    def check_rsvp_open
+      return if current_wedding.rsvp_visible?
+
+      respond_to do |format|
+        format.html { render :closed, status: :not_found }
+        format.json { render json: { error: "RSVPs are closed." }, status: :forbidden }
+      end
     end
   end
 end
