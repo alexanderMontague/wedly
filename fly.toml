@@ -4,7 +4,7 @@
 #
 
 app = 'wedly'
-primary_region = 'iad'
+primary_region = 'yyz'
 console_command = '/rails/bin/rails console'
 
 [build]

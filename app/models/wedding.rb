@@ -57,6 +57,10 @@ class Wedding < FrozenRecord::Base
     feature_flag("dispo_gallery_on_main_page")
   end
 
+  def dispo_gallery_visible?
+    feature_flag("dispo_gallery_on_main_page")
+  end
+
   def date
     Date.parse(super)
   end

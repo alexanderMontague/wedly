@@ -132,30 +132,6 @@
     </section>
   <% end %>
 
-  <% if @dispo_photos&.any? %>
-    <%# Disposable Camera Gallery Preview %>
-    <section class="py-32 border-y border-stone-200 bg-stone-100/50">
-      <div class="max-w-7xl mx-auto px-4">
-        <%= render "public/shared/divider" %>
-        <div class="mb-12"></div>
-        <%= render "public/shared/section_title", title: "From the Disposable Camera", centered: true %>
-        <div class="mb-16"></div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-          <% @dispo_photos.each do |photo| %>
-            <div class="gallery-item animate-on-scroll" data-scroll-animate-target="item">
-              <%= image_tag DisposableCamera::StorageClient.public_url_for(photo.object_key),
-                  alt: "Wedding memory",
-                  loading: "lazy" %>
-            </div>
-          <% end %>
-        </div>
-        <div class="text-center">
-          <%= link_to "View All Photos", dispo_gallery_path, class: "btn-wedding-primary" %>
-        </div>
-      </div>
-    </section>
-  <% end %>
-
   <% if current_wedding.rsvp_visible? %>
     <%# RSVP Call to Action %>
     <section class="py-32 border-y border-stone-200 bg-stone-100/50" id="rsvp-section">

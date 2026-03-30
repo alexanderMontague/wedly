@@ -44,8 +44,8 @@ class WeddingFeatureFlags
     ),
     FlagDefinition.new(
       key: "dispo_gallery_on_main_page",
-      label: "Dispo Gallery on Main Page",
-      description: "Display a gallery of disposable camera photos on the public wedding page.",
+      label: "Dispo Gallery on Photos Page",
+      description: "Display the full disposable camera album as the last section on the public Gallery page.",
       category: :dispo,
       scheduled_state: ->(_wedding) { false },
       scheduled_label: ->(_wedding) { "Off by default" }
