@@ -1,55 +1,55 @@
-<div class="min-h-screen py-20 px-4 bg-gradient-to-b from-stone-50 via-amber-50/30 to-stone-100"
-     data-controller="envelope rsvp-form"
+<div class="relative min-h-screen bg-gradient-to-b from-stone-50 via-amber-50/30 to-stone-100"
+     data-controller="invitation-video rsvp-form"
      data-rsvp-form-guest-ids-value="<%= @guests.map(&:id).to_json %>">
-  <div class="max-w-2xl mx-auto">
-    <%# Header %>
-    <div class="text-center mb-16 animate-fade-in-up">
+  <%= render "public/shared/invitation_video_stage",
+        video_src: asset_path("britt&alex-wedding-invite.mp4") %>
+
+  <div class="invitation-video-content mx-auto hidden max-w-2xl px-4 py-20"
+       data-invitation-video-target="content">
+    <div class="mb-16 animate-fade-in-up text-center">
       <%= render "public/shared/divider" %>
       <div class="mb-8"></div>
-      <h1 class="text-6xl mb-6 tracking-wide font-display font-light text-stone-800">
+      <h1 class="mb-6 font-display text-6xl font-light tracking-wide text-stone-800">
         RSVP
       </h1>
-      <p class="text-sm tracking-wider text-stone-500 font-light">
-        Select the envelope to reveal your invitation
+      <p class="text-sm font-light tracking-wider text-stone-500">
+        Your invitation details are below
       </p>
     </div>
 
     <%= render "public/shared/flash_messages" %>
 
-    <%# Envelope %>
     <%= render "public/rsvps/envelope" %>
+  </div>
 
-    <%# Full RSVP Form (hidden initially) %>
-    <div class="hidden" data-envelope-target="form">
-      <div class="rsvp-form-card animate-fade-in-up">
-        <div class="mb-12">
-          <h2 class="text-3xl mb-2 font-display font-light text-stone-800">
-            <%= @household.display_name %>
-          </h2>
-          <p class="text-stone-500 font-light">
-            Please respond for each guest in your party
+  <div class="hidden" data-invitation-video-target="form">
+    <div class="rsvp-form-card mx-auto max-w-2xl px-4 pb-20 animate-fade-in-up">
+      <div class="mb-12">
+        <h2 class="mb-2 font-display text-3xl font-light text-stone-800">
+          <%= @household.display_name %>
+        </h2>
+        <p class="font-light text-stone-500">
+          Please respond for each guest in your party
+        </p>
+        <% if current_wedding.rsvp_deadline %>
+          <p class="mt-2 text-sm font-light text-stone-400">
+            Kindly respond by <%= format_date(current_wedding.rsvp_deadline) %>
           </p>
-          <% if current_wedding.rsvp_deadline %>
-            <p class="text-sm mt-2 text-stone-400 font-light">
-              Kindly respond by <%= format_date(current_wedding.rsvp_deadline) %>
-            </p>
-          <% end %>
-        </div>
-
-        <%= form_with url: public_rsvp_path(@guest.invite_code), method: :patch, data: { turbo: false } do |f| %>
-          <% @guests.each_with_index do |guest, index| %>
-            <%= render "public/rsvps/guest_fields", guest: guest, index: index %>
-          <% end %>
-
-          <div class="pt-12">
-            <%= f.submit "Submit Response", class: "rsvp-submit" %>
-          </div>
         <% end %>
       </div>
-    </div>
 
-    <%# Decorative corners (desktop only) %>
-    <div class="hidden md:block absolute top-20 left-10 w-24 h-24 border-l border-t border-stone-200/50"></div>
-    <div class="hidden md:block absolute bottom-20 right-10 w-24 h-24 border-r border-b border-stone-200/50"></div>
+      <%= form_with url: public_rsvp_path(@guest.invite_code), method: :patch, data: { turbo: false } do |f| %>
+        <% @guests.each_with_index do |guest, index| %>
+          <%= render "public/rsvps/guest_fields", guest: guest, index: index %>
+        <% end %>
+
+        <div class="pt-12">
+          <%= f.submit "Submit Response", class: "rsvp-submit" %>
+        </div>
+      <% end %>
+    </div>
   </div>
+
+  <div class="pointer-events-none absolute left-10 top-20 hidden h-24 w-24 border-l border-t border-stone-200/50 md:block"></div>
+  <div class="pointer-events-none absolute bottom-20 right-10 hidden h-24 w-24 border-r border-b border-stone-200/50 md:block"></div>
 </div>

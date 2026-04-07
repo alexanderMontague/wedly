@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -468,161 +469,14 @@
   }
 
   /* --------------------------------------------------------------------------
-     Wax Seal
+     Invitation video reveal (save the date / RSVP)
      -------------------------------------------------------------------------- */
-  .wax-seal {
-    @apply w-16 h-16 rounded-full shadow-lg flex items-center justify-center bg-gradient-to-br from-amber-700 to-amber-900 border-2 border-amber-800/30;
+  .invitation-video-content {
+    @apply opacity-0 transition-opacity duration-700 ease-out;
   }
 
-  /* --------------------------------------------------------------------------
-     Envelope Animation
-     -------------------------------------------------------------------------- */
-  .envelope-container {
-    @apply relative;
-    perspective: 1500px;
-  }
-
-  .envelope {
-    @apply relative cursor-pointer transition-transform duration-300 ease-out hover:scale-[1.01];
-  }
-
-  .envelope-body {
-    @apply relative shadow-2xl border border-stone-200/50;
-  }
-
-  .envelope-inner {
-    @apply relative aspect-[3/2] bg-gradient-to-br from-stone-50 to-amber-50/50;
-    isolation: isolate;
-  }
-
-  .envelope-inner::before {
-    content: '';
-    @apply absolute inset-x-0 top-0 h-1/2 border-b border-stone-500/10 bg-gradient-to-br from-stone-100 to-stone-200;
-    clip-path: polygon(0 0, 50% 0, 50% 100%);
-    z-index: 8;
-    pointer-events: none;
-  }
-
-  .envelope-inner::after {
-    content: '';
-    @apply absolute inset-x-0 top-0 h-1/2 border-b border-stone-500/10 bg-gradient-to-bl from-stone-100 to-stone-200;
-    clip-path: polygon(50% 0, 100% 0, 50% 100%);
-    z-index: 9;
-    pointer-events: none;
-  }
-
-  .envelope-flap {
-    @apply absolute inset-x-0 top-0 h-1/2 z-30 border-b border-stone-500/10 bg-gradient-to-br from-stone-100 to-stone-200;
-    transform-origin: top center;
-    transform-style: preserve-3d;
-    backface-visibility: visible;
-    clip-path: polygon(0 0, 100% 0, 50% 105%);
-    transition: transform 1s cubic-bezier(0.43, 0.13, 0.23, 0.96);
-  }
-
-  .envelope-flap.open {
-    transform: rotateX(-180deg);
-  }
-
-  .envelope-flap-inner {
-    @apply absolute inset-0 bg-gradient-to-br from-stone-100 to-stone-200 opacity-30;
-  }
-
-  .envelope-flap-line {
-    @apply absolute w-12 h-px bg-stone-400/30;
-    top: 33%;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .envelope-seal {
-    @apply absolute z-40 transition-all duration-400 ease-out;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  .envelope-seal.hidden {
-    @apply opacity-0;
-    transform: translate(-50%, -50%) scale(0);
-  }
-
-  .envelope-bottom {
-    @apply absolute inset-0 z-20 bg-gradient-to-br from-stone-100 to-amber-100 border-t border-stone-200;
-    overflow: hidden;
-    clip-path: polygon(0 0, 0% 0, 50% 52%, 100% 0, 100% 0, 100% 100%, 0 100%);
-    -webkit-clip-path: polygon(0 0, 0% 0, 50% 52%, 100% 0, 100% 0, 100% 100%, 0 100%);
-  }
-
-  .envelope-bottom::before {
-    content: '';
-    @apply absolute inset-0;
-    @apply bg-gradient-to-br from-stone-50 to-stone-100;
-    clip-path: polygon(0 50%, 50% 100%, 0 100%);
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  .envelope-bottom::after {
-    content: '';
-    @apply absolute inset-0;
-    @apply bg-gradient-to-bl from-stone-50 to-stone-100;
-    clip-path: polygon(100% 50%, 50% 100%, 100% 100%);
-    z-index: 2;
-    pointer-events: none;
-  }
-
-  .envelope-card {
-    @apply absolute bg-white flex flex-col items-center justify-center border border-stone-200/50 p-12 opacity-0;
-    left: 1rem;
-    right: 1rem;
-    top: 1rem;
-    bottom: 1rem;
-    z-index: 10;
-    box-shadow: none;
-    /* transition: opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s; */
-  }
-
-  .envelope-card.visible {
+  .invitation-video-content--visible {
     @apply opacity-100;
-    z-index: 10;
-  }
-
-  .envelope-inner > :not(.envelope-card):not(.envelope-flap) {
-    transition: transform 1.35s cubic-bezier(0.2, 0.82, 0.28, 1), opacity 0.8s ease;
-  }
-
-  .envelope-inner::before,
-  .envelope-inner::after {
-    transition: transform 1.35s cubic-bezier(0.2, 0.82, 0.28, 1), opacity 0.8s ease;
-  }
-
-  .envelope-inner:has(.envelope-flap.open) > :not(.envelope-card):not(.envelope-flap),
-  .envelope-inner:has(.envelope-flap.open)::before,
-  .envelope-inner:has(.envelope-flap.open)::after {
-    transform: translateY(140%);
-    opacity: 0;
-    transition-delay: 1.15s;
-  }
-
-  .envelope-inner:has(.envelope-flap.open) .envelope-flap {
-    animation: envelope-flap-drop 1.35s cubic-bezier(0.2, 0.82, 0.28, 1) 1.15s forwards;
-  }
-
-  @keyframes envelope-flap-drop {
-    from {
-      transform: rotateX(-180deg) translateY(0);
-      opacity: 1;
-    }
-    to {
-      transform: rotateX(-180deg) translateY(140%);
-      opacity: 1;
-    }
-  }
-
-  .envelope-instruction {
-    @apply text-center mt-12 opacity-0;
-    animation: fade-in 0.5s ease 1.5s forwards;
   }
 
   /* --------------------------------------------------------------------------
@@ -945,8 +799,6 @@
 /* ==========================================================================
    Disposable Camera — Retro Design
    ========================================================================== */
-
-@import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
 
 @layer components {
   .dispo-body {
@@ -1276,7 +1128,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 0.75rem;
-    padding: 0.7rem 1.25rem 0.95rem;
+    padding: 0.85rem 1.25rem 1.15rem;
     border-top: 1px solid rgba(0, 0, 0, 0.5);
     box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.04);
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.22) 0%, rgba(255, 255, 255, 0.02) 100%);
@@ -1352,15 +1204,34 @@
     line-height: 1.35;
   }
 
+  /* Room for shutter 3D shadow + press motion inside overflow:hidden shell */
+  .dispo-shutter-wrap {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.55rem 0;
+  }
+
   /* ---- Shutter Button ---- */
   .dispo-shutter-btn {
     position: relative;
     flex-shrink: 0;
+    box-sizing: border-box;
     width: 70px;
     height: 70px;
+    min-width: 70px;
+    min-height: 70px;
+    aspect-ratio: 1;
+    padding: 0;
+    margin: 0;
     border-radius: 50%;
     border: 3px solid rgba(0, 0, 0, 0.65);
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
     font-size: 0.56rem;
     font-weight: 800;
     letter-spacing: 0.12em;
@@ -1374,7 +1245,7 @@
       0 10px 22px rgba(0, 0, 0, 0.65),
       inset 0 1px 0 rgba(255, 255, 255, 0.28),
       inset 0 -2px 4px rgba(0, 0, 0, 0.32);
-    transform: translateY(-2px);
+    transform: translateY(0);
     transition: transform 80ms, box-shadow 80ms;
   }
 
@@ -1416,12 +1287,18 @@
     }
 
     .dispo-controls {
-      padding: 0.5rem 1.25rem 0.6rem;
+      padding: 0.55rem 1.25rem 0.75rem;
+    }
+
+    .dispo-shutter-wrap {
+      padding: 0.45rem 0;
     }
 
     .dispo-shutter-btn {
       width: 58px;
       height: 58px;
+      min-width: 58px;
+      min-height: 58px;
     }
   }
 

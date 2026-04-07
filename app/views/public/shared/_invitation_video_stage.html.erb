@@ -1,0 +1,22 @@
+<% video_src = local_assigns.fetch(:video_src) %>
+<div class="invitation-video-stage fixed inset-0 z-[200] bg-black"
+     data-invitation-video-target="videoStage"
+     role="dialog"
+     aria-label="Wedding invitation video">
+  <%= video_tag video_src,
+        class: "absolute inset-0 h-full w-full object-cover",
+        data: { invitation_video_target: "video" },
+        playsinline: true,
+        preload: "metadata" %>
+  <div class="pointer-events-none absolute inset-0 z-10 bg-white opacity-0 transition-opacity duration-700 ease-out"
+       data-invitation-video-target="whiteCurtain"
+       aria-hidden="true"></div>
+  <button type="button"
+          class="absolute inset-0 z-20 flex cursor-pointer items-center justify-center bg-stone-950/30 transition-opacity duration-300"
+          data-invitation-video-target="clickOverlay"
+          data-action="click->invitation-video#start">
+    <span class="border border-stone-200/40 bg-stone-950/40 px-8 py-3 text-sm font-light tracking-[0.35em] text-stone-100 backdrop-blur-sm">
+      Click to open
+    </span>
+  </button>
+</div>
