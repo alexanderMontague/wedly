@@ -1,8 +1,4 @@
-<div class="relative min-h-screen bg-gradient-to-b from-stone-50 via-amber-50/30 to-stone-100"
-     data-controller="invitation-video">
-  <%= render "public/shared/invitation_video_stage",
-        video_src: asset_path("britt&alex-wedding-invite.mp4") %>
-
+<%= render layout: "public/shared/full_width_invitation_video", locals: { skip_video: params["skip_video"].present? } do %>
   <div class="invitation-video-content hidden min-h-screen px-4 py-20"
        data-invitation-video-target="content">
     <div class="mx-auto max-w-2xl">
@@ -12,15 +8,64 @@
         <h1 class="mb-6 font-display text-6xl font-light tracking-wide text-stone-800">
           Save the Date
         </h1>
-        <p class="mb-4 text-lg font-light text-stone-600">
-          <%= current_wedding.title %>
-        </p>
-        <p class="text-sm font-light tracking-wider text-stone-500">
-          We hope you can join us
-        </p>
+
       </div>
 
-      <%= render "public/save_the_dates/envelope" %>
+      <div class="space-y-8 text-center">
+        <div class="mb-8 space-y-6">
+          <%= render "public/shared/divider", height: 8 %>
+          <div class="mb-6"></div>
+          <p class="text-[10px] font-light uppercase tracking-[0.3em] text-stone-500">
+            Save the Date
+          </p>
+          <h2 class="font-display text-4xl font-light text-stone-800">
+            <%= current_wedding.title %>
+          </h2>
+          <div class="mx-auto h-px w-16 bg-stone-300"></div>
+        </div>
+
+        <div class="mb-8 space-y-6 text-center">
+          <p class="mx-auto max-w-md font-light leading-relaxed text-stone-600">
+            We are delighted to announce our wedding and would be honored to have you celebrate with us on this special day.
+          </p>
+
+          <% if current_wedding.date %>
+            <div class="border-y border-stone-200 py-6">
+              <p class="mb-2 font-display text-3xl font-light text-stone-800">
+                <%= format_date_elegant(current_wedding.date) %>
+              </p>
+              <% if current_wedding.ceremony_time %>
+                <p class="text-lg font-light text-stone-600">
+                  <%= current_wedding.ceremony_time %>
+                </p>
+              <% end %>
+            </div>
+          <% end %>
+
+          <% if current_wedding.venue %>
+            <div class="space-y-1">
+              <p class="font-light text-stone-600"><%= current_wedding.venue['name'] %></p>
+              <p class="text-sm font-light text-stone-500">
+                <%= full_venue_name(current_wedding.venue) %>
+              </p>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="space-y-4 text-center">
+          <% if current_wedding&.date %>
+            <%= link_to calendar_url,
+                target: "_blank",
+                rel: "noopener noreferrer",
+                class: "btn-wedding-primary inline-block" do %>
+              Add to Calendar
+            <% end %>
+          <% end %>
+          <p class="text-xs font-light text-stone-400">
+            Formal invitation to follow
+          </p>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+<% end %>

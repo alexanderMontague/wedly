@@ -12,7 +12,16 @@ export default class extends Controller {
     "form",
   ];
 
+  static values = {
+    skipVideo: Boolean,
+  };
+
   connect() {
+    if (this.skipVideoValue) {
+      this.showForm();
+      return;
+    }
+
     this.revealed = false;
     this.started = false;
     this.boundOnEnded = () => this.onEnded();
@@ -29,7 +38,7 @@ export default class extends Controller {
     this.clickOverlayTarget.classList.add(
       "opacity-0",
       "pointer-events-none",
-      "invisible"
+      "invisible",
     );
     this.videoTarget.play().catch(() => {});
   }

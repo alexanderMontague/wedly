@@ -1,0 +1,9 @@
+<% skip_video = local_assigns.fetch(:skip_video, false) %>
+
+<% video_src = local_assigns.fetch(:video_src) { asset_path("britt-alex-envelope-open.mp4") } %>
+<% controllers = ["invitation-video", local_assigns[:extra_controllers]].compact.join(" ") %>
+<% data_attrs = { controller: controllers, skip_video: skip_video }.merge(local_assigns.fetch(:data, {})) %>
+<%= tag.div(class: "relative min-h-screen bg-gradient-to-b from-stone-50 via-amber-50/30 to-stone-100", data: data_attrs) do %>
+  <%= render "public/shared/invitation_video_stage", video_src: video_src %>
+  <%= yield %>
+<% end %>

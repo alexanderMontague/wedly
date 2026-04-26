@@ -1,9 +1,8 @@
-<div class="relative min-h-screen bg-gradient-to-b from-stone-50 via-amber-50/30 to-stone-100"
-     data-controller="invitation-video rsvp-form"
-     data-rsvp-form-guest-ids-value="<%= @guests.map(&:id).to_json %>">
-  <%= render "public/shared/invitation_video_stage",
-        video_src: asset_path("britt&alex-wedding-invite.mp4") %>
-
+<%= render layout: "public/shared/full_width_invitation_video",
+      locals: {
+        extra_controllers: "rsvp-form",
+        data: { rsvp_form: { guest_ids_value: @guests.map(&:id).to_json } }
+      } do %>
   <div class="invitation-video-content mx-auto hidden max-w-2xl px-4 py-20"
        data-invitation-video-target="content">
     <div class="mb-16 animate-fade-in-up text-center">
@@ -19,7 +18,41 @@
 
     <%= render "public/shared/flash_messages" %>
 
-    <%= render "public/rsvps/envelope" %>
+    <div class="space-y-8 text-center">
+      <div class="mb-8 space-y-6">
+        <%= render "public/shared/divider", height: 8 %>
+        <div class="mb-6"></div>
+        <p class="text-[10px] font-light uppercase tracking-[0.3em] text-stone-500">
+          You're Invited
+        </p>
+        <h2 class="font-display text-4xl font-light text-stone-800">
+          <%= @household.display_name %>
+        </h2>
+        <div class="mx-auto h-px w-16 bg-stone-300"></div>
+      </div>
+
+      <div class="mb-8 space-y-4 text-center">
+        <% if current_wedding.date %>
+          <p class="font-display text-2xl text-stone-800">
+            <%= format_date(current_wedding.date) %>
+          </p>
+        <% end %>
+        <div class="space-y-1">
+          <p class="font-light text-stone-600"><%= current_wedding.venue['name'] %></p>
+          <p class="text-sm font-light text-stone-500">
+            <%= full_venue_name(current_wedding.venue) %>
+          </p>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button type="button"
+                data-action="click->invitation-video#showForm"
+                class="btn-wedding-primary">
+          Respond Now
+        </button>
+      </div>
+    </div>
   </div>
 
   <div class="hidden" data-invitation-video-target="form">
@@ -52,4 +85,4 @@
 
   <div class="pointer-events-none absolute left-10 top-20 hidden h-24 w-24 border-l border-t border-stone-200/50 md:block"></div>
   <div class="pointer-events-none absolute bottom-20 right-10 hidden h-24 w-24 border-r border-b border-stone-200/50 md:block"></div>
-</div>
+<% end %>

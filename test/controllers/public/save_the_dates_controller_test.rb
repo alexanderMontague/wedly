@@ -6,7 +6,7 @@ module Public
       get public_save_the_date_path
       assert_response :success
       assert_select "[data-controller=invitation-video]"
-      assert_select %(video[data-invitation-video-target="video"][src*="britt"])
+      assert_select %(video[data-invitation-video-target="video"][src*="britt-alex-envelope-open"])
     end
   end
 end
