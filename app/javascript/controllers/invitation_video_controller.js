@@ -13,23 +13,29 @@ export default class extends Controller {
   ];
 
   static values = {
-    skipVideo: Boolean,
+    skipVideo: { type: Boolean, default: false },
   };
 
   connect() {
+    this.revealed = false;
+    this.started = false;
+    this.boundOnEnded = null;
+
     if (this.skipVideoValue) {
-      this.showForm();
+      this.revealed = true;
+      this.started = true;
+      this.revealContentImmediately();
       return;
     }
 
-    this.revealed = false;
-    this.started = false;
     this.boundOnEnded = () => this.onEnded();
     this.videoTarget.addEventListener("ended", this.boundOnEnded);
   }
 
   disconnect() {
-    this.videoTarget.removeEventListener("ended", this.boundOnEnded);
+    if (this.boundOnEnded) {
+      this.videoTarget.removeEventListener("ended", this.boundOnEnded);
+    }
   }
 
   start() {
@@ -45,6 +51,22 @@ export default class extends Controller {
 
   onEnded() {
     this.fadeToContent();
+  }
+
+  revealContentImmediately() {
+    this.clickOverlayTarget.classList.add(
+      "opacity-0",
+      "pointer-events-none",
+      "invisible"
+    );
+    this.whiteCurtainTarget.classList.add("opacity-0");
+    this.videoTarget.pause();
+    this.videoStageTarget.classList.add("hidden");
+    this.videoStageTarget.setAttribute("aria-hidden", "true");
+    this.contentTarget.classList.remove("hidden");
+    requestAnimationFrame(() => {
+      this.contentTarget.classList.add("invitation-video-content--visible");
+    });
   }
 
   fadeToContent() {
