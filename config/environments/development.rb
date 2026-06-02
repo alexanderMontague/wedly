@@ -1,6 +1,10 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
+  # foreman/bin/dev pipes STDOUT, so Ruby buffers it and request logs never flush.
+  # Autoflushing makes the server's request logging show up live in the terminal.
+  $stdout.sync = true
+
   config.enable_reloading = true
   config.eager_load = false
   config.consider_all_requests_local = true
