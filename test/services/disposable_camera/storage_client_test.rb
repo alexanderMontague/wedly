@@ -2,99 +2,53 @@ require "test_helper"
 
 module DisposableCamera
   class StorageClientTest < ActiveSupport::TestCase
-    test "builds tigris bucket-subdomain public url when endpoint is configured" do
-      with_environment(
-        "BUCKET_NAME" => "wedly",
-        "AWS_ENDPOINT_URL_S3" => "https://fly.storage.tigris.dev",
-        "DISPOSABLE_CAMERA_PUBLIC_BASE_URL" => nil
-      ) do
-        object_key = "test/britt-and-alex/photos/example.jpg"
+    teardown { StorageClient.reset_adapter! }
 
-        assert_equal(
-          "https://wedly.fly.storage.tigris.dev/#{object_key}",
-          StorageClient.public_url_for(object_key)
-        )
+    test "selects the local adapter when local storage is enabled" do
+      StorageClient.reset_adapter!
+
+      Configuration.stub(:local_storage?, true) do
+        assert_instance_of Storage::LocalAdapter, StorageClient.adapter
       end
     end
 
-    test "builds public base url with bucket and key" do
-      with_environment(
-        "BUCKET_NAME" => "wedly",
-        "DISPOSABLE_CAMERA_PUBLIC_BASE_URL" => "https://cdn.example.com"
-      ) do
-        object_key = "test/britt-and-alex/photos/example.jpg"
+    test "selects the s3 adapter when local storage is disabled" do
+      StorageClient.reset_adapter!
 
-        assert_equal(
-          "https://cdn.example.com/wedly/#{object_key}",
-          StorageClient.public_url_for(object_key)
-        )
+      Configuration.stub(:local_storage?, false) do
+        assert_instance_of Storage::S3Adapter, StorageClient.adapter
       end
     end
 
-    test "does not prepend bucket when public base url already includes it" do
-      with_environment(
-        "BUCKET_NAME" => "wedly",
-        "DISPOSABLE_CAMERA_PUBLIC_BASE_URL" => "https://wedly.cdn.example.com"
-      ) do
-        object_key = "test/britt-and-alex/photos/example.jpg"
+    test "memoizes the adapter until reset" do
+      StorageClient.reset_adapter!
 
-        assert_equal(
-          "https://wedly.cdn.example.com/#{object_key}",
-          StorageClient.public_url_for(object_key)
-        )
+      Configuration.stub(:local_storage?, true) do
+        assert_same StorageClient.adapter, StorageClient.adapter
       end
     end
 
-    test "deletes object by key from configured bucket" do
-      with_environment("BUCKET_NAME" => "wedly") do
-        fake_client = Minitest::Mock.new
-        fake_client.expect(
-          :delete_object,
-          true,
-          [{ bucket: "wedly", key: "test/britt-and-alex/photos/example.jpg" }]
-        )
+    test "delegates public_url_for to the selected adapter" do
+      fake_adapter = Minitest::Mock.new
+      fake_adapter.expect(:public_url_for, "https://example.test/key", ["key"])
 
-        StorageClient.stub(:client, fake_client) do
-          StorageClient.delete!(object_key: "test/britt-and-alex/photos/example.jpg")
-        end
-
-        fake_client.verify
+      StorageClient.stub(:adapter, fake_adapter) do
+        assert_equal "https://example.test/key", StorageClient.public_url_for("key")
       end
+
+      fake_adapter.verify
     end
 
-    test "deletes multiple objects in batches via delete_objects" do
-      with_environment("BUCKET_NAME" => "wedly") do
-        calls = []
-        fake_client = Object.new
-        fake_client.define_singleton_method(:delete_objects) do |params|
-          calls << params
-          Aws::S3::Types::DeleteObjectsOutput.new(errors: [])
-        end
+    test "delegates upload! to the selected adapter" do
+      fake_adapter = Minitest::Mock.new
+      io = StringIO.new("x")
+      fake_adapter.expect(:upload!, true, io: io, object_key: "key", content_type: "image/jpeg")
 
-        StorageClient.stub(:client, fake_client) do
-          StorageClient.delete_objects!(object_keys: %w[a.jpg b.jpg])
-        end
-
-        assert_equal 1, calls.size
-        assert_equal "wedly", calls.first[:bucket]
-        assert_equal %w[a.jpg b.jpg], calls.first[:delete][:objects].pluck(:key)
-      end
-    end
-
-    private
-
-    def with_environment(overrides)
-      original_values = overrides.keys.to_h { |key| [key, ENV[key]] }
-
-      overrides.each do |key, value|
-        value.nil? ? ENV.delete(key) : ENV[key] = value
+      StorageClient.stub(:adapter, fake_adapter) do
+        StorageClient.upload!(io: io, object_key: "key", content_type: "image/jpeg")
       end
 
-      yield
-    ensure
-      original_values.each do |key, value|
-        value.nil? ? ENV.delete(key) : ENV[key] = value
-      end
+      fake_adapter.verify
     end
   end
 end

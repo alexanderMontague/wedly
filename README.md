@@ -155,12 +155,25 @@ Defaults include reminders at 7 days, 1 day, and day-of wedding date. To enable 
 
 ### Disposable Camera Bucket Setup
 
-Disposable camera photos upload to a shared object bucket and are rendered in `/dispo/gallery`.
+Disposable camera photos upload via a pluggable storage backend and are rendered in `/dispo/gallery`.
 
-Required environment variables:
+**Backend selection** is handled by `DisposableCamera::StorageClient`, which delegates to one of two adapters:
 
-- `BUCKET_NAME=your-public-bucket-name`
-- Use fly storage create
+- **Local disk** (`Storage::LocalAdapter`) — the default in development/test. Files are written under `public/uploads/disposable_camera/` and served by Rails' static file server, so nothing touches a real bucket while developing.
+- **S3-compatible bucket** (`Storage::S3Adapter`) — the default in production, backed by **Cloudflare R2**.
+
+The choice follows `Rails.env` (local off-production, bucket in production) and can be overridden with `DISPOSABLE_CAMERA_STORAGE=local|s3`.
+
+For the bucket backend, create an R2 bucket in the Cloudflare dashboard and generate an R2 API token (access key id + secret). The bucket does **not** need public access: reads are served via short-lived presigned URLs generated from the credentials, regenerated on each render.
+
+Required environment variables (bucket backend only):
+
+- `BUCKET_NAME` — the R2 bucket name (e.g. `wedly`)
+- `R2_ACCOUNT_ID` — Cloudflare account id; the endpoint resolves to `https://$R2_ACCOUNT_ID.r2.cloudflarestorage.com` (override with `AWS_ENDPOINT_URL_S3`)
+- `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` — R2 API token credentials
+- `AWS_REGION=auto` — required by R2
+
+To serve photos via a CDN-cached custom domain instead of presigned URLs, bind a public domain to the bucket and reintroduce a public-base-URL read path in `Storage::S3Adapter#public_url_for`.
 
 ### Database Console
 

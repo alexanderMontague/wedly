@@ -3,30 +3,40 @@ module DisposableCamera
     BUCKET_ENV_KEY = "BUCKET_NAME".freeze
     REGION_ENV_KEY = "AWS_REGION".freeze
     ENDPOINT_ENV_KEY = "AWS_ENDPOINT_URL_S3".freeze
-    PUBLIC_BASE_URL_ENV_KEY = "DISPOSABLE_CAMERA_PUBLIC_BASE_URL".freeze
     SSL_VERIFY_PEER_ENV_KEY = "AWS_SSL_VERIFY_PEER".freeze
     SSL_CA_BUNDLE_ENV_KEY = "AWS_SSL_CA_BUNDLE".freeze
-    TIGRIS_FLY_ENDPOINT = "https://fly.storage.tigris.dev".freeze
+    R2_ACCOUNT_ID_ENV_KEY = "R2_ACCOUNT_ID".freeze
+    R2_DEFAULT_REGION = "auto".freeze
+    STORAGE_BACKEND_ENV_KEY = "DISPOSABLE_CAMERA_STORAGE".freeze
+    LOCAL_BACKEND = "local".freeze
+    S3_BACKEND = "s3".freeze
 
     class << self
+      # Local disk in development/test, S3-compatible bucket in production.
+      # Override explicitly with DISPOSABLE_CAMERA_STORAGE=local|s3.
+      def local_storage?
+        case ENV[STORAGE_BACKEND_ENV_KEY].presence&.downcase
+        when LOCAL_BACKEND then true
+        when S3_BACKEND then false
+        else !Rails.env.production?
+        end
+      end
+
       def bucket
         ENV.fetch(BUCKET_ENV_KEY)
       end
 
       def region
-        ENV.fetch(REGION_ENV_KEY, "us-east-1")
+        ENV.fetch(REGION_ENV_KEY, R2_DEFAULT_REGION)
       end
 
+      # Derived from the Cloudflare account id; AWS_ENDPOINT_URL_S3 overrides it.
       def endpoint
-        ENV[ENDPOINT_ENV_KEY].presence || TIGRIS_FLY_ENDPOINT
+        ENV[ENDPOINT_ENV_KEY].presence || r2_endpoint
       end
 
       def force_path_style?
         ActiveModel::Type::Boolean.new.cast(ENV.fetch("FORCE_PATH_STYLE", nil))
-      end
-
-      def public_base_url
-        ENV[PUBLIC_BASE_URL_ENV_KEY].presence
       end
 
       def ssl_verify_peer?
@@ -56,6 +66,15 @@ module DisposableCamera
         config[:ssl_ca_bundle] = ssl_ca_bundle if ssl_ca_bundle.present?
 
         config
+      end
+
+      private
+
+      def r2_endpoint
+        account_id = ENV[R2_ACCOUNT_ID_ENV_KEY].presence
+        return nil unless account_id
+
+        "https://#{account_id}.r2.cloudflarestorage.com"
       end
     end
   end

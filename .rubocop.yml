@@ -48,5 +48,8 @@ Style/SafeNavigationChainLength:
 Naming/PredicatePrefix:
   Enabled: false
 
+Lint/UnusedMethodArgument:
+  AllowUnusedKeywordArguments: true
+
 Rails/I18nLocaleTexts:
   Enabled: false
