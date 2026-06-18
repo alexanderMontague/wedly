@@ -13,6 +13,14 @@ class WeddingFeatureFlags
   # summary of what the schedule says and why.
   DEFINITIONS = [
     FlagDefinition.new(
+      key: "save_the_date_mode",
+      label: "Save the Date Mode",
+      description: "Limit the public site to the save the date page only. All other guest pages redirect here.",
+      category: :site,
+      scheduled_state: ->(_wedding) { false },
+      scheduled_label: ->(_wedding) { "Off by default" }
+    ),
+    FlagDefinition.new(
       key: "rsvp_visible",
       label: "RSVP Section Visible",
       description: "Show or hide the RSVP call-to-action section on the public wedding page.",
@@ -69,6 +77,7 @@ class WeddingFeatureFlags
   end
 
   CATEGORY_LABELS = {
+    site: "Site",
     rsvp: "RSVP",
     dispo: "Disposable Camera"
   }.freeze

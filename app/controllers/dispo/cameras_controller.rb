@@ -3,6 +3,7 @@ module Dispo
     layout "dispo"
 
     include WeddingConcern
+    include SaveTheDateModeEnforcement
 
     helper_method :dispo_total_photos_stream
 

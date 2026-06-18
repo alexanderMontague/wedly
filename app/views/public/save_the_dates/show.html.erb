@@ -1,44 +1,68 @@
 <%= render layout: "public/shared/full_width_invitation_video" do %>
   <div class="invitation-video-content hidden min-h-screen px-4 py-20"
        data-invitation-video-target="content">
-    <div class="mx-auto max-w-2xl">
-      <div class="animate-fade-in-up mb-16 text-center">
-        <%= render "public/shared/divider" %>
-        <div class="mb-8"></div>
-        <h1 class="mb-6 font-display text-6xl font-light tracking-wide text-stone-800">
-          Save the Date
-        </h1>
-
-      </div>
-
-      <div class="space-y-8 text-center">
-        <div class="mb-8 space-y-6">
-          <%= render "public/shared/divider", height: 8 %>
-          <div class="mb-6"></div>
-          <p class="text-[10px] font-light uppercase tracking-[0.3em] text-stone-500">
-            Save the Date
-          </p>
-          <h2 class="font-display text-4xl font-light text-stone-800">
-            <%= current_wedding.title %>
-          </h2>
-          <div class="mx-auto h-px w-16 bg-stone-300"></div>
+    <div class="save-the-date-shell mx-auto max-w-2xl">
+      <div class="save-the-date-frame relative z-10">
+        <div class="save-the-date-botanical save-the-date-botanical--top-left">
+          <%= render "public/shared/botanical_accent", placement: "top-left" %>
+        </div>
+        <div class="save-the-date-botanical save-the-date-botanical--bottom-right">
+          <%= render "public/shared/botanical_accent", placement: "bottom-right" %>
         </div>
 
-        <div class="mb-8 space-y-6 text-center">
+        <header class="save-the-date-hero animate-fade-in-up mb-10 text-center">
+          <div class="mb-8">
+            <%= render "public/shared/divider", height: 16 %>
+          </div>
+          <div class="save-the-date-eyebrow-row">
+            <p class="save-the-date-eyebrow mb-0">Save the Date</p>
+          </div>
+          <h1 class="save-the-date-title">
+            <%= current_wedding.title %>
+          </h1>
+          <div class="space-y-3">
+            <%= render "public/shared/botanical_ornament" %>
+          </div>
+        </header>
+
+        <div class="space-y-10 text-center">
           <p class="mx-auto max-w-md font-light leading-relaxed text-stone-600">
             We are delighted to announce our wedding and would be honored to have you celebrate with us on this special day.
           </p>
 
           <% if current_wedding.date %>
-            <div class="border-y border-stone-200 py-6">
-              <p class="mb-2 font-display text-3xl font-light text-stone-800">
-                <%= format_date_elegant(current_wedding.date) %>
-              </p>
-              <% if current_wedding.ceremony_time %>
-                <p class="text-lg font-light text-stone-600">
-                  <%= current_wedding.ceremony_time %>
+            <div class="save-the-date-when"
+                 data-controller="countdown"
+                 data-countdown-target-time-value="<%= wedding_datetime_iso(current_wedding) %>">
+              <div class="border-y border-primary/20 py-8">
+                <p class="mb-2 font-display text-3xl font-light text-stone-800 md:text-4xl">
+                  <%= format_date_elegant(current_wedding.date) %>
                 </p>
-              <% end %>
+                <% if current_wedding.ceremony_time %>
+                  <p class="text-lg font-light text-stone-600">
+                    <%= current_wedding.ceremony_time %>
+                  </p>
+                <% end %>
+              </div>
+
+              <div class="countdown" aria-live="polite" aria-label="Countdown to wedding day">
+                <div class="countdown-unit">
+                  <span class="countdown-value" data-countdown-target="days">—</span>
+                  <span class="countdown-label">Days</span>
+                </div>
+                <div class="countdown-unit">
+                  <span class="countdown-value" data-countdown-target="hours">—</span>
+                  <span class="countdown-label">Hours</span>
+                </div>
+                <div class="countdown-unit">
+                  <span class="countdown-value" data-countdown-target="minutes">—</span>
+                  <span class="countdown-label">Minutes</span>
+                </div>
+                <div class="countdown-unit">
+                  <span class="countdown-value" data-countdown-target="seconds">—</span>
+                  <span class="countdown-label">Seconds</span>
+                </div>
+              </div>
             </div>
           <% end %>
 
@@ -50,20 +74,20 @@
               </p>
             </div>
           <% end %>
-        </div>
 
-        <div class="space-y-4 text-center">
-          <% if current_wedding&.date %>
-            <%= link_to calendar_url,
-                target: "_blank",
-                rel: "noopener noreferrer",
-                class: "btn-wedding-primary inline-block" do %>
-              Add to Calendar
+          <div class="space-y-4 text-center">
+            <% if current_wedding&.date %>
+              <%= link_to calendar_url,
+                  target: "_blank",
+                  rel: "noopener noreferrer",
+                  class: "btn-wedding-primary inline-block" do %>
+                Add to Calendar
+              <% end %>
             <% end %>
-          <% end %>
-          <p class="text-xs font-light text-stone-400">
-            Formal invitation to follow
-          </p>
+            <p class="text-xs font-light text-stone-400">
+              Formal invitation to follow
+            </p>
+          </div>
         </div>
       </div>
     </div>

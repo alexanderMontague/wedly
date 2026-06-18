@@ -1,0 +1,14 @@
+<%# Corner accents — uses assets from app/assets/images/botanical/ %>
+<% placement = local_assigns[:placement] || "top-left" %>
+<% size = local_assigns[:size] || "md" %>
+<% size_class = { "sm" => "botanical-accent--sm", "md" => "botanical-accent--md", "lg" => "botanical-accent--lg" }[size] %>
+<% rotate_class = case placement
+   when "top-left" then "-scale-x-100"
+   when "top-right" then ""
+   when "bottom-left" then "-scale-x-100 rotate-180"
+   when "bottom-right" then "rotate-180"
+   else ""
+   end %>
+<% css_class = ["botanical-accent", size_class, rotate_class].compact_blank.join(" ") %>
+
+<%= botanical_svg("top-right-corner-branch", css_class: css_class) %>

@@ -479,6 +479,107 @@
     @apply opacity-100;
   }
 
+  .save-the-date-hero {
+    @apply text-center;
+  }
+
+  .save-the-date-eyebrow {
+    @apply text-[10px] font-light uppercase tracking-[0.35em] text-primary-700;
+  }
+
+  .save-the-date-title {
+    @apply mb-4 font-display text-5xl font-light tracking-wide text-stone-800 md:text-6xl;
+  }
+
+  .save-the-date-initials {
+    @apply mb-8 text-sm font-light tracking-[0.4em] text-stone-400;
+  }
+
+  .save-the-date-rule {
+    @apply mx-auto h-px w-20 bg-stone-300;
+  }
+
+  .save-the-date-shell {
+    @apply relative px-2 sm:px-6;
+  }
+
+  .save-the-date-frame {
+    @apply relative overflow-hidden border border-primary/25 px-6 py-10 sm:px-10 sm:py-12;
+  }
+
+  .save-the-date-frame::before {
+    content: "";
+    @apply pointer-events-none absolute inset-2 border border-primary/10;
+    clip-path: polygon(
+      0 12px, 12px 0, calc(100% - 12px) 0, 100% 12px,
+      100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px)
+    );
+  }
+
+  .save-the-date-botanical {
+    @apply pointer-events-none absolute z-0 opacity-70;
+  }
+
+  .save-the-date-botanical--top-left {
+    @apply left-2 top-2 sm:left-3 sm:top-3;
+  }
+
+  .save-the-date-botanical--bottom-right {
+    @apply bottom-2 right-2 sm:bottom-3 sm:right-3;
+  }
+
+  .save-the-date-botanical .botanical-accent {
+    @apply h-24 w-24 sm:h-28 sm:w-28;
+  }
+
+  .save-the-date-frame .botanical-ornament {
+    @apply mx-auto h-12 w-64 max-w-[90%] sm:h-14 sm:w-80;
+  }
+
+  .save-the-date-eyebrow-row {
+    @apply mb-6 flex items-center justify-center gap-4;
+  }
+
+  .save-the-date-eyebrow-line {
+    @apply h-px w-10 bg-primary/30 sm:w-14;
+  }
+
+  .botanical-accent {
+    @apply block text-stone-400;
+  }
+
+  .botanical-accent--sm {
+    @apply h-10 w-10;
+  }
+
+  .botanical-accent--md {
+    @apply h-14 w-14;
+  }
+
+  .botanical-accent--lg {
+    @apply h-24 w-16 sm:h-32 sm:w-20;
+  }
+
+  .botanical-ornament {
+    @apply mx-auto h-5 w-36 text-stone-400;
+  }
+
+  .countdown {
+    @apply mx-auto mt-8 grid max-w-sm grid-cols-4 gap-4;
+  }
+
+  .countdown-unit {
+    @apply flex flex-col items-center gap-2;
+  }
+
+  .countdown-value {
+    @apply font-display text-2xl font-light tabular-nums text-stone-800 md:text-3xl;
+  }
+
+  .countdown-label {
+    @apply text-[9px] font-light uppercase tracking-[0.2em] text-stone-400;
+  }
+
   /* --------------------------------------------------------------------------
      Animation Utilities
      -------------------------------------------------------------------------- */

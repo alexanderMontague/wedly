@@ -45,6 +45,10 @@ class Wedding < FrozenRecord::Base
     definition.scheduled_state.call(self)
   end
 
+  def save_the_date_mode?
+    feature_flag("save_the_date_mode")
+  end
+
   def rsvp_visible?
     feature_flag("rsvp_visible")
   end

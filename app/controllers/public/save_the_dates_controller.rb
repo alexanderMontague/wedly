@@ -35,6 +35,10 @@ module Public
 
     private
 
+    def save_the_date_mode_allowed?
+      action_name.in?(%w[show calendar])
+    end
+
     def generate_ics(title:, description:, location:, start_time:, end_time:)
       <<~ICS
         BEGIN:VCALENDAR

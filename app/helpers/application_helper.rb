@@ -89,6 +89,14 @@ module ApplicationHelper
     public_calendar_ics_path(format: :ics)
   end
 
+  def botanical_svg(name, css_class: nil)
+    path = Rails.root.join("app/assets/images/botanical/#{name}.svg")
+    svg = File.read(path)
+    svg = svg.gsub('fill="#000000"', 'fill="currentColor"')
+    svg = svg.sub("<svg ", %(<svg class="#{css_class}" )) if css_class.present?
+    svg.html_safe
+  end
+
   def admin_nav_link(label, path, active_prefixes: [path], exact: false)
     active = if exact
                request.path == path

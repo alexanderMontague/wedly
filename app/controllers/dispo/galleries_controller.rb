@@ -3,6 +3,7 @@ module Dispo
     layout "dispo"
 
     include WeddingConcern
+    include SaveTheDateModeEnforcement
 
     DEFAULT_PER_PAGE = 48
     MAX_PER_PAGE = 96
