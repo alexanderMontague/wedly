@@ -1,27 +1,17 @@
-<div class="min-h-screen py-20 px-4 bg-gradient-to-b from-stone-50 via-amber-50/30 to-stone-100">
-  <div class="max-w-2xl mx-auto">
-    <%# Header %>
-    <div class="text-center mb-16 animate-fade-in-up">
-      <%= render "public/shared/divider" %>
-      <div class="mb-8"></div>
-      <h1 class="text-6xl mb-6 tracking-wide font-display font-light text-stone-800">
-        RSVP
-      </h1>
-      <p class="text-lg mb-4 text-stone-600 font-light">
-        <%= current_wedding.title %>
-      </p>
-      <p class="text-sm tracking-wider text-stone-500 font-light">
-        Search for your name to find your invitation
-      </p>
-    </div>
+<div class="min-h-screen bg-gradient-to-b from-stone-50 via-amber-50/30 to-stone-100 px-4 py-20">
+  <%= render "public/shared/invitation_frame" do %>
+    <%= render "public/shared/invitation_hero",
+        eyebrow: "RSVP",
+        title: current_wedding.title %>
 
-    <%# Search Card %>
-    <div class="bg-white shadow-xl p-8 md:p-12 border border-stone-200/50 animate-fade-in-up"
+    <p class="invitation-lead mb-10 text-center">
+      Search for your name to find your invitation
+    </p>
+
+    <div class="animate-fade-in-up"
          style="animation-delay: 0.2s;"
          data-controller="guest-search"
          data-guest-search-url-value="<%= public_rsvp_search_path %>">
-
-      <%# Search Input %>
       <div class="mb-8">
         <label class="rsvp-label">Your Name</label>
         <div class="relative">
@@ -30,43 +20,38 @@
                  data-action="input->guest-search#search"
                  placeholder="Enter your first or last name"
                  autocomplete="off"
-                 class="w-full px-0 py-4 text-xl border-b-2 border-stone-300 outline-none transition-colors bg-transparent font-display text-stone-800 focus:border-stone-800" />
+                 class="w-full border-b-2 border-stone-300 bg-transparent px-0 py-4 font-display text-xl text-stone-800 outline-none transition-colors focus:border-stone-800" />
           <div class="absolute right-0 top-1/2 -translate-y-1/2">
             <%= render "public/shared/icon", name: "search" %>
           </div>
         </div>
       </div>
 
-      <%# Searching Indicator %>
-      <div data-guest-search-target="searching" class="hidden text-center py-8">
-        <p class="text-sm text-stone-500 font-light">Searching...</p>
+      <div data-guest-search-target="searching" class="hidden py-8 text-center">
+        <p class="text-sm font-light text-stone-500">Searching...</p>
       </div>
 
-      <%# Results %>
       <div data-guest-search-target="results" class="hidden">
         <p class="rsvp-label mb-4">Select your name</p>
         <div class="border border-stone-200">
-          <%# Results injected by JavaScript %>
         </div>
       </div>
 
-      <%# No Results %>
-      <div data-guest-search-target="noResults" class="hidden text-center py-8">
-        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full border border-stone-300 mb-6">
+      <div data-guest-search-target="noResults" class="hidden py-8 text-center">
+        <div class="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full border border-stone-300">
           <%= render "public/shared/icon", name: "sad" %>
         </div>
-        <p class="text-lg mb-2 font-display text-stone-800">No guests found</p>
-        <p class="text-sm text-stone-500 font-light">
+        <p class="mb-2 font-display text-lg text-stone-800">No guests found</p>
+        <p class="text-sm font-light text-stone-500">
           Please check the spelling or try a different name
         </p>
       </div>
 
-      <%# Hint %>
-      <div class="mt-8 pt-8">
-        <p class="text-center text-sm text-stone-400 font-light">
+      <div class="mt-8 border-t border-primary/10 pb-24 pt-8 sm:pb-28">
+        <p class="text-center text-sm font-light text-stone-400">
           If you received an invitation link, you can use that to go directly to your RSVP
         </p>
       </div>
     </div>
-  </div>
+  <% end %>
 </div>

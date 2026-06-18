@@ -479,35 +479,43 @@
     @apply opacity-100;
   }
 
-  .save-the-date-hero {
+  .invitation-hero {
     @apply text-center;
   }
 
-  .save-the-date-eyebrow {
+  .invitation-eyebrow {
     @apply text-[10px] font-light uppercase tracking-[0.35em] text-primary-700;
   }
 
-  .save-the-date-title {
+  .invitation-title {
     @apply mb-4 font-display text-5xl font-light tracking-wide text-stone-800 md:text-6xl;
   }
 
-  .save-the-date-initials {
+  .invitation-subtitle {
     @apply mb-8 text-sm font-light tracking-[0.4em] text-stone-400;
   }
 
-  .save-the-date-rule {
+  .invitation-lead {
+    @apply text-sm font-light tracking-wider text-stone-500;
+  }
+
+  .invitation-party-name {
+    @apply font-display text-4xl font-light text-stone-800 md:text-5xl;
+  }
+
+  .invitation-rule {
     @apply mx-auto h-px w-20 bg-stone-300;
   }
 
-  .save-the-date-shell {
+  .invitation-frame-shell {
     @apply relative px-2 sm:px-6;
   }
 
-  .save-the-date-frame {
+  .invitation-frame {
     @apply relative overflow-hidden border border-primary/25 px-6 py-10 sm:px-10 sm:py-12;
   }
 
-  .save-the-date-frame::before {
+  .invitation-frame::before {
     content: "";
     @apply pointer-events-none absolute inset-2 border border-primary/10;
     clip-path: polygon(
@@ -516,31 +524,31 @@
     );
   }
 
-  .save-the-date-botanical {
+  .invitation-frame-botanical {
     @apply pointer-events-none absolute z-0 opacity-70;
   }
 
-  .save-the-date-botanical--top-left {
+  .invitation-frame-botanical--top-left {
     @apply left-2 top-2 sm:left-3 sm:top-3;
   }
 
-  .save-the-date-botanical--bottom-right {
+  .invitation-frame-botanical--bottom-right {
     @apply bottom-2 right-2 sm:bottom-3 sm:right-3;
   }
 
-  .save-the-date-botanical .botanical-accent {
+  .invitation-frame-botanical .botanical-accent {
     @apply h-24 w-24 sm:h-28 sm:w-28;
   }
 
-  .save-the-date-frame .botanical-ornament {
+  .invitation-frame .botanical-ornament {
     @apply mx-auto h-12 w-64 max-w-[90%] sm:h-14 sm:w-80;
   }
 
-  .save-the-date-eyebrow-row {
+  .invitation-eyebrow-row {
     @apply mb-6 flex items-center justify-center gap-4;
   }
 
-  .save-the-date-eyebrow-line {
+  .invitation-eyebrow-line {
     @apply h-px w-10 bg-primary/30 sm:w-14;
   }
 

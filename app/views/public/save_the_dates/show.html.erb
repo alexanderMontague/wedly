@@ -1,95 +1,75 @@
 <%= render layout: "public/shared/full_width_invitation_video" do %>
   <div class="invitation-video-content hidden min-h-screen px-4 py-20"
        data-invitation-video-target="content">
-    <div class="save-the-date-shell mx-auto max-w-2xl">
-      <div class="save-the-date-frame relative z-10">
-        <div class="save-the-date-botanical save-the-date-botanical--top-left">
-          <%= render "public/shared/botanical_accent", placement: "top-left" %>
-        </div>
-        <div class="save-the-date-botanical save-the-date-botanical--bottom-right">
-          <%= render "public/shared/botanical_accent", placement: "bottom-right" %>
-        </div>
+    <%= render "public/shared/invitation_frame" do %>
+      <%= render "public/shared/invitation_hero",
+          eyebrow: "Save the Date",
+          title: current_wedding.title %>
 
-        <header class="save-the-date-hero animate-fade-in-up mb-10 text-center">
-          <div class="mb-8">
-            <%= render "public/shared/divider", height: 16 %>
-          </div>
-          <div class="save-the-date-eyebrow-row">
-            <p class="save-the-date-eyebrow mb-0">Save the Date</p>
-          </div>
-          <h1 class="save-the-date-title">
-            <%= current_wedding.title %>
-          </h1>
-          <div class="space-y-3">
-            <%= render "public/shared/botanical_ornament" %>
-          </div>
-        </header>
+      <div class="space-y-10 text-center">
+        <p class="mx-auto max-w-md font-light leading-relaxed text-stone-600">
+          We are delighted to announce our wedding and would be honored to have you celebrate with us on this special day.
+        </p>
 
-        <div class="space-y-10 text-center">
-          <p class="mx-auto max-w-md font-light leading-relaxed text-stone-600">
-            We are delighted to announce our wedding and would be honored to have you celebrate with us on this special day.
-          </p>
-
-          <% if current_wedding.date %>
-            <div class="save-the-date-when"
-                 data-controller="countdown"
-                 data-countdown-target-time-value="<%= wedding_datetime_iso(current_wedding) %>">
-              <div class="border-y border-primary/20 py-8">
-                <p class="mb-2 font-display text-3xl font-light text-stone-800 md:text-4xl">
-                  <%= format_date_elegant(current_wedding.date) %>
-                </p>
-                <% if current_wedding.ceremony_time %>
-                  <p class="text-lg font-light text-stone-600">
-                    <%= current_wedding.ceremony_time %>
-                  </p>
-                <% end %>
-              </div>
-
-              <div class="countdown" aria-live="polite" aria-label="Countdown to wedding day">
-                <div class="countdown-unit">
-                  <span class="countdown-value" data-countdown-target="days">—</span>
-                  <span class="countdown-label">Days</span>
-                </div>
-                <div class="countdown-unit">
-                  <span class="countdown-value" data-countdown-target="hours">—</span>
-                  <span class="countdown-label">Hours</span>
-                </div>
-                <div class="countdown-unit">
-                  <span class="countdown-value" data-countdown-target="minutes">—</span>
-                  <span class="countdown-label">Minutes</span>
-                </div>
-                <div class="countdown-unit">
-                  <span class="countdown-value" data-countdown-target="seconds">—</span>
-                  <span class="countdown-label">Seconds</span>
-                </div>
-              </div>
-            </div>
-          <% end %>
-
-          <% if current_wedding.venue %>
-            <div class="space-y-1">
-              <p class="font-light text-stone-600"><%= current_wedding.venue['name'] %></p>
-              <p class="text-sm font-light text-stone-500">
-                <%= full_venue_name(current_wedding.venue) %>
+        <% if current_wedding.date %>
+          <div class="invitation-when"
+               data-controller="countdown"
+               data-countdown-target-time-value="<%= wedding_datetime_iso(current_wedding) %>">
+            <div class="border-y border-primary/20 py-8">
+              <p class="mb-2 font-display text-3xl font-light text-stone-800 md:text-4xl">
+                <%= format_date_elegant(current_wedding.date) %>
               </p>
-            </div>
-          <% end %>
-
-          <div class="space-y-4 text-center">
-            <% if current_wedding&.date %>
-              <%= link_to calendar_url,
-                  target: "_blank",
-                  rel: "noopener noreferrer",
-                  class: "btn-wedding-primary inline-block" do %>
-                Add to Calendar
+              <% if current_wedding.ceremony_time %>
+                <p class="text-lg font-light text-stone-600">
+                  <%= current_wedding.ceremony_time %>
+                </p>
               <% end %>
-            <% end %>
-            <p class="text-xs font-light text-stone-400">
-              Formal invitation to follow
+            </div>
+
+            <div class="countdown" aria-live="polite" aria-label="Countdown to wedding day">
+              <div class="countdown-unit">
+                <span class="countdown-value" data-countdown-target="days">—</span>
+                <span class="countdown-label">Days</span>
+              </div>
+              <div class="countdown-unit">
+                <span class="countdown-value" data-countdown-target="hours">—</span>
+                <span class="countdown-label">Hours</span>
+              </div>
+              <div class="countdown-unit">
+                <span class="countdown-value" data-countdown-target="minutes">—</span>
+                <span class="countdown-label">Minutes</span>
+              </div>
+              <div class="countdown-unit">
+                <span class="countdown-value" data-countdown-target="seconds">—</span>
+                <span class="countdown-label">Seconds</span>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <% if current_wedding.venue %>
+          <div class="space-y-1">
+            <p class="font-light text-stone-600"><%= current_wedding.venue['name'] %></p>
+            <p class="text-sm font-light text-stone-500">
+              <%= full_venue_name(current_wedding.venue) %>
             </p>
           </div>
+        <% end %>
+
+        <div class="space-y-4 text-center">
+          <% if current_wedding&.date %>
+            <%= link_to calendar_url,
+                target: "_blank",
+                rel: "noopener noreferrer",
+                class: "btn-wedding-primary inline-block" do %>
+              Add to Calendar
+            <% end %>
+          <% end %>
+          <p class="text-xs font-light text-stone-400">
+            Formal invitation to follow
+          </p>
         </div>
       </div>
-    </div>
+    <% end %>
   </div>
 <% end %>

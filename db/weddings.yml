@@ -14,7 +14,7 @@
   # Date & Location
   date: "2027-07-10"
   ceremony_time: "4:00 PM"
-  wedding_duration_hours: 10 # used to lock disposable camera photos
+  wedding_duration_hours: 12 # used to lock disposable camera photos
   venue:
     name: "Liberty Grand"
     city: "Toronto"
