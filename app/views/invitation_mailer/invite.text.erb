@@ -1,11 +1,11 @@
 You're Invited!
 
-<%= current_wedding.title %>
-<% if current_wedding.date %>
-<%= format_date_elegant(current_wedding.date) %>
+<%= @wedding.title %>
+<% if @wedding.date %>
+<%= format_date_elegant(@wedding.date) %>
 <% end %>
-<% if current_wedding.location %>
-<%= current_wedding.location %>
+<% if @wedding.venue %>
+<%= full_venue_name(@wedding.venue) %>
 <% end %>
 
 Dear <%= @guest.first_name %>,

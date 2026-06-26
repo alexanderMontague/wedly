@@ -1,0 +1,15 @@
+Thank You!
+
+<%= @wedding.title %>
+
+We've received your RSVP. Here's a summary of what you told us:
+
+<% @guests.each do |guest| -%>
+- <%= guest.full_name %>: <%= guest.rsvp_status.capitalize %><%= guest.rsvp&.meal_choice.present? ? " (#{guest.rsvp.meal_choice})" : "" %>
+<% end -%>
+
+Need to make a change? You can update your RSVP any time before the big day:
+
+<%= @rsvp_url %>
+
+We can't wait to celebrate with you!

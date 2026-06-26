@@ -1,6 +1,6 @@
 class CreateWeddingMetadata < ActiveRecord::Migration[7.1]
   def change
-    create_table :wedding_metadata, id: :uuid do |t|
+    create_table :wedding_metadata, id: :string do |t|
       t.string :wedding_id
       t.string :key
       t.string :value

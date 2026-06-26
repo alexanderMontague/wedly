@@ -1,0 +1,40 @@
+<h1>Thank You!</h1>
+
+<p style="text-align: center; font-size: 20px; color: #C89B7B; margin: 24px 0;">
+  <%= @wedding.title %>
+</p>
+
+<p>
+  We've received your RSVP. Here's a summary of what you told us:
+</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 24px 0;">
+  <thead>
+    <tr>
+      <th style="text-align: left; padding: 8px; border-bottom: 2px solid #eee;">Guest</th>
+      <th style="text-align: left; padding: 8px; border-bottom: 2px solid #eee;">Response</th>
+      <th style="text-align: left; padding: 8px; border-bottom: 2px solid #eee;">Meal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @guests.each do |guest| %>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #f0f0f0;"><%= guest.full_name %></td>
+        <td style="padding: 8px; border-bottom: 1px solid #f0f0f0;"><%= guest.rsvp_status.capitalize %></td>
+        <td style="padding: 8px; border-bottom: 1px solid #f0f0f0;"><%= guest.rsvp&.meal_choice.presence || "&mdash;".html_safe %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p>
+  Need to make a change? You can update your RSVP any time before the big day:
+</p>
+
+<div style="text-align: center; margin: 32px 0;">
+  <a href="<%= @rsvp_url %>" class="btn">Update RSVP</a>
+</div>
+
+<p>
+  We can't wait to celebrate with you!
+</p>

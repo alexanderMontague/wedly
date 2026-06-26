@@ -53,7 +53,8 @@ module DisposableCamera
           fake_client.expect(
             :delete_object,
             true,
-            [{ bucket: "wedly", key: "test/britt-and-alex/photos/example.jpg" }]
+            bucket: "wedly",
+            key: "test/britt-and-alex/photos/example.jpg"
           )
 
           @adapter.stub(:client, fake_client) do

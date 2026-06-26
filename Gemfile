@@ -22,6 +22,9 @@ gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 group :development, :test do
   gem "debug", platforms: %i[mri mingw x64_mingw]
   gem "faker"
+  # Rails 7.1's test runner is incompatible with minitest 6's changed `run`
+  # signature; keep it on the 5.x series until Rails catches up.
+  gem "minitest", "~> 5.0"
 end
 
 group :development do

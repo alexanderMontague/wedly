@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_02_18_113000) do
+ActiveRecord::Schema[7.1].define(version: 2026_06_26_010000) do
   create_table "admin_users", force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest", null: false
@@ -20,8 +20,21 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_18_113000) do
     t.index ["email"], name: "index_admin_users_on_email", unique: true
   end
 
-# Could not dump table "disposable_photos" because of following StandardError
-#   Unknown type 'uuid' for column 'id'
+  create_table "disposable_photos", id: :string, force: :cascade do |t|
+    t.string "wedding_id", null: false
+    t.integer "guest_id"
+    t.string "object_key", null: false
+    t.string "content_type", null: false
+    t.integer "byte_size", null: false
+    t.boolean "flash_enabled", default: false, null: false
+    t.datetime "captured_at", null: false
+    t.string "source_ip"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["guest_id"], name: "index_disposable_photos_on_guest_id"
+    t.index ["object_key"], name: "index_disposable_photos_on_object_key", unique: true
+    t.index ["wedding_id", "created_at"], name: "index_disposable_photos_on_wedding_id_and_created_at"
+  end
 
   create_table "events", force: :cascade do |t|
     t.string "wedding_id", null: false
@@ -95,8 +108,14 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_18_113000) do
     t.index ["guest_id"], name: "index_rsvps_on_guest_id"
   end
 
-# Could not dump table "wedding_metadata" because of following StandardError
-#   Unknown type 'uuid' for column 'id'
+  create_table "wedding_metadata", id: :string, force: :cascade do |t|
+    t.string "wedding_id"
+    t.string "key"
+    t.string "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["wedding_id"], name: "index_wedding_metadata_on_wedding_id"
+  end
 
   add_foreign_key "disposable_photos", "guests"
   add_foreign_key "guests", "households"

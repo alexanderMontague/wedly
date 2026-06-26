@@ -17,10 +17,16 @@ class WeddingReminderPipelineJobTest < ActiveJob::TestCase
       email: "alex.guest@example.com",
       phone_number: "+15550001234"
     )
+
+    # Derive the trigger time from the configured wedding date so the test stays
+    # valid as db/weddings.yml changes. 10:05 is just past the 10:00 send window.
+    week_before = wedding.date - 7
+    @week_before_send_time = Time.find_zone!(wedding.timezone)
+                                 .local(week_before.year, week_before.month, week_before.day, 10, 5)
   end
 
   test "enqueues one delivery per guest and reminder channel" do
-    travel_to(Time.find_zone!("America/Toronto").local(2026, 8, 29, 10, 5)) do
+    travel_to(@week_before_send_time) do
       WeddingReminderPipelineJob.perform_now
     end
 
@@ -31,7 +37,7 @@ class WeddingReminderPipelineJobTest < ActiveJob::TestCase
   end
 
   test "does not enqueue duplicate deliveries across repeated runs" do
-    travel_to(Time.find_zone!("America/Toronto").local(2026, 8, 29, 10, 5)) do
+    travel_to(@week_before_send_time) do
       WeddingReminderPipelineJob.perform_now
       WeddingReminderPipelineJob.perform_now
     end

@@ -1,18 +1,18 @@
 <h1>You're Invited!</h1>
 
 <p style="text-align: center; font-size: 24px; color: #C89B7B; margin: 30px 0;">
-  <%= current_wedding.title %>
+  <%= @wedding.title %>
 </p>
 
-<% if current_wedding.date %>
+<% if @wedding.date %>
   <p style="text-align: center; font-size: 18px;">
-    <%= format_date(current_wedding.date) %>
+    <%= format_date(@wedding.date) %>
   </p>
 <% end %>
 
-<% if current_wedding.location %>
+<% if @wedding.venue %>
   <p style="text-align: center; font-size: 18px;">
-    <%= current_wedding.location %>
+    <%= full_venue_name(@wedding.venue) %>
   </p>
 <% end %>
 

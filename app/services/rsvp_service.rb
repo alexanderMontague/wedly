@@ -5,8 +5,6 @@ class RSVPService
         guest = household.guests.find(guest_id)
         rsvp = guest.rsvp || guest.build_rsvp
 
-        attributes[:meal_choice].presence if attributes[:status] == "accepted"
-
         rsvp.update!(
           status: attributes[:status],
           meal_choice: attributes[:status] == "accepted" ? attributes[:meal_choice] : nil,
@@ -14,9 +12,12 @@ class RSVPService
           notes: attributes[:notes]
         )
       end
-
-      { success: true }
     end
+
+    # Enqueued after commit so the async worker never reads stale/uncommitted data.
+    RSVPConfirmationJob.perform_later(household.id)
+
+    { success: true }
   rescue ActiveRecord::RecordInvalid => e
     { success: false, error: e.message }
   rescue StandardError

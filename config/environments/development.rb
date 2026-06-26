@@ -28,14 +28,7 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
   config.action_mailer.default_url_options = { host: "localhost", port: 3003 }
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    address: ENV.fetch("SMTP_ADDRESS", nil),
-    port: ENV.fetch("SMTP_PORT", 587),
-    user_name: ENV.fetch("SMTP_USERNAME", nil),
-    password: ENV.fetch("SMTP_PASSWORD", nil),
-    authentication: :plain,
-    enable_starttls_auto: true
-  }
+  # SMTP transport is configured centrally in config/initializers/smtp.rb.
 
   config.active_support.deprecation = :log
   config.active_support.disallowed_deprecation = :raise

@@ -1,6 +1,6 @@
 class CreateDisposablePhotos < ActiveRecord::Migration[7.1]
   def change
-    create_table :disposable_photos, id: :uuid do |t|
+    create_table :disposable_photos, id: :string do |t|
       t.string :wedding_id, null: false
       t.references :guest, null: true, foreign_key: true
       t.string :object_key, null: false
