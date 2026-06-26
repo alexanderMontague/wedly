@@ -1,50 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="color-scheme" content="light only">
+    <meta name="supported-color-schemes" content="light only">
+    <title><%= @wedding&.title %></title>
     <style>
-      body {
-        font-family: 'Georgia', serif;
-        line-height: 1.6;
-        color: #333;
-        background-color: #f5f5f5;
-        margin: 0;
-        padding: 0;
-      }
-      .container {
-        max-width: 600px;
-        margin: 0 auto;
-        background: white;
-        padding: 40px;
-      }
-      h1 {
-        color: #C89B7B;
-        font-size: 32px;
-        margin-bottom: 20px;
-        text-align: center;
-      }
-      .btn {
-        display: inline-block;
-        padding: 15px 30px;
-        background: #C89B7B;
-        color: white;
-        text-decoration: none;
-        border-radius: 4px;
-        margin: 20px 0;
-      }
-      .footer {
-        text-align: center;
-        color: #999;
-        font-size: 12px;
-        margin-top: 40px;
-        padding-top: 20px;
-        border-top: 1px solid #eee;
+      @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@200;300;400;500&display=swap');
+
+      body { margin: 0; padding: 0; width: 100% !important; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; background-color: #FAF9F7; }
+      table { border-collapse: collapse; }
+      img { border: 0; line-height: 100%; outline: none; text-decoration: none; }
+      a { color: #A07658; }
+
+      .mono { font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif; }
+      .sans { font-family: 'Montserrat', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; }
+
+      @media only screen and (max-width: 620px) {
+        .card-pad { padding-left: 28px !important; padding-right: 28px !important; }
+        .display-xl { font-size: 40px !important; }
       }
     </style>
   </head>
-  <body>
-    <div class="container">
-      <%= yield %>
-    </div>
+  <body style="margin:0; padding:0; background-color:#FAF9F7;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#FAF9F7;">
+      <tr>
+        <td align="center" style="padding: 40px 16px;">
+          <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px; max-width:600px; background-color:#FFFFFF; border:1px solid #EADfd4;">
+            <!-- Top accent rule -->
+            <tr>
+              <td style="height:3px; line-height:3px; font-size:0; background-color:#C89B7B;">&nbsp;</td>
+            </tr>
+
+            <!-- Monogram header -->
+            <tr>
+              <td align="center" class="card-pad" style="padding: 44px 56px 0;">
+                <% if @wedding&.couple&.dig("initials").present? %>
+                  <div class="mono" style="font-family:'Cormorant Garamond',Georgia,serif; font-size:17px; font-weight:500; letter-spacing:0.16em; color:#C89B7B; text-transform:uppercase;">
+                    <%= @wedding.couple["initials"] %>
+                  </div>
+                <% end %>
+              </td>
+            </tr>
+
+            <!-- Content -->
+            <tr>
+              <td class="card-pad sans" style="padding: 16px 56px 8px; font-family:'Montserrat',-apple-system,'Segoe UI',Helvetica,Arial,sans-serif; color:#57534e;">
+                <%= yield %>
+              </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+              <td class="card-pad" style="padding: 8px 56px 48px;">
+                <%= render "mailer_shared/divider" %>
+                <div align="center" style="text-align:center;">
+                  <div class="mono" style="font-family:'Cormorant Garamond',Georgia,serif; font-size:22px; font-weight:400; letter-spacing:0.04em; color:#292524;">
+                    <%= @wedding&.title %>
+                  </div>
+                  <div class="sans" style="font-family:'Montserrat',Helvetica,Arial,sans-serif; font-size:11px; font-weight:300; letter-spacing:0.22em; text-transform:uppercase; color:#a8a29e; padding-top:10px;">
+                    <% if @wedding&.date %><%= format_date(@wedding.date) %><% end %>
+                    <% if @wedding&.venue.present? %>&nbsp;&middot;&nbsp;<%= @wedding.venue["city"] %><% end %>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
   </body>
 </html>

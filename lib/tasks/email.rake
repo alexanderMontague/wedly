@@ -10,11 +10,8 @@ namespace :email do
 
     wedding = Wedding.current
 
-    accepted_guest = build_sample_guest(wedding, "Sample", "Guest", recipient)
-    accepted_guest.build_rsvp(status: "accepted", meal_choice: wedding.meal_options.first)
-
-    declined_guest = build_sample_guest(wedding, "Sample", "Partner", recipient)
-    declined_guest.build_rsvp(status: "declined")
+    accepted_guest = EmailSampleData.accepted_guest(email: recipient)
+    declined_guest = EmailSampleData.declined_guest(email: recipient)
 
     deliveries = {
       "invitation" => -> { InvitationMailer.invite(accepted_guest) },
@@ -32,15 +29,5 @@ namespace :email do
     end
 
     puts "Done."
-  end
-
-  def build_sample_guest(wedding, first_name, last_name, email)
-    Guest.new(
-      first_name:,
-      last_name:,
-      email:,
-      invite_code: "SAMPLECODE",
-      wedding_id: wedding.id
-    )
   end
 end

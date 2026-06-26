@@ -1,15 +1,24 @@
-Thank You!
+THANK YOU
 
-<%= @wedding.title %>
+Your RSVP is confirmed
 
-We've received your RSVP. Here's a summary of what you told us:
-
+We've received your response — here's what we have on file for your party:
 <% @guests.each do |guest| -%>
-- <%= guest.full_name %>: <%= guest.rsvp_status.capitalize %><%= guest.rsvp&.meal_choice.present? ? " (#{guest.rsvp.meal_choice})" : "" %>
+<%
+  label = case guest.rsvp_status
+          when "accepted" then "Joyfully accepts"
+          when "declined" then "Regretfully declines"
+          else "Awaiting reply"
+          end
+-%>
+  - <%= guest.full_name %>: <%= label %><%= guest.rsvp&.meal_choice.present? ? " (#{guest.rsvp.meal_choice})" : "" %>
 <% end -%>
+--------------------------------------------------
 
-Need to make a change? You can update your RSVP any time before the big day:
+Need to make a change? You may update your response any time before the big
+day:
 
 <%= @rsvp_url %>
 
-We can't wait to celebrate with you!
+We can't wait to celebrate with you.
+<%= @wedding.title %>

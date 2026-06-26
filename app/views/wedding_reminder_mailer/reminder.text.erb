@@ -1,9 +1,19 @@
+A GENTLE REMINDER
+
+We'd love your reply
+<% if @wedding.date %><%= format_date(@wedding.date) %>
+<% end %>
+--------------------------------------------------
+
 Hi <%= @guest.first_name %>,
 
-This is a reminder for <%= @wedding.title %>.
-The wedding is <%= distance_of_time_in_words_to_now(@wedding.date.to_time, include_seconds: false) %> away.
+Our celebration for <%= @wedding.title %> is drawing near, and we don't want to
+miss you. If you haven't had a chance yet, please take a moment to confirm
+whether you'll be joining us. It only takes a minute, and it helps us plan a
+perfect day.
 
-Please RSVP here:
+RSVP here:
 <%= @rsvp_url %>
 
-Thank you.
+With love,
+<%= @wedding.title %>

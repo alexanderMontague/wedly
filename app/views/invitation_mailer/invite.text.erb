@@ -1,23 +1,21 @@
-You're Invited!
-
 <%= @wedding.title %>
+request the honour of your presence
 <% if @wedding.date %>
 <%= format_date_elegant(@wedding.date) %>
 <% end %>
-<% if @wedding.venue %>
-<%= full_venue_name(@wedding.venue) %>
+<% if @wedding.venue.present? %><%= full_venue_name(@wedding.venue) %>
 <% end %>
+--------------------------------------------------
 
 Dear <%= @guest.first_name %>,
 
-We are delighted to invite you to celebrate our special day with us!
-Your presence would mean the world to us.
+We are delighted to invite you to celebrate our special day with us. Your
+presence would mean the world to us, and we would be honoured to share this
+moment with you.
 
-Please let us know if you'll be able to join us by visiting this link to RSVP:
+Kindly let us know whether you are able to join us by responding here:
 
 <%= @rsvp_url %>
 
-We look forward to celebrating with you!
-
----
-This invitation was sent to <%= @guest.email %>
+With love,
+<%= @wedding.title %>
